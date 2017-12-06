@@ -16,6 +16,16 @@ export default class App extends React.Component {
       title: 'app',
       open: false,
     };
+    this.getCookie = function (name) {
+      var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+      if (arr != null) return decodeURIComponent(arr[2]); return null;
+    }; 
+  }
+  componentWillMount(){
+    let isLogined = this.getCookie("id");
+    if (!isLogined) {
+      this.context.router.push('/login'); 
+    }
   }
   render() {
     // console.log(this.props.route, this.props.params, this.props.routeParams);
@@ -47,3 +57,7 @@ export default class App extends React.Component {
     );
   }
 }
+
+App.contextTypes = {
+  router: React.PropTypes.object
+};
