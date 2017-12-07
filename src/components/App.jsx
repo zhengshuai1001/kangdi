@@ -1,63 +1,80 @@
 import React from 'react';
 import { hashHistory } from 'react-router';
-import { NavBar, Drawer } from 'antd-mobile';
+import { TabBar } from 'antd-mobile';
 
-// not use `babel-plugin-import`
-// import 'antd-mobile/dist/antd-mobile.css';
-// import NavBar from 'antd-mobile/lib/nav-bar';
-// import 'antd-mobile/lib/nav-bar/style/css';
-// import Drawer from 'antd-mobile/lib/drawer';
-// import 'antd-mobile/lib/drawer/style/css';
 
 export default class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      title: 'app',
-      open: false,
-    };
-    this.getCookie = function (name) {
-      var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
-      if (arr != null) return decodeURIComponent(arr[2]); return null;
-    }; 
-  }
-  componentWillMount(){
-    let isLogined = this.getCookie("id");
-    if (!isLogined) {
-      this.context.router.push('/login'); 
+    constructor(props) {
+        super(props);
+        this.state = {
+            title: 'app',
+            selectedTab: "MyCar"
+        };
+        this.getCookie = function (name) {
+            var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
+            if (arr != null) return decodeURIComponent(arr[2]); return null;
+        };
     }
-  }
-  render() {
-    // console.log(this.props.route, this.props.params, this.props.routeParams);
-    return (
-      <div className="container">
-        <NavBar mode="light"
-          onLeftClick={() => hashHistory.goBack()}
-          rightContent={<b onClick={() => this.setState({ open: true })}>...</b>}
-        >
-          {this.state.title}
-        </NavBar>
-
-        <div style={{ position: 'relative', height: '100%' }}>
-          <Drawer
-            position="right"
-            sidebar='side content'
-            sidebarStyle={{ backgroundColor: '#fff' }}
-            open={this.state.open}
-            onOpenChange={() => this.setState({ open: !this.state.open })}
-          >
-            {this.props && this.props.children && React.cloneElement(this.props.children, {
-              changeTitle: title => this.setState({ title })
-            }) || 'no content'}
-          </Drawer>
-        </div>
-
-        {/*<div className="fixed-bottom">底部固定条</div>*/}
-      </div>
-    );
-  }
+    componentWillMount() {
+        let isLogined = this.getCookie("id");
+        if (!isLogined) {
+            // this.context.router.push('/login');
+        }
+    }
+    render() {
+        return (
+            <div className="container-app">
+                <TabBar
+                    barTintColor="transparent"
+                    unselectedTintColor="#fff"
+                    tintColor="#cf2a89"
+                >
+                    <TabBar.Item
+                        title="我的车辆"
+                        key="MyCar"
+                        icon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MyCar.png')} />}
+                        selectedIcon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MyCar-selected.png')} />}
+                        selected={this.state.selectedTab === 'MyCar'}
+                        onPress={() => {
+                            this.setState({
+                                selectedTab: 'MyCar',
+                            });
+                            this.context.router.push("/MyCar");
+                        }}
+                    ></TabBar.Item>
+                    <TabBar.Item
+                        title="使用帮助"
+                        key="UseHelp"
+                        icon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-UseHelp.png')} />}
+                        selectedIcon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-UseHelp-selected.png')} />}
+                        selected={this.state.selectedTab === 'UseHelp'}
+                        onPress={() => {
+                            this.setState({
+                                selectedTab: 'UseHelp',
+                            });
+                            this.context.router.push("/UseHelp");
+                        }}
+                    ></TabBar.Item>
+                    <TabBar.Item
+                        title="更多设置"
+                        key="MoreOptions"
+                        icon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MoreOptions.png')} />}
+                        selectedIcon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MoreOptions-selected.png')} />}
+                        selected={this.state.selectedTab === 'MoreOptions'}
+                        onPress={() => {
+                            this.setState({
+                                selectedTab: 'MoreOptions',
+                            });
+                            this.context.router.push("/MoreOptions");
+                        }}
+                    ></TabBar.Item>
+                </TabBar>
+                {this.props.children}
+            </div>
+        );
+    }
 }
 
 App.contextTypes = {
-  router: React.PropTypes.object
+    router: React.PropTypes.object
 };

@@ -28,7 +28,14 @@ const postcssOpts = {
 module.exports = {
   devtool: 'source-map', // or 'inline-source-map'
   devServer: {
-    disableHostCheck: true
+    disableHostCheck: true,
+    stats: {
+      colors: true,
+      modules: false,
+      children: false,
+      chunks: false,
+      chunkModules: false
+    }
   },
 
   entry: { "index": path.resolve(__dirname, 'src/index') },
