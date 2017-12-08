@@ -8,7 +8,7 @@ export default class App extends React.Component {
         super(props);
         this.state = {
             title: 'app',
-            selectedTab: "MyCar"
+            selectedTab: "/MyCar"
         };
         this.getCookie = function (name) {
             var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
@@ -20,6 +20,9 @@ export default class App extends React.Component {
         if (!isLogined) {
             // this.context.router.push('/login');
         }
+        this.setState({
+            selectedTab: this.props.location.pathname
+        });
     }
     render() {
         return (
@@ -34,10 +37,10 @@ export default class App extends React.Component {
                         key="MyCar"
                         icon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MyCar.png')} />}
                         selectedIcon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MyCar-selected.png')} />}
-                        selected={this.state.selectedTab === 'MyCar'}
+                        selected={this.state.selectedTab === '/MyCar'}
                         onPress={() => {
                             this.setState({
-                                selectedTab: 'MyCar',
+                                selectedTab: '/MyCar',
                             });
                             this.context.router.push("/MyCar");
                         }}
@@ -47,10 +50,10 @@ export default class App extends React.Component {
                         key="UseHelp"
                         icon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-UseHelp.png')} />}
                         selectedIcon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-UseHelp-selected.png')} />}
-                        selected={this.state.selectedTab === 'UseHelp'}
+                        selected={this.state.selectedTab === '/UseHelp'}
                         onPress={() => {
                             this.setState({
-                                selectedTab: 'UseHelp',
+                                selectedTab: '/UseHelp',
                             });
                             this.context.router.push("/UseHelp");
                         }}
@@ -60,10 +63,10 @@ export default class App extends React.Component {
                         key="MoreOptions"
                         icon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MoreOptions.png')} />}
                         selectedIcon={<img className="tab-bar-icon-img" src={require('../images/tab-bar-MoreOptions-selected.png')} />}
-                        selected={this.state.selectedTab === 'MoreOptions'}
+                        selected={this.state.selectedTab === '/MoreOptions'}
                         onPress={() => {
                             this.setState({
-                                selectedTab: 'MoreOptions',
+                                selectedTab: '/MoreOptions',
                             });
                             this.context.router.push("/MoreOptions");
                         }}

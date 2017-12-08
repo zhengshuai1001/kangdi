@@ -37,8 +37,8 @@
   margin: 0 auto;
 }
 .am-wingblank.am-wingblank-lg.page-login-WingBlank{
-    margin-left: 2.6rem;
-    margin-right: 2.6rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
 }
 .am-whitespace.am-whitespace-xs.page-login-WhiteSpace{
     height: 1.5rem;
@@ -122,11 +122,140 @@ html:not([data-scale]) .am-list-item:not(:last-child) .am-list-line::after {
     position: fixed;
     bottom: 0;
 }
-.am-tab-bar-bar{
+.am-tabs-tab-bar-wrap .am-tab-bar-bar{
     background-image: url("../images/tab-bar-background.png");
-    background-size: 100% 50px;
+    height: 4.6rem;
+    background-size: 100% 4.6rem;
 }
 .tab-bar-icon-img{
+    width: 1.8rem;
+    height: 1.8rem;
+}
+.my-accordion.am-accordion .am-accordion-item .am-accordion-header{
+    background-color: transparent;
+    color: #fff;
+    height: 5rem;
+    line-height: 5rem;
+}
+.my-accordion.am-accordion .am-accordion-item .am-accordion-content{
+    background-color: transparent;
+}
+.my-accordion.am-accordion .am-accordion-item .am-accordion-content .am-accordion-content-box{
+    color: #fff;
+    padding: 15px;
+}
+.my-accordion.am-accordion .am-accordion-item .am-accordion-header i{
     width: 20px;
     height: 20px;
+    top: 20px;
+}
+.my-accordion .box{
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color: rgb(207, 201, 201);
+}
+.my-accordion .box .answer{
+    display: inline-block;
+    padding: 0.3rem;
+    line-height: 1;
+    margin-right: 0.2rem;
+    background-color: #a0256c;
+}
+
+.am-button.feedbackButton{
+  position: fixed!important;
+  right: 1rem;
+  bottom: 5.5rem;
+  width: 5.6rem;
+  height: 5.6rem;
+  font-size: 0.5rem;
+  background-color: #a0256c;
+  color: #fff;
+  border-radius: 50%;
+  z-index: 100;
+  -webkit-box-shadow: 0 3px 20px 0 rgba(0,0,0,.3);
+  -moz-box-shadow: 0 3px 20px 0 rgba(0,0,0,.3);
+  box-shadow: 0 3px 20px 0 rgba(0,0,0,.3); 
+}
+.am-button.feedbackButton.am-button-active{
+    background-color: #661b47;
+}
+
+.am-button.feedbackButton img{
+    width: 2rem;
+    height: 2rem;
+    margin-top: 0.5rem;
+}
+
+.am-button.feedbackButton span{
+    position: absolute;
+    display: inline-block;
+    width: 8rem;
+    left: -1.2rem;
+    top: 2.6rem;
+    line-height: 1.5;
+    color: #fff;
+}
+
+.page-feedback .title{
+    color: #fff;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+}
+
+.opinion .am-textarea-control{
+    border: 1px solid #7d7d7d;
+    border-radius: 1rem;
+}
+.opinion .am-textarea-control textarea{
+    box-sizing: border-box;
+    color: rgb(179, 174, 174);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 1.4rem;
+}
+.opinion .am-textarea-count span{
+    color: rgb(179, 174, 174);
+}
+.page-feedback .segmenting-line{
+    width: 100%;
+    height: 3px;
+    background-color: #252525;
+    margin: 1.6rem 0;
+}
+#example .page-feedback .phone .am-list-line{
+    background-color: transparent;
+    border: 1px solid #7d7d7d;
+}
+
+.phone .am-list-line .am-input-control input{
+    box-sizing: border-box;
+    font-size: 1.4rem;
+    color: #b3aeae;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.my-list .am-list-body{
+    background-color: transparent;
+}
+.my-list .am-list-body .am-list-item{
+    background-color: transparent;
+    width: 100%;
+    height: 5rem;
+    padding-left: 0;
+}
+#example .my-list .am-list-body .am-list-item .am-list-line{
+    background-color: transparent;
+    border: none;
+    border-radius: none;
+}
+.my-list .am-list-item .am-list-line .am-list-content{
+    color: #fff;
+}
+.my-list .am-list-content img{
+    margin-left: 1.6rem;
+    margin-right: 1rem;
+    width: 2.6rem;
+    height: 2.6rem;
 }

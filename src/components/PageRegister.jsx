@@ -89,7 +89,7 @@ export default class PageRegister extends React.Component {
                     </InputItem> 
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <Button type="" className="page-login-bottom">
-                        <Link style={{"color":"#fff"}} className="toPageMoreInfo" to="/PageMoreInfo">下一步</Link>
+                        <Link style={{"color":"#fff"}} className="toPageMoreInfo" to="/moreInfo">下一步</Link>
                     </Button>
                 </WingBlank>
             </div>
