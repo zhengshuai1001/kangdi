@@ -13,14 +13,15 @@ import PageSettings from './components/PageSettings';
 import PagePersonalCenter from './components/PagePersonalCenter';
 import PageModifyPassword from './components/PageModifyPassword';
 import PageContactUs from './components/PageContactUs';
+import PageMyCarLogin from './components/PageMyCarLogin';
 
 import './index.less';
 
 ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/" component={App}>
-            <IndexRoute component={PageLogin} />
-            <Route path="MyCar" component={PageLogin} />
+            <IndexRoute component={PageMyCarLogin} />
+            <Route path="MyCar" component={PageMyCarLogin} />
             <Route path="UseHelp" component={PageUseHelp} />
             <Route path="MoreOptions" component={PageSettings} />
         </Route>
