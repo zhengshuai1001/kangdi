@@ -19,12 +19,24 @@
             width: 340px;
             height: 340px;
             margin: 0 auto;
-            background-image: url("./remoteDashboard.png");
+            background-image: url("./dashboard-background.png");
             background-size: 100% 100%;
+            position: relative;
         }
         #mountNode{
             width: 340px;
             margin: 0 auto;
+        }
+        #dashboardCenter{
+            padding-top: 8px;
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            top: 0;
+            bottom: 0;
         }
     </style>
 </head>
@@ -32,50 +44,16 @@
 <body>
     <div id="backgroud">
         <div id="mountNode"></div>
+        <img id="dashboardCenter" src="./dashboard-Center.png">
     </div>
     <script>/*Fixing iframe window.innerHeight 0 issue in Safari*/document.body.clientHeight;</script>
     <script src="https://gw.alipayobjects.com/os/antv/assets/g2/3.0.0/g2.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/assets/data-set/0.7.0/data-set.min.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/assets/lib/jquery-3.2.1.min.js"></script>
     <script>
-            const Shape = G2.Shape;
-            // 自定义Shape 部分
-            Shape.registerShape('point', 'pointer', {
-                drawShape(cfg, group) {
-                    console.log(cfg.points);
-                    let point = cfg.points[1]; // 获取第一个标记点
-                    point = this.parsePoint(point);
-                    const center = this.parsePoint({ // 获取极坐标系下画布中心点
-                        x: 0,
-                        y: 0
-                    });
-                    // 绘制指针
-                    group.addShape('line', {
-                        attrs: {
-                            x1: center.x,
-                            y1: center.y,
-                            x2: point.x,
-                            y2: point.y,
-                            stroke: cfg.color,
-                            lineWidth: 5,
-                            lineCap: 'round'
-                        }
-                    });
-                    return group.addShape('circle', {
-                        attrs: {
-                            x: center.x,
-                            y: center.y,
-                            r: 9.75,
-                            stroke: cfg.color,
-                            lineWidth: 4.5,
-                            fill: '#fff'
-                        }
-                    });
-                }
-            });
-
         // 极坐标下的柱状图
         // 构造数据
+        const mileage = 89;
         const data1 = [];
         for (let i = 0; i < 121; i++) {
             const item = {};
@@ -87,7 +65,10 @@
             if (i % 10 == 0) {
                 item.value = 20;
             }
-            data1.push(item);
+            if (i == mileage) {
+                item.value = 20;
+            }
+            data1.push(item);            
         }     
 
         const chart = new G2.Chart({
@@ -123,9 +104,9 @@
                 offset: -20,
                 autoRotate: false,
                 textStyle: function(type){
-                    var color = type < 61 ? "#cf2a89" : "#fff";
-                    var shadowBlur = type < 61 ? 10 : 0;
-                    var shadowColor = type < 61 ? "#cf2a89" : "#fff";
+                    var color = type <= mileage && mileage != 0 ? "#cf2a89" : "#fff";
+                    var shadowBlur = type <= mileage && mileage != 0 ? 10 : 0;
+                    var shadowColor = type <= mileage && mileage != 0 ? "#cf2a89" : "#fff";
                     return {
                         textAlign: 'center',
                         fill: "#fff",
@@ -151,10 +132,52 @@
             innerRadius: 0.9,
             radius: 0.9
         });
+        view1.interval().position('type*value')
+        .size('type',function(type){
+            return type == mileage ? 5 : 3;
+        })
+        .style('type',{ // 使用回调函数设置属性
+            // lineWidth: (type, value) => { },
+            fill: function(type){
+                return type < mileage ? "#cf2a89" : "#fff"
+            },
+            shadowBlur: function (type) {
+                return type < mileage ? 10 : 0
+            },
+            shadowColor: function (type) {
+                return type < mileage ? "#cf2a89" : "#fff"
+            },
+        });
+
+        view1.guide().arc({
+            top: false,
+            start: [0, -65],
+            end: [mileage, -65],
+            style: {
+                stroke: '#cf2a89',
+                lineWidth: 130,
+                opacity: 0.2
+            }
+        });
+
+        view1.guide().line({
+            top: true,
+            start: ["50%", "60%"],
+            end: [mileage, 1],
+            lineStyle: {
+                stroke: '#fff',
+                lineDash: null, 
+                lineWidth: 3
+            }
+        });
+
+        // view1.interval().position('type*value').shape("pointer");
+
         // const Shape = G2.Shape;
         // // 自定义Shape 部分
         // Shape.registerShape('point', 'pointer', {
         //     drawShape(cfg, group) {
+        //         console.log(cfg.points[0]);
         //         let point = cfg.points[0]; // 获取第一个标记点
         //         point = this.parsePoint(point);
         //         const center = this.parsePoint({ // 获取极坐标系下画布中心点
@@ -168,47 +191,11 @@
         //                 y1: center.y,
         //                 x2: point.x,
         //                 y2: point.y,
-        //                 stroke: "red",
-        //                 lineWidth: 50
+        //                 stroke: cfg.color,
+        //                 lineWidth: 5,
+        //                 lineCap: 'round'
         //             }
         //         });
-        //     }
-        // });
-        view1.interval().position('type*value')
-        .size(3)
-        .style('type',{ // 使用回调函数设置属性
-            // lineWidth: (type, value) => { },
-            fill: function(type){
-                return type < 61 ? "#cf2a89" : "#fff"
-            },
-            shadowBlur: function (type) {
-                return type < 61 ? 10 : 0
-            },
-            shadowColor: function (type) {
-                return type < 61 ? "#cf2a89" : "#fff"
-            },
-        })
-        .shape('pointer');
-
-        view1.guide().arc({
-            top: false,
-            start: [0, -55],
-            end: [61, -55],
-            style: {
-                stroke: '#cf2a89',
-                lineWidth: 120,
-                opacity: 0.2
-            }
-        });
-
-        // view1.guide().line({
-        //     top: false,
-        //     start: [58, -55],
-        //     end: [61, -55],
-        //     style: {
-        //         stroke: '#cf2a89',
-        //         lineWidth: 120,
-        //         opacity: 0.2
         //     }
         // });
 
