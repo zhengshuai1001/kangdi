@@ -15,6 +15,7 @@ import PageModifyPassword from './components/PageModifyPassword';
 import PageContactUs from './components/PageContactUs';
 import PageMyCarLogin from './components/PageMyCarLogin';
 import PageRemoteMeter from './components/PageRemoteMeter';
+import PageRemoteControl from './components/PageRemoteControl';
 
 import './index.less';
 
@@ -35,5 +36,6 @@ ReactDOM.render(
         <Route path="/modifyPassword" component={PageModifyPassword} />
         <Route path="/contactUs" component={PageContactUs} />
         <Route path="/remoteMeter" component={PageRemoteMeter} />
+        <Route path="/remoteControl" component={PageRemoteControl} />
     </Router>
     , document.getElementById('example'));

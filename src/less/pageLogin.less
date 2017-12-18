@@ -21,7 +21,7 @@
 #example{
   background-color: #181819;
   width: 100%;
-  height: 100%;
+//   height: 100%;
 //   background-image: url("../images/backgroundshadow.png");
   background-size: 100%;
 }
@@ -370,6 +370,7 @@ html:not([data-scale]) .am-button::before {
     width: 340px;
     height: 340px;
     margin: 0 auto;
+    margin-top: 1.6rem;
     background-image: url("../images/dashboard-background.png");
     background-size: 100% 100%;
     position: relative;
@@ -395,4 +396,158 @@ html:not([data-scale]) .am-button::before {
     margin: auto;
     top: 0;
     bottom: 0;
+}
+#mountNode3{
+    width: 340px;
+    height: 110px;
+    margin: 0 auto;
+}
+
+#mountNode3 .bar {
+    width: 130px;
+    height: 5px;
+    margin: 0 auto;
+}
+
+.bar-unfill {
+    height: 100%;
+    display: block;
+    background-color: #fff;
+    width: 100%;
+}
+
+
+.bar-fill-width {
+    display: initial;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    display: block;
+    background-color: #a0256c;
+    width: 67%;
+}
+
+.bar .bar-head{
+    display: inline-block;
+    width: 5px;
+    height: 15px;
+    background-color: #fff;
+    position: relative;
+}
+.bar .bar-head.bar-left{
+    float: left;
+    top: -5px;
+    background-color: #a0256c;
+}
+.bar .bar-head.bar-right{
+    float: right;
+    bottom: 10px;
+    background-color: #fff;
+}
+#mountNode3 .bar-title{
+    text-align: center;
+    color: #fff;
+    font-size: 2rem;
+    margin: 5px;
+}
+#mountNode3 .bar-bottom{
+    width: 130px;
+    margin: 0 auto;
+    color: #a0256c;
+    position: relative;
+    font-size: 1.3rem;
+}
+.bar-bottom .bar-bottom-text{
+    text-align: center;
+    color: #fff;
+    font-size: 1.5rem;
+    margin: 10px;
+}
+.bar-bottom .bar-bottom-left{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
+}
+.bar-bottom .bar-bottom-right{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 0px;
+}
+.bar-center-text{
+    text-align: center;
+    color: #fff;
+    font-size: 1.6rem;
+    width: 340px;
+    margin: 0 auto;
+    line-height: 2rem;
+    height: 2rem;
+}
+.shortcut-flex .shortcut-box{
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 40px;
+    border: 2px solid #3a3a3b;
+    margin: 0 auto;
+    text-align: center;
+}
+.shortcut-flex .shortcut-box img{
+    max-width: 35px;
+    max-height: 35px;
+    display: inline-block; 
+    vertical-align: sub;
+    margin-top: 2px;
+    // height: 30px;
+}
+.shortcut-flex .shortcut-text{
+    display: block;
+    text-align: center;
+    color: #fff;
+    font-size: 10px;
+    height: 16px;
+    line-height: 16px;
+    margin-top: 0.6rem;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+}
+.shortcut-WingBlank{
+    background-color: #181819;
+}
+.air-conditioner-box .temperature{
+    font-size: 5rem;
+    color: #fff;
+}
+.air-conditioner-box .temperature-img-box{
+    width: 4rem;
+    height: 4rem;
+    border: 2px solid #3a3a3b;
+    border-radius: 4rem;
+    display: inline-block;
+    // margin-left: 0.3rem;
+    text-align: center;
+}
+.air-conditioner-box .temperature-img-box img{
+    width: 3rem;
+    height: 3rem;
+    margin-top: 5px;
+}
+.am-flexbox .am-flexbox-item.temperature-flex-item{
+    -webkit-box-flex: 2;
+    -webkit-flex: 2;
+    -ms-flex: 2;
+    flex: 2;
+}
+.my-car-img-box{
+    width: 400px;
+    margin: 0 auto; 
+    height: 240px;
+    background-image: url("../images/my-car.png");
+    background-size: 100% 100%;
 }
