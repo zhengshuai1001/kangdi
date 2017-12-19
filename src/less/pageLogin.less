@@ -1,29 +1,76 @@
-@media only screen and (min-width: 316px){
-	html {
-    	font-size: 62.5%;
-	}
+html {
+    font-size:10px;
 }
-@media only screen and (min-width: 640px){
-	html {
-    	font-size: 125%;
-	}
+// @media only screen and (min-width: 316px){
+// 	html {
+//     	font-size: 62.5%;
+// 	}
+// }
+// @media only screen and (min-width: 640px){
+// 	html {
+//     	font-size: 125%;
+// 	}
+// }
+// @media only screen and (min-width: 750px){
+// 	html {
+//     	font-size: 150%;
+// 	}
+// }
+// @media only screen and (min-width: 1242px){
+// 	html {
+//     	font-size: 187.5%;
+// 	}
+// }
+@media screen and (min-width:480px) and (max-width:639px) {
+    html {
+        font-size: 15px;
+    }
 }
-@media only screen and (min-width: 750px){
-	html {
-    	font-size: 150%;
-	}
+@media screen and (min-width:640px) and (max-width:719px) {
+    html {
+        font-size: 20px;
+    }
 }
-@media only screen and (min-width: 1242px){
-	html {
-    	font-size: 187.5%;
-	}
+@media screen and (min-width:720px) and (max-width:749px) {
+    html {
+        font-size: 22.5px;
+    }
 }
+@media screen and (min-width:750px) and (max-width:799px) {
+    html {
+        font-size: 23.5px;
+    }
+}
+@media screen and (min-width:800px) and (max-width:959px) {
+    html {
+        font-size: 25px;
+    }
+}
+@media screen and (min-width:960px) and (max-width:1079px) {
+    html {
+        font-size: 30px;
+    }
+}
+@media screen and (min-width:1080px) {
+    html {
+        font-size: 32px;
+    }
+}
+@font-face{  
+  font-family: 'pingFangSC-Light';  
+  src: url('../less/PingFang-Light.ttf');  
+  font-weight: normal;  
+  font-style: normal;  
+} 
 #example{
-  background-color: #181819;
-  width: 100%;
+    background-color: #181819;
+    width: 100%;
 //   height: 100%;
 //   background-image: url("../images/backgroundshadow.png");
-  background-size: 100%;
+    background-size: 100%;
+    overflow-x: hidden;
+    font-family: Helvetica;
+
 }
 .page-login .page-login-bg-div{
     height: 20rem;
@@ -123,6 +170,7 @@ html:not([data-scale]) .am-button::before {
     width: 100%;
     position: fixed;
     bottom: 0;
+    z-index: 3;
 }
 .am-tabs-tab-bar-wrap .am-tab-bar-bar{
     background-image: url("../images/tab-bar-background.png");
@@ -491,7 +539,7 @@ html:not([data-scale]) .am-button::before {
 .shortcut-flex .shortcut-box{
     width: 40px;
     height: 40px;
-    line-height: 40px;
+    // line-height: 40px;
     border-radius: 40px;
     border: 2px solid #3a3a3b;
     margin: 0 auto;
@@ -523,6 +571,8 @@ html:not([data-scale]) .am-button::before {
 .air-conditioner-box .temperature{
     font-size: 5rem;
     color: #fff;
+    font-family: 'pingFangSC-Light',Helvetica;
+    font-weight: 100;
 }
 .air-conditioner-box .temperature-img-box{
     width: 4rem;
@@ -545,9 +595,210 @@ html:not([data-scale]) .am-button::before {
     flex: 2;
 }
 .my-car-img-box{
-    width: 400px;
+    width: 360px;
     margin: 0 auto; 
-    height: 240px;
+    height: 216.6px;
     background-image: url("../images/my-car.png");
     background-size: 100% 100%;
+}
+.tabs-one{
+    // width: 5rem;
+    height: 5rem;
+    text-align: center;
+}
+.tabs-one img{
+    width: 3rem;
+    max-height: 3rem;
+}
+.tabs-one span{
+    color: #808080;
+    font-size: 1.2rem;
+    display: block;
+}
+.my-car-tabs .my-car-tabs-tab-bar-wrap{
+    width: 100%;
+    overflow: hidden;
+}
+.my-car-tabs .am-tabs-default-bar-tab{
+    line-height: inherit;
+    // line-height: initial;
+}
+html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-bar-tab::after{
+    display: none;
+}
+.my-car-tabs .am-tabs-default-bar-top .am-tabs-default-bar-prevpage,
+.my-car-tabs .am-tabs-default-bar-top .am-tabs-default-bar-nextpage{
+    width: 1.8rem;
+    background: none;
+}
+.my-car-tabs .am-tabs-default-bar-top .am-tabs-default-bar-prevpage{
+    background-image: url("../images/tab-bar-prevpage.png");
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size: 60%;
+}
+.my-car-tabs .am-tabs-default-bar-top .am-tabs-default-bar-nextpage{
+    background-image: url("../images/tab-bar-nextpage.png");
+    background-repeat: no-repeat;
+    background-position:center;
+    background-size: 60%;
+}
+.shortcut-btn-box{
+    text-align: center;
+}
+.shortcut-btn-box span{
+    color: #fff;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    margin: 0.5rem auto 1.5rem;
+    display: inline-block;
+}
+.shortcut-btn-img-box{
+    width: 5rem;
+    height: 5rem;
+    margin: 0 auto;
+    background-image: url("../images/btn-bg-black.png");
+    background-size: 100% 100%;
+}
+.shortcut-btn-img-box img{
+    width: 3.2rem;
+    height: 3.2rem;
+    position:relative;
+    top:50%;
+    margin-top: -1.6rem;
+}
+.page-login-WingBlank-diy{
+    background-color: #181819;
+}
+
+.my-car-btn-box{
+    text-align: center;
+}
+.my-car-btn-box span{
+    color: #fff;
+    font-size: 1.5rem;
+    margin-top: 1rem;
+    margin: 1rem auto;
+    display: inline-block;
+}
+.my-car-btn-img-box{
+    width: 7rem;
+    height: 7rem;
+    margin: 0 auto;
+    background-image: url("../images/btn-bg-black.png");
+    background-size: 100% 100%;
+}
+.my-car-btn-img-box img{
+    width: 5rem;
+    height: 5rem;
+    position:relative;
+    top:50%;
+    margin-top: -2.5rem;
+}
+.my-car-big-box{
+    background-image: url("../images/my-car-big-bg.png");
+    background-size: 100% 100%;
+    position: relative;
+}
+.page-my-car{
+    background-color: #1c1c1c;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+.my-car-annular-box{
+    width: 260px;
+    margin: 0 auto; 
+    height: 54.2px;
+    background-image: url("../images/my-car-annular.png");
+    background-size: 100% 100%;
+    position: relative;
+    top: -32px;
+}
+.my-car-temperature-box{
+    display: inline-block;
+    position: absolute;
+    top: 0rem;
+    left: 2rem;
+}
+
+.my-car-temperature-box .temperature{
+    font-size: 5rem;
+    color: #fff;
+    font-family: 'pingFangSC-Light', Helvetica;
+    font-weight: 100;
+    padding-bottom: 0.2rem;
+    display: block;
+}
+.my-car-temperature-box .txt{
+    font-size: 1.2rem;
+    color: #fff;
+    padding: 3px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+} 
+.my-car-soc-box{
+    display: inline-block;
+    float: right;
+    position: relative;
+    top: -75px;
+    margin-right: 3rem;
+    // position: absolute;
+    // bottom: 140px;
+    // right: 35px;
+}
+.my-car-soc-box .soc{
+    font-size: 1.5rem;
+    color: #fff;
+    font-family: 'pingFangSC-Light', Helvetica;
+    font-weight: 100;
+    margin-right: 0.6rem;
+    text-shadow: 0 0 2px #a0256c, -0 -0 2px #a0256c;
+}
+.my-car-soc-box .txt{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 100%;
+    text-align: center;
+    color: #fff;
+    background-color: #a0256c;
+    box-shadow: 0px 0px 2px 2px #69103a inset;
+}
+
+.my-car-switchKey-box{
+    display: inline-block;
+    position: absolute;
+    top: 0rem;
+    right: 2.6rem;
+    width: 40px;
+}
+.my-car-switchKey-box span{
+    float: left;
+    display: inline-block;
+    width: 40px;
+    height: 45px;
+    line-height: 50px;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #fff;
+    background-color: #a0256c;
+    box-shadow: 0px 0px 2px 2px #69103a inset;
+}
+.my-car-switchKey-box img{
+    width: 20px;
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+    left: -2.6rem;
+}
+.my-car-switchKey-box .off{
+    border-top-left-radius: 100%;
+    border-top-right-radius: 100%;
+}
+.my-car-switchKey-box .on{
+    border-bottom-left-radius: 100%;
+    border-bottom-right-radius: 100%;
 }

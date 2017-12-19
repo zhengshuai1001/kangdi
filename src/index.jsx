@@ -16,13 +16,14 @@ import PageContactUs from './components/PageContactUs';
 import PageMyCarLogin from './components/PageMyCarLogin';
 import PageRemoteMeter from './components/PageRemoteMeter';
 import PageRemoteControl from './components/PageRemoteControl';
+import PageMyCar from './components/PageMyCar';
 
 import './index.less';
 
 ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/" component={App}>
-            <IndexRoute component={PageMyCarLogin} />
+            <IndexRoute component={PageMyCar} />
             <Route path="MyCar" component={PageMyCarLogin} />
             <Route path="UseHelp" component={PageUseHelp} />
             <Route path="MoreOptions" component={PageSettings} />
