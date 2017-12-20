@@ -4,6 +4,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const autoprefixer = require('autoprefixer');
 const pxtorem = require('postcss-pxtorem');
 
+// const ERRMSG = require('./src/data/errmsg');
+
 // const Visualizer = require('webpack-visualizer-plugin'); // remove it in production environment.
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin; // remove it in production environment.
 // const otherPlugins = process.argv[1].indexOf('webpack-dev-server') >= 0 ? [] : [
@@ -94,6 +96,10 @@ module.exports = {
     "react-dom": "ReactDOM"
   },
   plugins: [
+    new webpack.ProvidePlugin({
+      ERRMSG: ['../common/errmsg.js', 'default'],
+      CONFIG: '../common/config.js'
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     // new webpack.optimize.CommonsChunkPlugin('shared.js'),
     new webpack.optimize.CommonsChunkPlugin({

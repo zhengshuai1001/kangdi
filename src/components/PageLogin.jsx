@@ -1,17 +1,51 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
-import { WhiteSpace, Button, WingBlank, InputItem, Flex } from 'antd-mobile';
+import { WhiteSpace, Button, WingBlank, InputItem, Flex, Toast } from 'antd-mobile';
+import qs from 'qs';
 
 export default class PageLogin extends React.Component {
     constructor(props){
         super(props);
         this.state= {
             nick_name: '',
-            account: '',
-            password: ''
+            account: '17683993335',
+            password: '123456'
+        }
+        this.loginAjax = function (){
+            // var post_data = {
+            //     params: {
+            //         "timestamp": 0,
+            //         "token": "",
+            //         "mobile": "17683993335",
+            //         "busitype": 1
+            //     }
+            // };
+            CONFIG.ajax.post('account/login',JSON.stringify({
+                    "timestamp": Date.parse(new Date())/1000,
+                    "token": "",
+                    "kangdid": this.state.account,
+                    "psd": this.state.password,
+                    "vincode": "",
+                    "logintype": 1
+                })
+                // data: JSON.stringify(post_data)
+            ).then(req => {
+                console.log(req.data);
+                let res = req.result;
+                if (res.code == 1000) {
+                    console.log("success");
+                } else {
+                    Toast.fail(ERRMSG[res.code], 3);
+                }
+            }).catch(error => {
+                console.log(error);
+            });	
         }
     }
+
     render(){
+        this.loginAjax()
+        // console.log(CONFIG.ajax)
         return (
             <div key="1" className="page-login">
                 <div className="page-login-bg-div">

@@ -18,6 +18,9 @@ import PageRemoteMeter from './components/PageRemoteMeter';
 import PageRemoteControl from './components/PageRemoteControl';
 import PageMyCar from './components/PageMyCar';
 
+// import errmsg from './data/errmsg';
+// console.log(errmsg["100"]);
+
 import './index.less';
 
 ReactDOM.render(
