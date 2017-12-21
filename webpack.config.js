@@ -98,7 +98,7 @@ module.exports = {
   plugins: [
     new webpack.ProvidePlugin({
       ERRMSG: ['../common/errmsg.js', 'default'],
-      CONFIG: '../common/config.js'
+      // CONFIG: '../common/config.js'
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     // new webpack.optimize.CommonsChunkPlugin('shared.js'),

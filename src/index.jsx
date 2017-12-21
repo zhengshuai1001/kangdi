@@ -33,8 +33,8 @@ ReactDOM.render(
         </Route>
         <Route path="/login" component={PageLogin} />
         <Route path="/register" component={PageRegister} />
-        <Route path="/forgetPassword" component={PageForgetPassword} />
         <Route path="/moreInfo" component={PageMoreInfo} />
+        <Route path="/forgetPassword" component={PageForgetPassword} />
         <Route path="/feedback" component={PageFeedback} />
         <Route path="/personalCenter" component={PagePersonalCenter} />
         <Route path="/modifyPassword" component={PageModifyPassword} />

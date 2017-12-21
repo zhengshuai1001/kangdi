@@ -10,19 +10,16 @@ export default class App extends React.Component {
             title: 'app',
             selectedTab: "/MyCar"
         };
-        this.getCookie = function (name) {
-            var arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
-            if (arr != null) return decodeURIComponent(arr[2]); return null;
-        };
     }
     componentWillMount() {
-        let isLogined = this.getCookie("id");
-        if (!isLogined) {
-            // this.context.router.push('/login');
+        let token = localStorage.getItem("token");
+        if (!token) {
+            this.context.router.push('/login');
+        } else {
+            this.setState({
+                selectedTab: this.props.location.pathname
+            });
         }
-        this.setState({
-            selectedTab: this.props.location.pathname
-        });
     }
     render() {
         return (

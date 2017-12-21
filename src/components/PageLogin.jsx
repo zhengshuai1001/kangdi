@@ -1,51 +1,68 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, Flex, Toast } from 'antd-mobile';
-import qs from 'qs';
+import { runPromise } from '../common/promise';
 
 export default class PageLogin extends React.Component {
     constructor(props){
         super(props);
         this.state= {
             nick_name: '',
-            account: '17683993335',
-            password: '123456'
+            account: '',
+            password: ''
         }
-        this.loginAjax = function (){
-            // var post_data = {
-            //     params: {
-            //         "timestamp": 0,
-            //         "token": "",
-            //         "mobile": "17683993335",
-            //         "busitype": 1
-            //     }
-            // };
-            CONFIG.ajax.post('account/login',JSON.stringify({
-                    "timestamp": Date.parse(new Date())/1000,
-                    "token": "",
-                    "kangdid": this.state.account,
-                    "psd": this.state.password,
-                    "vincode": "",
-                    "logintype": 1
-                })
-                // data: JSON.stringify(post_data)
-            ).then(req => {
-                console.log(req.data);
-                let res = req.result;
-                if (res.code == 1000) {
-                    console.log("success");
-                } else {
-                    Toast.fail(ERRMSG[res.code], 3);
+        //发送登录后的处理函数
+        this.handleLogin = (req) =>{
+            let res = req.result;
+            console.log(res);
+            if (res.code == 1000) {
+                //拿到token，保存到本地存储里
+                if (res.data.token) {
+                    localStorage.setItem("token", res.data.token)
+                    //跳转到首页,MyCar
+                    this.context.router.push({
+                        pathname: '/MyCar'
+                    });
                 }
-            }).catch(error => {
-                console.log(error);
-            });	
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
         }
     }
 
+    testAccount(val) {
+        if (!(/^1(2|3|4|5|6|7|8|9)\d{9}$/.test(val))) {
+            Toast.info("请输入正确手机号！", 1);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    testPassword(val) {
+        let value = val.replace(" ", "");
+        if (!(/^.{1,20}$/.test(value))) {
+            Toast.info("请输入正确密码", 1);
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    onClickLogin = () => {
+        let account = this.state.account;
+        let password = this.state.password;
+        if (this.testAccount(account) && this.testPassword(password)) {
+            //发送ajax登录
+            runPromise("accountLogin", {
+                "kangdid": this.state.account,
+                "psd": this.state.password,
+                "vincode": "",
+                "logintype": 1
+            }, this.handleLogin);
+        }
+    }
     render(){
-        this.loginAjax()
-        // console.log(CONFIG.ajax)
         return (
             <div key="1" className="page-login">
                 <div className="page-login-bg-div">
@@ -56,7 +73,9 @@ export default class PageLogin extends React.Component {
                         type="string"
                         placeholder="请输入您的用户名"
                         maxLength="20"
+                        value = {this.state.account}
                         onChange={(val) => { this.setState({ account: val }) }}
+                        onBlur={(val) => { this.testAccount(val) }}
                     >
                         <img className="page-login-account-img" src={require('../images/page-login-account.png')} />
                     </InputItem>
@@ -65,12 +84,14 @@ export default class PageLogin extends React.Component {
                         type="password"
                         placeholder="请输入密码"
                         maxLength="20"
+                        value={this.state.password}
                         onChange={(val) => { this.setState({ password: val }) }}
+                        onBlur={(val) => { this.testPassword(val) }}
                     >
                         <img className="page-login-password-img" src={require('../images/page-login-password.png')} />
                     </InputItem>
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
-                    <Button type="" className="page-login-bottom">登入</Button>
+                    <Button type="" className="page-login-bottom" onClick={this.onClickLogin}>登入</Button>
                     <Flex style={{"margin-top":"1rem"}}>
                         <Flex.Item style={{"textAlign":"left", "paddingLeft":"1rem"}}><Link to="/register">新用户注册</Link></Flex.Item>
                         <Flex.Item style={{ "textAlign": "right", "paddingRight": "1rem" }}><Link to="/forgetPassword">忘记密码?</Link></Flex.Item>
