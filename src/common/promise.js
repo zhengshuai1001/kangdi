@@ -1,3 +1,6 @@
+import { hashHistory } from 'react-router';
+// import { Toast } from 'antd-mobile';
+
 import axios from 'axios';
 
 let Ajax = axios.create({
@@ -53,10 +56,20 @@ function run(taskDef) {
  * @param {any} ajaxName 具体执行ajax的请求名称
  * @param {any} param ajax请求的参数对象，必须是对象，属性名和ajax参数的属性名相同
  * @param {any} handle ajax执行完成后的处理函数
+ * @param {any} mustLogin 是否必须登录后才能发送请求，判断登录是查询本地存储的token
  */
-function runPromise(ajaxName, param, handle ) {
-
-    let serializeParam = { "timestamp": Date.parse(new Date()) / 1000, "token": "", "kangdid": ""};
+function runPromise(ajaxName, param, handle, mustLogin = true ) {
+    let token = localStorage.getItem("token");
+    let kangdid = localStorage.getItem("kangdid");
+    if (mustLogin && (!token || !kangdid)) {
+        //如果没登录，跳转到登录页
+        hashHistory.push({
+            pathname: '/login',
+            query: { form: 'promise' }
+        });
+        return;  
+    }
+    let serializeParam = { "timestamp": Date.parse(new Date()) / 1000, "token": token, "kangdid": kangdid};
     Object.assign(serializeParam, param);
 
     run(function* () {

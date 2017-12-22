@@ -77,7 +77,7 @@ export default class PageRegister extends React.Component {
             runPromise("smsNumsend", {
                 "mobile": phoneValue,
                 "busitype": 2
-            }, this.handleSendSMSCode);
+            }, this.handleSendSMSCode, false);
         }
     }
     handleRouterGoNext = () =>{

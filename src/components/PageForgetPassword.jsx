@@ -29,7 +29,7 @@ export default class PageForgetPassword extends React.Component {
             let res = req.result;
             console.log(res);
             if (res.code == 1000) {
-                //修改密码成功
+                //忘记密码重置成功
                 
                 
             } else {
@@ -89,7 +89,7 @@ export default class PageForgetPassword extends React.Component {
             runPromise("smsNumsend", {
                 "mobile": phoneValue,
                 "busitype": 2
-            }, this.handleSendSMSCode);
+            }, this.handleSendSMSCode, false);
         }
     }
     onClickForgetPassword = () =>{
@@ -104,7 +104,7 @@ export default class PageForgetPassword extends React.Component {
                 "busitype": "1",
                 "vericode": SMSCode,
                 "vincode": ""
-            }, this.handleForgetPassword);
+            }, this.handleForgetPassword, false);
 
         }
     }

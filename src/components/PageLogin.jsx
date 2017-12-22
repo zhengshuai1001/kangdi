@@ -18,7 +18,9 @@ export default class PageLogin extends React.Component {
             if (res.code == 1000) {
                 //拿到token，保存到本地存储里
                 if (res.data.token) {
-                    localStorage.setItem("token", res.data.token)
+                    //本地保存登录状态
+                    localStorage.setItem("token", res.data.token);
+                    localStorage.setItem("kangdid", this.state.account);
                     //跳转到首页,MyCar
                     this.context.router.push({
                         pathname: '/MyCar'
@@ -59,7 +61,7 @@ export default class PageLogin extends React.Component {
                 "psd": this.state.password,
                 "vincode": "",
                 "logintype": 1
-            }, this.handleLogin);
+            }, this.handleLogin, false);
         }
     }
     render(){

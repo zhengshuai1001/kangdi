@@ -82,7 +82,7 @@ export default class PageMoreInfo extends React.Component {
                 "nick_name": MixinState.nick_name,
                 "real_name": MixinState.full_name,
                 "certid": MixinState.ID_number
-            }, this.handleRegister);
+            }, this.handleRegister, false);
             
         }
     } 
