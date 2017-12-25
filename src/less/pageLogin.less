@@ -347,16 +347,19 @@ html:not([data-scale]) .am-button::before {
     width: 90px;
     height: 90px;
     border-radius: 90px;
-    overflow: hidden;
+    // overflow: hidden;
     position: absolute;
     left: 50%;
     margin-left: -45px;
     top: 20%;
-    box-shadow: 0 0 5px 0px rgba(0, 0, 0, .5);
+    // box-shadow: 0 0 5px 0px rgba(0, 0, 0, .5);
 }
 .avatar-box .img-box .avatar-img{
     width: 90px;
-    min-height: 90px;
+    height: 90px;
+    overflow: hidden;
+    border-radius: 100%;
+    box-shadow: 0 0 5px 0px rgba(0, 0, 0, 0.5);
 }
 .avatar-box .avatar-blur-box{
     width: 100%;
@@ -808,4 +811,44 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     border-bottom-right-radius: 100%;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+}
+.avatar-box .img-corner-box{
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-radius: 100%;
+    background-color: #9f236a;
+    text-align: center;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+.avatar-box .img-corner-box .img-corner{
+    width: 14px;
+    height: 14px;
+    margin-top: 3px;
+}
+.avatar-box .img-corner-box input{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    opacity: 0;
+    z-index: 2;
+}
+.am-button.uploadButton{
+    height: 30px;
+    line-height: 30px;
+    background-color: #9f236a;
+    color: #fff;
+    font-size: 14px;
+    padding: 0px 15px;
+}
+.am-button.am-button-active.uploadButton{
+    background-color: #750e4a;
+}
+.cropperAvatarBox{
+    width:100%;
+    height:100%;
+    background-color: #fff; 
+    // border: 1px solid #fff; 
 }

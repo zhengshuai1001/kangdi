@@ -20,7 +20,8 @@ const ajaxURLList = {
     passwordForget: "password/forget", //忘记密码
     appuserRetrieve: "appuser/retrieve", //查询个人信息
     appuserUpdate: "appuser/update", //修改用户信息
-    appuserSuggestion: "appuser/suggestion" //意见反馈   
+    appuserSuggestion: "appuser/suggestion", //意见反馈   
+    controlCodeChange: "password/change" //修改控制码（车主密码）   
 }
 
 //定义一个基于Promise的异步任务执行器
@@ -58,7 +59,7 @@ function run(taskDef) {
  * @param {any} handle ajax执行完成后的处理函数
  * @param {any} mustLogin 是否必须登录后才能发送请求，判断登录是查询本地存储的token
  */
-function runPromise(ajaxName, param, handle, mustLogin = true ) {
+function runPromise(ajaxName, param, handle, mustLogin = true, mustCarLogin = false ) {
     let token = localStorage.getItem("token");
     let kangdid = localStorage.getItem("kangdid");
     if (mustLogin && (!token || !kangdid)) {
@@ -69,7 +70,16 @@ function runPromise(ajaxName, param, handle, mustLogin = true ) {
         });
         return;  
     }
-    let serializeParam = { "timestamp": Date.parse(new Date()) / 1000, "token": token, "kangdid": kangdid};
+    let vincode = localStorage.getItem("vincode");
+    if (mustCarLogin && !vincode) {
+        //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+        hashHistory.push({
+            pathname: '/MyCarLogin',
+            query: { form: 'promise' }
+        });
+        return;
+    }
+    let serializeParam = { "timestamp": Date.parse(new Date()) / 1000, "token": token, "kangdid": kangdid, "vincode": vincode};
     Object.assign(serializeParam, param);
 
     run(function* () {

@@ -17,6 +17,10 @@ import PageMyCarLogin from './components/PageMyCarLogin';
 import PageRemoteMeter from './components/PageRemoteMeter';
 import PageRemoteControl from './components/PageRemoteControl';
 import PageMyCar from './components/PageMyCar';
+import PageModifyControlCodeFirst from './components/PageModifyControlCodeFirst';
+import PageModifyControlCodeSecond from './components/PageModifyControlCodeSecond';
+
+import { PageUploadAvatar } from './components/uploadAvatar';
 
 // import errmsg from './data/errmsg';
 // console.log(errmsg["100"]);
@@ -27,7 +31,8 @@ ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/" component={App}>
             <IndexRoute component={PageMyCar} />
-            <Route path="MyCar" component={PageMyCarLogin} />
+            <Route path="MyCar" component={PageMyCar} />
+            <Route path="MyCarLogin" component={PageMyCarLogin} />
             <Route path="UseHelp" component={PageUseHelp} />
             <Route path="MoreOptions" component={PageSettings} />
         </Route>
@@ -41,5 +46,8 @@ ReactDOM.render(
         <Route path="/contactUs" component={PageContactUs} />
         <Route path="/remoteMeter" component={PageRemoteMeter} />
         <Route path="/remoteControl" component={PageRemoteControl} />
+        <Route path="/uploadAvatar" component={PageUploadAvatar} />
+        <Route path="/modifyControlCodeFirst" component={PageModifyControlCodeFirst} />
+        <Route path="/modifyControlCodeSecond" component={PageModifyControlCodeSecond} />
     </Router>
     , document.getElementById('example'));

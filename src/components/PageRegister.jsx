@@ -76,7 +76,7 @@ export default class PageRegister extends React.Component {
             //发送ajax获取短信验证码
             runPromise("smsNumsend", {
                 "mobile": phoneValue,
-                "busitype": 2
+                "busitype": 1
             }, this.handleSendSMSCode, false);
         }
     }
