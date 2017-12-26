@@ -55,6 +55,19 @@ const MyCarBtn = (props) => (
     </div>
 )
 
+const transformParam = {
+    trunk0: "18",
+    trunk1: "17",
+    lock0: "8",
+    lock1: "7",
+    engine0: "24",
+    engine1: "23",
+    door0: "2",
+    door1: "1",
+    lamp0: "16",
+    lamp1: "15"
+}
+
 export default class PageMyCar extends React.Component{
     constructor(props) {
         super(props)
@@ -70,7 +83,8 @@ export default class PageMyCar extends React.Component{
             defrost: 1, // 除雾除霜
             acc: 0, // 自适应巡航
             soc: 0, //电量
-            temperature: 0 //室内温度
+            temperature: 0, //室内温度
+            onClickTabName: "" //点击tab的state名字
         }
         //发送完后车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
@@ -97,6 +111,20 @@ export default class PageMyCar extends React.Component{
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
         }
+        //发送完后车身控制后的处理函数
+        this.handleControlCar = (req) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                let data = res.data;
+                //将相应的state取反操作
+                this.setState({
+                    [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
+                });
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
     }
     onActive = (index) => {
         console.log(index);
@@ -111,19 +139,29 @@ export default class PageMyCar extends React.Component{
     }
     componentDidMount() {
         //发送ajax获取车辆运行数据
-        // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+        runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+    }
+    onClickTab = (tab, index) => {
+        let state = tab.title.props.state;
+        this.setState({onClickTabName: state});
+        let suffix = this.state[state] == 1 ? "0" : "1" ;
+        let param = state + suffix;
+        //发送ajax设置车身控制
+        runPromise("controlCar", {
+            contrlpara: {"part":transformParam[param], "para": ""}
+        }, this.handleControlCar,true, true);
     }
     render() {
         const tabs = [
-            { title: <div className="tabs-one"><img src={ this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.door ? imgUrl.doorActive : imgUrl.door} /><span>车门</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
-            { title: <div className="tabs-one"><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
+            { title: <div state="trunk" className="tabs-one"><img src={ this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
+            { title: <div state="lock" className="tabs-one"><img src={ this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
+            { title: <div state="engine" className="tabs-one"><img src={ this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
+            { title: <div state="door" className="tabs-one"><img src={ this.state.door ? imgUrl.doorActive : imgUrl.door} /><span>车门</span></div> },
+            { title: <div state="lamp" className="tabs-one"><img src={ this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
+            { title: <div state="AirConditioner" className="tabs-one"><img src={ this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
+            { title: <div state="ac" className="tabs-one"><img src={ this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
+            { title: <div state="ptc" className="tabs-one"><img src={ this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
+            { title: <div state="defrost" className="tabs-one"><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
         ];
         return (
             <QueueAnim
@@ -162,7 +200,7 @@ export default class PageMyCar extends React.Component{
                             tabs={tabs}
                             initialPage={0}
                             onChange={(tab, index) => { console.log('onChange', index, tab); }}
-                            onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
+                            onTabClick={this.onClickTab}
                         >
                         </Tabs>
                     </div>

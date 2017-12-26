@@ -25,6 +25,7 @@ const ajaxURLList = {
     appuserChangeimg: "appuser/changeimg", //上传图片修改头像   
     carOwner: "car/owner", //车辆查询 
     queryCarStatus: "control/queryCarStatus", //车辆运行数据查询
+    controlCar: "control/car", //车身控制
 }
 
 //定义一个基于Promise的异步任务执行器
