@@ -140,11 +140,11 @@ export default class PageMyCar extends React.Component{
                         <div className="my-car-img-box"></div>
                         <div className="my-car-soc-box">
                             <span className="soc">SOC</span>
-                            <span className="txt">35%</span>
+                            <span className="txt">{this.state.soc}%</span>
                         </div>
                         <div className="my-car-annular-box"></div>
                         <div className="my-car-temperature-box">
-                            <span className="temperature">25℃</span>
+                            <span className="temperature">{this.state.temperature}℃</span>
                             <span className="txt">车内温度</span>
                         </div>
                         <div className="my-car-switchKey-box">
