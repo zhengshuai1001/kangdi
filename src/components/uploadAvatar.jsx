@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Icon, Toast } from 'antd-mobile';
 import QueueAnim from 'rc-queue-anim';
+import { runPromise } from '../common/promise';
 
 import Cropper from 'cropperjs';
 /**
@@ -64,23 +65,55 @@ class PageUploadAvatar extends React.Component {
         // this.state = {
         //     img1: {}
         // }
+        this.convertCanvasToImage = function (canvas) {
+            //新Image对象，可以理解为DOM  
+            let image = new Image();
+            // canvas.toDataURL 返回的是一串Base64编码的URL，当然,浏览器自己肯定支持  
+            // 指定格式 PNG  
+            image.src = canvas.toDataURL("image/png");
+            return image.src;
+        }
+        //发送上传图片完成后的处理函数
+        this.handleUploadAvatar = (req) => {
+            let res = req.result;
+            console.log(res);
+            if (res.code == 1000) {
+                //上传图片成功
+
+
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        } 
     }
     onClickUpload = () => {
         //这里写上传图片的代码   
-        FileAPI.upload({
-            url: 'https://www.huakewang.com/upload/upload_images_for_mobile',
-            files: { Filedata: this.state.img1 },
-            progress: function (evt) { /* ... */ },
-            complete: function (err, xhr) { /* ... */
-                //保存图片地址
-                var upfileFilePath = (JSON.parse(xhr.responseText)).data.file_path;
-                //var url = CONFIG.getUrl() + upfileFilePath;
-                //相对路径就好了
-                if (upfileFilePath) {
-                    hashHistory.goBack();
-                }
-            }
-        });
+        // FileAPI.upload({
+        //     url: 'http://kd.hetaoyun.com/api/appuser/changeimg',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     data: {
+        //         "timestamp": Date.parse(new Date()) / 1000, 
+        //         "token": localStorage.getItem("token"), 
+        //         "kangdid": localStorage.getItem("kangdid"),
+        //         "header_img": this.convertCanvasToImage(this.state.img2)
+        //     },
+        //     // files: { header_img: this.convertCanvasToImage(this.state.img2) },
+        //     // files: { header_img: this.convertCanvasToImage(this.state.img2) },
+        //     progress: function (evt) { /* ... */ },
+        //     complete: function (err, xhr) { /* ... */
+        //         //保存图片地址
+        //         var upfileFilePath = (JSON.parse(xhr.responseText)).data.file_path;
+        //         //var url = CONFIG.getUrl() + upfileFilePath;
+        //         //相对路径就好了
+        //         if (upfileFilePath) {
+        //             hashHistory.goBack();
+        //         }
+        //     }
+        // });
+        //发送ajax上传图片
+        runPromise("appuserChangeimg", {
+            "header_img": (this.convertCanvasToImage(this.state.img2)).split("base64,")[1]
+        }, this.handleUploadAvatar);
     }
     componentWillMount () {
         this.setState(this.props.location.state);
@@ -113,9 +146,15 @@ class PageUploadAvatar extends React.Component {
                     img1.matrix.sh = e.detail.height;
                     img1.matrix.dw = width;
                     img1.matrix.dh = height;
-                    self.setState({
-                        img1: img1
-                    })
+                    img1.get(function (err, img) {
+                        // img 原图
+                        // img1 需要切割的图
+                        //跳转到裁切图片页
+                        // console.log(img);
+                        self.setState({
+                            img2: img
+                        })  
+                    });
                 }
             });
         }, 0);
@@ -146,3 +185,45 @@ PageUploadAvatar.contextTypes = {
 };
 
 export { cropperToUpload, PageUploadAvatar };
+
+// let toBinaryTable = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 62, -1, -1, -1, 63,
+//     52, 53, 54, 55, 56, 57, 58, 59, 60, 61, -1, -1, -1, 0, -1, -1, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
+//     15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, -1, -1, -1, -1, -1, -1, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40,
+//     41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, -1, -1, -1, -1, -1
+// ]; 
+// let base64Pad = '=';   
+// function base64ToString(data) {
+//     var result = '';
+//     var leftbits = 0; // number of bits decoded, but yet to be appended    
+//     var leftdata = 0; // bits decoded, but yet to be appended   
+
+//     // Convert one by one.                                                                               
+//     for (var i = 0; i < data.length; i++) {
+//         var c = toBinaryTable[data.charCodeAt(i) & 0x7f];
+//         var padding = (data.charCodeAt(i) == base64Pad.charCodeAt(0));
+//         // Skip illegal characters and whitespace    
+//         if (c == -1) continue;
+
+//         // Collect data into leftdata, update bitcount    
+//         leftdata = (leftdata << 6) | c;
+//         leftbits += 6;
+
+//         // If we have 8 or more bits, append 8 bits to the result   
+//         if (leftbits >= 8) {
+//             leftbits -= 8;
+//             // Append if not padding.   
+//             if (!padding)
+//                 result += String.fromCharCode((leftdata >> leftbits) & 0xff);
+//             leftdata &= (1 << leftbits) - 1;
+//         }
+
+//     }
+
+
+
+//     // If there are any bits left, the base64 string was corrupted                                        
+
+//     if (leftbits)
+//         throw Components.Exception('Corrupted base64 string');
+//     return result;
+// }  

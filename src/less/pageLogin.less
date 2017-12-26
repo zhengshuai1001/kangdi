@@ -86,6 +86,7 @@ html {
 .am-wingblank.am-wingblank-lg.page-login-WingBlank{
     margin-left: 2rem;
     margin-right: 2rem;
+    position: relative;
 }
 .am-whitespace.am-whitespace-xs.page-login-WhiteSpace{
     height: 1.5rem;
@@ -691,6 +692,9 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     background-image: url("../images/btn-bg-black.png");
     background-size: 100% 100%;
 }
+.my-car-btn-img-box:active{
+    background-image: url("../images/btn-bg-red.png");
+}
 .my-car-btn-img-box img{
     width: 5rem;
     height: 5rem;
@@ -851,4 +855,28 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     height:100%;
     background-color: #fff; 
     // border: 1px solid #fff; 
+}
+.drop-down-list-box{
+    position: absolute;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid #9f236a;
+    border-radius: 5px;
+    width: 100%;
+    margin-top: 0;
+    // left: 0;
+    // right:0;
+    // margin: 0 auto;
+    box-sizing: border-box;
+    // padding-left: 0;
+    // padding-right: 0;
+    list-style: none;
+    color: #fff;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.drop-down-list-box li{
+    height: 3rem;
+    line-height: 3rem;
+    font-size: 1.6rem;
 }

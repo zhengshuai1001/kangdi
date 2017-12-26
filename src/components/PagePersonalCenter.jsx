@@ -15,7 +15,8 @@ export default class PagePersonalCenter extends React.Component {
             nick_name: '',
             real_name: '',
             certid: '',
-            phone: localStorage.getItem("kangdid") || ""
+            phone: localStorage.getItem("kangdid") || "",
+            avatar: require("../images/avatar.png")
         }
         //获取个人信息后的处理函数
         this.handleUserInfo = (req) => {
@@ -24,7 +25,8 @@ export default class PagePersonalCenter extends React.Component {
                 this.setState({
                     nick_name: res.data.nick_name || "",
                     real_name: res.data.real_name || "",
-                    certid: res.data.certid || ""
+                    certid: res.data.certid || "",
+                    avatar: "http://kd.hetaoyun.com" + res.data.header_img_url || require("../images/avatar.png")
                 });               
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
@@ -86,7 +88,7 @@ export default class PagePersonalCenter extends React.Component {
                     <div className="avatar-box">
                         <div className="avatar-content">
                             <div className="img-box">
-                                <img className="avatar-img" src={require("../images/avatar.png")}/>
+                                <img className="avatar-img" src={this.state.avatar}/>
                                 <div className="img-corner-box">
                                     <input ref="imgInput" type="file" accept="image/*"/>
                                     <img className="img-corner" src={require("../images/pen-icon.png")} />
@@ -99,7 +101,7 @@ export default class PagePersonalCenter extends React.Component {
                             </div>
                         </div>
                         <div className="avatar-blur-box">
-                            <img src={require("../images/avatar.png")} className="blur"/>
+                            <img src={this.state.avatar} className="blur"/>
                         </div>
                     </div>
                     <WingBlank className="page-login-WingBlank" size="lg">

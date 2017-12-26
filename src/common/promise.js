@@ -21,7 +21,10 @@ const ajaxURLList = {
     appuserRetrieve: "appuser/retrieve", //查询个人信息
     appuserUpdate: "appuser/update", //修改用户信息
     appuserSuggestion: "appuser/suggestion", //意见反馈   
-    controlCodeChange: "password/change" //修改控制码（车主密码）   
+    controlCodeChange: "password/change", //修改控制码（车主密码）   
+    appuserChangeimg: "appuser/changeimg", //上传图片修改头像   
+    carOwner: "car/owner", //车辆查询 
+    queryCarStatus: "control/queryCarStatus", //车辆运行数据查询
 }
 
 //定义一个基于Promise的异步任务执行器
@@ -58,6 +61,7 @@ function run(taskDef) {
  * @param {any} param ajax请求的参数对象，必须是对象，属性名和ajax参数的属性名相同
  * @param {any} handle ajax执行完成后的处理函数
  * @param {any} mustLogin 是否必须登录后才能发送请求，判断登录是查询本地存储的token
+ * @param {any} mustCarLogin 是否必须车主登录后才能发送请求，判断车主登录是查询本地存储的vincode
  */
 function runPromise(ajaxName, param, handle, mustLogin = true, mustCarLogin = false ) {
     let token = localStorage.getItem("token");
