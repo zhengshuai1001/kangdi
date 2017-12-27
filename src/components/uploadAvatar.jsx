@@ -37,12 +37,12 @@ function cropperToUpload (element, width, height) {
                 var file = files[0];
                 var img0 = FileAPI.Image(file);
                 var img1 = FileAPI.Image(file);
-                console.log("cropperToUpload::", self);
+                // console.log("cropperToUpload::", self);
                 img0.get(function (err, img) {
                     // img 原图
                     // img1 需要切割的图
                     //跳转到裁切图片页
-                    console.log(img);
+                    // console.log(img);
                     self.context.router.push({
                         pathname: '/uploadAvatar',
                         state: {
@@ -78,9 +78,10 @@ class PageUploadAvatar extends React.Component {
             let res = req.result;
             console.log(res);
             if (res.code == 1000) {
-                //上传图片成功
-
-
+                //上传图片成功，退回到个人中心页
+                Toast.success("上传头像成功", 1, ()=>{
+                    hashHistory.goBack();
+                });
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -120,7 +121,7 @@ class PageUploadAvatar extends React.Component {
     }
     componentDidMount () {
         let { img, img1, width, height } = this.state;
-        console.log(img1);
+        // console.log(img1);
         setTimeout(() => {            
             // let AvatarBoxDOM = ReactDOM.findDOMNode(this.refs.img2);
             let AvatarBoxDOM = document.getElementById("img2");

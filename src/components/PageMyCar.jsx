@@ -243,6 +243,10 @@ export default class PageMyCar extends React.Component{
                             tabBarUnderlineStyle={{ "display": "none" }}
                             tabs={tabs}
                             initialPage={0}
+                            animated={false}
+                            usePaged={false}
+                            swipeable={false}
+                            useOnPan={false}
                             onChange={(tab, index) => { console.log('onChange', index, tab); }}
                             onTabClick={this.onClickTab}
                         >

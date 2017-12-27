@@ -38,7 +38,7 @@ export default class PageUseHelp extends React.Component {
                         />
                     ))}
                 </Carousel>
-                <Accordion defaultActiveKey="1" className="my-accordion">
+                <Accordion className="my-accordion">
                     <Accordion.Panel header="如何注册康迪智慧出行" className="pad">
                         <div className="box">
                             <span className="answer">答</span>
