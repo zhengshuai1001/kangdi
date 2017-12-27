@@ -480,7 +480,13 @@ html:not([data-scale]) .am-button::before {
     height: 100%;
     display: block;
     background-color: #a0256c;
-    width: 67%;
+    width: 90%;
+}
+.bar.empty .bar-head.bar-left{
+    background-color: #fff;
+}
+.bar.full .bar-head.bar-right{
+    background-color: #a0256c;
 }
 
 .bar .bar-head{
@@ -569,6 +575,12 @@ html:not([data-scale]) .am-button::before {
     text-overflow:ellipsis;
     white-space: nowrap;
 }
+.shortcut-box-out.active .shortcut-box{
+        border: 2px solid #8e0f58;
+}
+.shortcut-box-out.active .shortcut-text{
+    color: #8e0f58
+}
 .shortcut-WingBlank{
     background-color: #181819;
 }
@@ -586,6 +598,9 @@ html:not([data-scale]) .am-button::before {
     display: inline-block;
     // margin-left: 0.3rem;
     text-align: center;
+}
+.air-conditioner-box .temperature-img-box.active{
+    border: 2px solid #9f236a;
 }
 .air-conditioner-box .temperature-img-box img{
     width: 3rem;
@@ -614,10 +629,39 @@ html:not([data-scale]) .am-button::before {
     width: 3rem;
     max-height: 3rem;
 }
+.tabs-one.door img{
+    width: 3rem;
+    max-height: 3rem;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    visibility: hidden;
+}
+.tabs-one.door img.bg{
+    visibility: visible;
+}
+.tabs-one.door.lf img.lf,
+.tabs-one.door.rf img.rf,
+.tabs-one.door.lr img.lr,
+.tabs-one.door.rr img.rr{
+    visibility: visible;
+}
 .tabs-one span{
     color: #808080;
     font-size: 1.2rem;
     display: block;
+}
+.tabs-one.door span{
+    // margin-top: 40px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin: auto;
+    bottom: 8px;
+}
+.tabs-one.active span{
+    color: #750e4a
 }
 .my-car-tabs .my-car-tabs-tab-bar-wrap{
     width: 100%;
@@ -663,6 +707,9 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     margin: 0 auto;
     background-image: url("../images/btn-bg-black.png");
     background-size: 100% 100%;
+}
+.shortcut-btn-img-box:active{
+    background-image: url("../images/btn-bg-red.png");
 }
 .shortcut-btn-img-box img{
     width: 3.2rem;
@@ -815,6 +862,9 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     border-bottom-right-radius: 100%;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
+}
+.my-car-switchKey-box span.active{
+    background-color: #f6008b;
 }
 .avatar-box .img-corner-box{
     width: 20px;

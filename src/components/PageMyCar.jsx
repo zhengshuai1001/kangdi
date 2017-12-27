@@ -23,6 +23,10 @@ const imgUrl ={
     lock : require('../images/shortcut-btn-lock.png'),
     engine : require('../images/shortcut-btn-engine.png'),
     door : require('../images/shortcut-btn-door.png'),
+    doorLF: require('../images/shortcut-btn-doorLF.png'),
+    doorRF: require('../images/shortcut-btn-doorRF.png'),
+    doorLR: require('../images/shortcut-btn-doorLR.png'),
+    doorRR: require('../images/shortcut-btn-doorRR.png'),
     lamp : require('../images/shortcut-btn-lamp.png'),
     switch : require('../images/shortcut-btn-switch.png'),
     refrigeration : require('../images/shortcut-btn-refrigeration.png'),
@@ -65,28 +69,36 @@ const transformParam = {
     door0: "2",
     door1: "1",
     lamp0: "16",
-    lamp1: "15"
+    lamp1: "15",
+    AirConditioner0: "2", //空调
+    AirConditioner1: "1", //空调
+    ac0: "4", // AC降温
+    ac1: "3", // AC降温
+    ptc0: "6", // PTC加热
+    ptc1: "5", // PTC加热
+    defrost0: "9", // 除雾除霜
+    defrost1: "12", // 除雾除霜
 }
 
 export default class PageMyCar extends React.Component{
     constructor(props) {
         super(props)
         this.state ={
-            trunk: 1, //后备箱
-            lock: 1,  //车锁
-            engine: 1, //电机加锁
-            door: 1, //车门
-            lamp: 1, //车灯
-            AirConditioner: 1, //空调
-            ac: 1, // AC降温
-            ptc: 1, // PTC加热
-            defrost: 1, // 除雾除霜
+            trunk: 0, //后备箱
+            lock: 0,  //车锁
+            engine: 0, //电机加锁
+            door: 0, //车门
+            lamp: 0, //车灯
+            AirConditioner: 0, //空调
+            ac: 0, // AC降温
+            ptc: 0, // PTC加热
+            defrost: 0, // 除雾除霜
             acc: 0, // 自适应巡航
             soc: 0, //电量
             temperature: 0, //室内温度
             onClickTabName: "" //点击tab的state名字
         }
-        //发送完后车辆运行数据查询后的处理函数
+        //发送完车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
             let res = req.result;
             // console.log(res);
@@ -97,12 +109,16 @@ export default class PageMyCar extends React.Component{
                     trunk: data.BcmData.Trunk, 
                     lock: data.BcmData.CentralLock,  
                     engine: data.BcmData.BatteryDoor, //假的
-                    door: data.BcmData.LFDoor,  //昨前门
+                    door: data.BcmData.LFDoor,  //左前门,先用左前门代替车门
+                    doorLF: data.BcmData.LFDoor,  //左前门
+                    doorRF: data.BcmData.RFDoor,  //右前门
+                    doorLR: data.BcmData.LRDoor,  //左后门
+                    doorRR: data.BcmData.RRDoor,  //右后门
                     lamp: data.BcmData.Headlight, //大灯
                     AirConditioner: data.EasData.AirConditione, 
                     ac: data.EasData.AC,
                     ptc: data.EasData.PTC,
-                    defrost: data.EasData.WindDirection,
+                    defrost: data.EasData.WindDirection == 3 ? 1 : 0,
                     acc: data.KDData.ACC,
                     soc: data.CarData.SOC,
                     temperature: 0 //室内温度不知道
@@ -113,6 +129,20 @@ export default class PageMyCar extends React.Component{
         }
         //发送完后车身控制后的处理函数
         this.handleControlCar = (req) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                let data = res.data;
+                //将相应的state取反操作
+                this.setState({
+                    [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
+                });
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+        //发送完车身控制的空调部分的处理函数
+        this.handleControlCarAir = (req) => {
             let res = req.result;
             // console.log(res);
             if (res.code == 1000) {
@@ -143,25 +173,39 @@ export default class PageMyCar extends React.Component{
     }
     onClickTab = (tab, index) => {
         let state = tab.title.props.state;
+        if (state == "door") {
+            Toast.offline('不能操作车门', 1);
+            return;
+        }
         this.setState({onClickTabName: state});
         let suffix = this.state[state] == 1 ? "0" : "1" ;
         let param = state + suffix;
-        //发送ajax设置车身控制
-        runPromise("controlCar", {
-            contrlpara: {"part":transformParam[param], "para": ""}
-        }, this.handleControlCar,true, true);
+        //不能是空调控制
+        if (state != "AirConditioner" && state != "ac" && state != "ptc" && state != "defrost") {
+            //发送ajax设置车身控制
+            runPromise("controlCar", {
+                contrlpara: { "part": transformParam[param], "para": "" }
+            }, this.handleControlCar, true, true);
+        } else {
+            //发送ajax设置车身控制 ,空调
+            runPromise("controlAc", {
+                contrlpara: { "part": transformParam[param], "para": "" }
+            }, this.handleControlCarAir, true, true);
+        } 
     }
     render() {
+        const doorAllClassName = `tabs-one door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
         const tabs = [
-            { title: <div state="trunk" className="tabs-one"><img src={ this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
-            { title: <div state="lock" className="tabs-one"><img src={ this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
-            { title: <div state="engine" className="tabs-one"><img src={ this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
-            { title: <div state="door" className="tabs-one"><img src={ this.state.door ? imgUrl.doorActive : imgUrl.door} /><span>车门</span></div> },
-            { title: <div state="lamp" className="tabs-one"><img src={ this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
-            { title: <div state="AirConditioner" className="tabs-one"><img src={ this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
-            { title: <div state="ac" className="tabs-one"><img src={ this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
-            { title: <div state="ptc" className="tabs-one"><img src={ this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
-            { title: <div state="defrost" className="tabs-one"><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
+            { title: <div state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={ this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
+            { title: <div state="lock" className={this.state.lock ? "tabs-one active" : "tabs-one"}><img src={ this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
+            // { title: <div state="engine" className={this.state.engine ? "tabs-one active" : "tabs-one"}><img src={ this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
+            // { title: <div state="door" className={this.state.door ? "tabs-one active" : "tabs-one"}><img src={ this.state.door ? imgUrl.doorActive : imgUrl.door} /><span>车门</span></div> },
+            { title: <div state="door" className={doorAllClassName}><img className="bg" src={imgUrl.door} /><img className="lf" src={imgUrl.doorLF} /><img className="rf" src={imgUrl.doorRF} /><img className="lr" src={imgUrl.doorLR} /><img className="rr" src={imgUrl.doorRR} /><span>车门</span></div> },
+            { title: <div state="lamp" className={this.state.lamp ? "tabs-one active" : "tabs-one"}><img src={ this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
+            { title: <div state="AirConditioner" className={this.state.AirConditioner ? "tabs-one active" : "tabs-one"}><img src={ this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
+            { title: <div state="ac" className={this.state.ac ? "tabs-one active" : "tabs-one"}><img src={ this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
+            { title: <div state="ptc" className={this.state.ptc ? "tabs-one active" : "tabs-one"}><img src={ this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
+            { title: <div state="defrost" className={this.state.defrost ? "tabs-one active" : "tabs-one"}><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
         ];
         return (
             <QueueAnim
@@ -181,16 +225,16 @@ export default class PageMyCar extends React.Component{
                             <span className="txt">{this.state.soc}%</span>
                         </div>
                         <div className="my-car-annular-box"></div>
-                        <div className="my-car-temperature-box">
+                        <div className="my-car-temperature-box" style={{ "display": "none" }}>
                             <span className="temperature">{this.state.temperature}℃</span>
                             <span className="txt">车内温度</span>
                         </div>
                         <div className="my-car-switchKey-box">
                             <img src={imgUrl.icon}/>
                             <div>
-                                <span className="off">OFF</span>
-                                <span className="acc">ACC</span>
-                                <span className="on">ON</span>
+                                <span className={ this.state.acc == 0 ? "off active" : "off" }>OFF</span>
+                                <span className={this.state.acc == 1 ? "acc active" : "acc"}>ACC</span>
+                                <span className={this.state.acc == 2 ? "on active" : "on"}>ON</span>
                             </div>
                         </div>
                         <Tabs

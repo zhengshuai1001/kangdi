@@ -26,6 +26,7 @@ const ajaxURLList = {
     carOwner: "car/owner", //车辆查询 
     queryCarStatus: "control/queryCarStatus", //车辆运行数据查询
     controlCar: "control/car", //车身控制
+    controlAc: "control/ac", //空调控制
 }
 
 //定义一个基于Promise的异步任务执行器
@@ -63,8 +64,9 @@ function run(taskDef) {
  * @param {any} handle ajax执行完成后的处理函数
  * @param {any} mustLogin 是否必须登录后才能发送请求，判断登录是查询本地存储的token
  * @param {any} mustCarLogin 是否必须车主登录后才能发送请求，判断车主登录是查询本地存储的vincode
+ * @param {any} handleParam ajax执行完成后的处理函数的参数
  */
-function runPromise(ajaxName, param, handle, mustLogin = true, mustCarLogin = false ) {
+function runPromise(ajaxName, param, handle, mustLogin = true, mustCarLogin = false, handleParam ) {
     let token = localStorage.getItem("token");
     let kangdid = localStorage.getItem("kangdid");
     if (mustLogin && (!token || !kangdid)) {
@@ -90,7 +92,7 @@ function runPromise(ajaxName, param, handle, mustLogin = true, mustCarLogin = fa
     run(function* () {
         // let contents = yield ajaxName(param);
         let contents = yield sendAjax(ajaxURLList[ajaxName], serializeParam);
-        handle(contents.data);
+        handle(contents.data, handleParam);
     })
 }
 

@@ -12,7 +12,7 @@ const DropDownList = (props) => (
             props.list.map((val,index) => { 
                 return (
                     <li
-                        onClick={() => { props.onActive(index) }}
+                        onTouchStart={() => { props.onActive(index) }}
                     >{val}</li> 
                 )
             } ) 
@@ -87,6 +87,7 @@ export default class PageMyCarLogin extends React.Component {
     //点击下拉列表的某一列
     onActiveCarModel = (index) => {
         let car_model = this.state.data_car_model_list[index];
+        console.log(car_model)
         this.setState({
             data_car_model_selected: car_model,
             data_vincode_list: this.getVincodeList(car_model),

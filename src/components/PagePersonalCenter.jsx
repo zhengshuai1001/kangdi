@@ -70,6 +70,18 @@ export default class PagePersonalCenter extends React.Component {
             },
         ], 'default', null, ['输入昵称']);
     }
+    //退出登录
+    signOut = () => {
+        localStorage.removeItem("kangdid");
+        localStorage.removeItem("token");
+        localStorage.removeItem("vincode");
+        localStorage.removeItem("controlCode");
+        //跳转到登录页
+        hashHistory.push({
+            pathname: '/login',
+            query: { form: 'signOut' }
+        });
+    }
     render() {
         console.log("render");
         return (
@@ -121,7 +133,7 @@ export default class PagePersonalCenter extends React.Component {
                         </List>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
-                        <Button type="" className="page-login-bottom">退出当前账号</Button>
+                        <Button onClick={ this.signOut }  className="page-login-bottom">退出当前账号</Button>
                     </WingBlank>
                 </div>
             </QueueAnim>

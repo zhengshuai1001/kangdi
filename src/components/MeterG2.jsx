@@ -1,6 +1,9 @@
 import G2 from '@antv/g2';
 
-export default function (mileage, soc) {
+export default function (mileageOld, reMileage, socOld) {
+    let mileage = parseInt(mileageOld / 2);
+    let soc = parseInt(socOld);
+    mileage > 120 ? mileage = 120 : "";
     const data1 = [];
     for (let i = 0; i < 121; i++) {
         const item = {};
@@ -156,7 +159,7 @@ export default function (mileage, soc) {
             lineWidth: 3,
         }
     });
-    var socForamt = 1.02 + 1 - soc;
+    var socForamt = 1.02 + 1 - soc/100;
     socForamt = socForamt > 1.98 ? 1.98 : socForamt;
     view2.guide().arc({
         top: false,
@@ -185,8 +188,8 @@ export default function (mileage, soc) {
     view2.guide().html({
         position: ['50%', '55%'],
         html: '<div style="width: 200px;text-align: center;">'
-            + '<p style="font-size: 14px; color: #fff;margin: 0">剩余里程： <span style="color: #cf2a89">70km</span></p>'
-            + '<p style="font-size: 14px;color: #fff;margin: 0;">SOC： <span style="color: #cf2a89">40%</span></p>'
+            + '<p style="font-size: 14px; color: #fff;margin: 0">剩余里程： <span style="color: #cf2a89">' + reMileage +'km</span></p>'
+            + '<p style="font-size: 14px;color: #fff;margin: 0;">SOC： <span style="color: #cf2a89">' + soc+'%</span></p>'
             + '</div>'
     });
     view2.guide().html({
