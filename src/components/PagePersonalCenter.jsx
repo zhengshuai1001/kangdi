@@ -6,6 +6,7 @@ import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 import { cropperToUpload } from './uploadAvatar';
+import { cropperToUpload2 } from './uploadAvatar2';
 
 export default class PagePersonalCenter extends React.Component {
     constructor(props) {
@@ -49,11 +50,21 @@ export default class PagePersonalCenter extends React.Component {
     }
     componentDidMount() {
         setTimeout(() => {
-            let inputDOM = ReactDOM.findDOMNode(this.refs.imgInput);
-            cropperToUpload.bind(this)(inputDOM, 250, 250); 
+            // let inputDOM = ReactDOM.findDOMNode(this.refs.imgInput);
+            // cropperToUpload.bind(this)(inputDOM, 250, 250); 
             //发送ajax获取个人信息
             runPromise("appuserRetrieve", {}, this.handleUserInfo);  
         }, 0);     
+    }
+    onChangeFile = (e) => {
+        // console.log(e.target.files[0]);
+        //跳转到裁切图片页
+        this.context.router.push({
+            pathname: '/uploadAvatar2',
+            state: {
+                img: e.target.files[0]
+            }
+        });
     }
     changeNickName = () => {
         Modal.prompt('修改昵称', '',[
@@ -102,7 +113,7 @@ export default class PagePersonalCenter extends React.Component {
                             <div className="img-box">
                                 <img className="avatar-img" src={this.state.avatar}/>
                                 <div className="img-corner-box">
-                                    <input ref="imgInput" type="file" accept="image/*"/>
+                                    <input ref="imgInput" type="file" accept="image/*" onChange={this.onChangeFile}/>
                                     <img className="img-corner" src={require("../images/pen-icon.png")} />
                                 </div>
                             </div>

@@ -21,6 +21,7 @@ import PageModifyControlCodeFirst from './components/PageModifyControlCodeFirst'
 import PageModifyControlCodeSecond from './components/PageModifyControlCodeSecond';
 
 import { PageUploadAvatar } from './components/uploadAvatar';
+import { PageUploadAvatar2 } from './components/uploadAvatar2';
 
 // import errmsg from './data/errmsg';
 // console.log(errmsg["100"]);
@@ -47,6 +48,7 @@ ReactDOM.render(
         <Route path="/remoteMeter" component={PageRemoteMeter} />
         <Route path="/remoteControl" component={PageRemoteControl} />
         <Route path="/uploadAvatar" component={PageUploadAvatar} />
+        <Route path="/uploadAvatar2" component={PageUploadAvatar2} />
         <Route path="/modifyControlCodeFirst" component={PageModifyControlCodeFirst} />
         <Route path="/modifyControlCodeSecond" component={PageModifyControlCodeSecond} />
     </Router>
