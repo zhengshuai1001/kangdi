@@ -151,6 +151,10 @@ export default class PageMyCar extends React.Component{
                 this.setState({
                     [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
                 });
+
+                //空调操作后做的应该是重新获取空调的数据。
+                //发送ajax获取车辆运行数据
+                runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
