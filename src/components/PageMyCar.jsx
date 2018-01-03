@@ -171,14 +171,17 @@ export default class PageMyCar extends React.Component{
             pathname: path
         }); 
     }
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps.carStatus)
+    }
     componentDidMount() {
         //发送ajax获取车辆运行数据
-        runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+        // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
     }
     onClickTab = (tab, index) => {
         let state = tab.title.props.state;
         if (state == "door") {
-            Toast.offline('不能操作车门', 1);
+            // Toast.offline('不能操作车门', 1);
             return;
         }
         this.setState({onClickTabName: state});
@@ -187,14 +190,14 @@ export default class PageMyCar extends React.Component{
         //不能是空调控制
         if (state != "AirConditioner" && state != "ac" && state != "ptc" && state != "defrost") {
             //发送ajax设置车身控制
-            runPromise("controlCar", {
-                contrlpara: { "part": transformParam[param], "para": "" }
-            }, this.handleControlCar, true, true);
+            // runPromise("controlCar", {
+            //     contrlpara: { "part": transformParam[param], "para": "" }
+            // }, this.handleControlCar, true, true);
         } else {
             //发送ajax设置车身控制 ,空调
-            runPromise("controlAc", {
-                contrlpara: { "part": transformParam[param], "para": "" }
-            }, this.handleControlCarAir, true, true);
+            // runPromise("controlAc", {
+            //     contrlpara: { "part": transformParam[param], "para": "" }
+            // }, this.handleControlCarAir, true, true);
         } 
     }
     render() {
@@ -251,7 +254,7 @@ export default class PageMyCar extends React.Component{
                             usePaged={false}
                             swipeable={false}
                             useOnPan={false}
-                            onChange={(tab, index) => { console.log('onChange', index, tab); }}
+                            // onChange={(tab, index) => { console.log('onChange', index, tab); }}
                             onTabClick={this.onClickTab}
                         >
                         </Tabs>

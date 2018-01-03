@@ -163,9 +163,9 @@ export default class PageRemoteControl extends React.Component{
             if (res.code == 1000) {
                 let data = res.data;
                 //将相应的state取反操作
-                this.setState({
-                    [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
-                });
+                // this.setState({
+                //     [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
+                // });
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -176,7 +176,7 @@ export default class PageRemoteControl extends React.Component{
             // console.log(res);
             if (res.code == 1000) {
                 if (handleParam) {
-                    Toast.success(handleParam, 1);
+                    // Toast.success(handleParam, 1);
                 }
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
@@ -189,13 +189,13 @@ export default class PageRemoteControl extends React.Component{
             if (res.code == 1000) {
                 let data = res.data;
                 //将相应的state取反操作
-                this.setState({
-                    [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
-                });
+                // this.setState({
+                //     [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
+                // });
 
                 //空调操作后做的应该是重新获取空调的数据。
                 //发送ajax获取车辆运行数据
-                runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+                // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -257,14 +257,17 @@ export default class PageRemoteControl extends React.Component{
         }, this.handleControlCarAir, true, true);
 
     }
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps.carStatus)
+    }
     componentDidMount() {
         //发送ajax获取车辆运行数据
-        runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
+        // runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
     }
     onClickTab = (tab, index) => {
         let state = tab.title.props.state;
         if (state == "door") {
-            Toast.offline('不能操作车门', 1);
+            // Toast.offline('不能操作车门', 1);
             return ;
         }
         this.setState({ onClickTabName: state });
@@ -273,14 +276,14 @@ export default class PageRemoteControl extends React.Component{
         //不能是空调控制
         if (state != "AirConditioner" && state != "ac" && state != "ptc" && state != "defrost") {
             //发送ajax设置车身控制
-            runPromise("controlCar", {
-                contrlpara: { "part": transformParam[param], "para": "" }
-            }, this.handleControlCar, true, true);
+            // runPromise("controlCar", {
+            //     contrlpara: { "part": transformParam[param], "para": "" }
+            // }, this.handleControlCar, true, true);
         } else {
             //发送ajax设置车身控制 ,空调
-            runPromise("controlAc", {
-                contrlpara: { "part": transformParam[param], "para": "" }
-            }, this.handleControlCarAir, true, true);
+            // runPromise("controlAc", {
+            //     contrlpara: { "part": transformParam[param], "para": "" }
+            // }, this.handleControlCarAir, true, true);
         }       
     }
     //开始开关窗的操作，即用户刚开始点击窗户的操作，先判断是开窗还是关窗

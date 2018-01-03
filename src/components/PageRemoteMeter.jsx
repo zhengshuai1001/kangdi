@@ -86,9 +86,26 @@ export default class PageRemoteMeter extends React.Component{
             }
         }
     }
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps.carStatus)   
+        let token = setTimeout(()=>{
+            //绘制仪表盘,这是特例
+            MeterG2(nextProps.carStatus.Mileage, nextProps.carStatus.ReMileage, nextProps.carStatus.soc);
+        },0)   
+        this.setState({token: token})
+    }
     componentDidMount() {
         //发送ajax获取车辆运行数据
-        runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
+        // runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
+
+        // setTimeout(()=>{
+        //     //绘制仪表盘,这是特例
+        //     MeterG2(this.state.Mileage, this.state.ReMileage, this.state.soc);
+        // },0)
+        
+    }
+    componentWillUnmount() {
+        clearTimeout(this.state.token);
     }
     render(){
         const doorAllClassName = `shortcut-box tabs-one door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
@@ -130,14 +147,14 @@ export default class PageRemoteMeter extends React.Component{
                                 <p className="bar-bottom-right">5v</p>
                             </p>
                         </div>
-                        <div className="am-flexbox-item">
+                        <div className="am-flexbox-item" style={{"display": this.state.TotalV == 0 ? "none" : "block" }}>
                             <p className="bar-title">{this.state.TotalV}v</p>
                             <div className={this.state.TotalV == 0 ? "bar empty" : (this.state.TotalV == 500 ? "bar full" : "bar") }>
                                 <span className="bar-left bar-head"></span>
                                 <span className="bar-unfill">
                                     <span className="bar-fill-width">
                                         <span className="bar-fill" style={{
-                                            "width": (this.state.TotalV / 500).toFixed(2) * 100 + "%"
+                                            "width": ((this.state.TotalV > 500 ? 500 : this.state.TotalV) / 500).toFixed(2) * 100 + "%"
                                         }}></span>
                                     </span>
                                 </span>

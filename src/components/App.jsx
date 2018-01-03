@@ -69,7 +69,7 @@ export default class App extends React.Component {
                         }}
                     ></TabBar.Item>
                 </TabBar>
-                {this.props.children}
+                {this.props.children && React.cloneElement(this.props.children, {carStatus:this.props.carStatus})}
             </div>
         );
     }
