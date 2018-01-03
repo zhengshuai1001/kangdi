@@ -23,6 +23,8 @@ import PageModifyControlCodeSecond from './components/PageModifyControlCodeSecon
 import { PageUploadAvatar } from './components/uploadAvatar';
 import { PageUploadAvatar2 } from './components/uploadAvatar2';
 
+import CarStatus from './components/CarStatus';
+
 // import errmsg from './data/errmsg';
 // console.log(errmsg["100"]);
 
@@ -30,26 +32,54 @@ import './index.less';
 
 ReactDOM.render(
     <Router history={hashHistory}>
-        <Route path="/" component={App}>
-            <IndexRoute component={PageMyCar} />
-            <Route path="MyCar" component={PageMyCar} />
-            <Route path="MyCarLogin" component={PageMyCarLogin} />
-            <Route path="UseHelp" component={PageUseHelp} />
-            <Route path="MoreOptions" component={PageSettings} />
+        <Route path="/" component={CarStatus}>
+            <Route path="" component={App}>
+                <IndexRoute component={PageMyCar} />
+                <Route path="MyCar" component={PageMyCar} />
+                <Route path="MyCarLogin" component={PageMyCarLogin} />
+                <Route path="UseHelp" component={PageUseHelp} />
+                <Route path="MoreOptions" component={PageSettings} />
+            </Route>
+            <Route path="login" component={PageLogin} />
+            <Route path="register" component={PageRegister} />
+            <Route path="moreInfo" component={PageMoreInfo} />
+            <Route path="forgetPassword" component={PageForgetPassword} />
+            <Route path="feedback" component={PageFeedback} />
+            <Route path="personalCenter" component={PagePersonalCenter} />
+            <Route path="modifyPassword" component={PageModifyPassword} />
+            <Route path="contactUs" component={PageContactUs} />
+            <Route path="remoteMeter" component={PageRemoteMeter} />
+            <Route path="remoteControl" component={PageRemoteControl} />
+            <Route path="uploadAvatar" component={PageUploadAvatar} />
+            <Route path="uploadAvatar2" component={PageUploadAvatar2} />
+            <Route path="modifyControlCodeFirst" component={PageModifyControlCodeFirst} />
+            <Route path="modifyControlCodeSecond" component={PageModifyControlCodeSecond} />
         </Route>
-        <Route path="/login" component={PageLogin} />
-        <Route path="/register" component={PageRegister} />
-        <Route path="/moreInfo" component={PageMoreInfo} />
-        <Route path="/forgetPassword" component={PageForgetPassword} />
-        <Route path="/feedback" component={PageFeedback} />
-        <Route path="/personalCenter" component={PagePersonalCenter} />
-        <Route path="/modifyPassword" component={PageModifyPassword} />
-        <Route path="/contactUs" component={PageContactUs} />
-        <Route path="/remoteMeter" component={PageRemoteMeter} />
-        <Route path="/remoteControl" component={PageRemoteControl} />
-        <Route path="/uploadAvatar" component={PageUploadAvatar} />
-        <Route path="/uploadAvatar2" component={PageUploadAvatar2} />
-        <Route path="/modifyControlCodeFirst" component={PageModifyControlCodeFirst} />
-        <Route path="/modifyControlCodeSecond" component={PageModifyControlCodeSecond} />
     </Router>
     , document.getElementById('example'));
+
+// ReactDOM.render(
+//     <Router history={hashHistory}>
+//         <Route path="/" component={App}>
+//             <IndexRoute component={PageMyCar} />
+//             <Route path="MyCar" component={PageMyCar} />
+//             <Route path="MyCarLogin" component={PageMyCarLogin} />
+//             <Route path="UseHelp" component={PageUseHelp} />
+//             <Route path="MoreOptions" component={PageSettings} />
+//         </Route>
+//         <Route path="/login" component={PageLogin} />
+//         <Route path="/register" component={PageRegister} />
+//         <Route path="/moreInfo" component={PageMoreInfo} />
+//         <Route path="/forgetPassword" component={PageForgetPassword} />
+//         <Route path="/feedback" component={PageFeedback} />
+//         <Route path="/personalCenter" component={PagePersonalCenter} />
+//         <Route path="/modifyPassword" component={PageModifyPassword} />
+//         <Route path="/contactUs" component={PageContactUs} />
+//         <Route path="/remoteMeter" component={PageRemoteMeter} />
+//         <Route path="/remoteControl" component={PageRemoteControl} />
+//         <Route path="/uploadAvatar" component={PageUploadAvatar} />
+//         <Route path="/uploadAvatar2" component={PageUploadAvatar2} />
+//         <Route path="/modifyControlCodeFirst" component={PageModifyControlCodeFirst} />
+//         <Route path="/modifyControlCodeSecond" component={PageModifyControlCodeSecond} />
+//     </Router>
+//     , document.getElementById('example'));

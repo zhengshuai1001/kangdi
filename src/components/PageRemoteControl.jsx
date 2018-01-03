@@ -35,6 +35,8 @@ const transformParam = {
     ptc1: "5", // PTC加热
     defrost0: "9", // 除雾除霜
     defrost1: "12", // 除雾除霜
+    horn0: "11", //关闭双跳
+    horn1: "10", //打开双跳
 }
 const imgUrl = {
     trunk: require('../images/shortcut-btn-trunk.png'),
@@ -201,7 +203,7 @@ export default class PageRemoteControl extends React.Component{
     }
     onActive = (state) => {
         this.setState({ onClickTabName: state });
-        if (state != "horn" && state != "plusEngine" && state != "reduceEngine" && state != "openWindow" && state != "closeWindow") {
+        if (state != "plusEngine" && state != "reduceEngine" && state != "openWindow" && state != "closeWindow") {
             let suffix = this.state[state] == 1 ? "0" : "1";
             let param = state + suffix;
             //发送ajax设置车身控制
@@ -213,7 +215,7 @@ export default class PageRemoteControl extends React.Component{
         if (state == "horn") {
             //发送ajax设置车身控制 ,闪灯鸣笛
             runPromise("controlCar", {
-                contrlpara: { "part": "22", "para": "" }
+                contrlpara: { "part": "9", "para": "" }
             }, this.handleControlCarOne, true, true);
         }
         //电机加锁

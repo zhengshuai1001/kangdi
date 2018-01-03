@@ -3,6 +3,7 @@ import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, TextareaItem, NavBar, Icon, Toast } from 'antd-mobile';
 import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
+import { setInterval } from 'core-js/library/web/timers';
 
 export default class PageFeedback extends React.Component {
     constructor(props) {

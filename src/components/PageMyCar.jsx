@@ -270,5 +270,6 @@ export default class PageMyCar extends React.Component{
 }
 
 PageMyCar.contextTypes = {
-    router: React.PropTypes.object
+    router: React.PropTypes.object,
+    carStatus: React.PropTypes.object
 };
