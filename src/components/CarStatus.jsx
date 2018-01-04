@@ -6,7 +6,8 @@ export default class CarStatus extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            carStatus: {}
+            carStatus: {},
+            queryCarStatus: this.startQueryCarStatus
         }
         //发送完车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
@@ -33,11 +34,23 @@ export default class CarStatus extends React.Component {
                         acc: data.KDData.ACC,
                         soc: data.CarData.SOC,
                         temperature: 0, //室内温度不知道
-                        Mileage: data.KDData.Mileage, 
+                        Mileage: data.CarData.Speed, 
                         ReMileage: data.KDData.ReMileage, 
                         TotalV: data.CarData.TotalV, 
                         TotalA: data.CarData.TotalA //本来要显示最低单体电压，现在用总电流代替
                     }
+                });
+                let pathname = this.props.location.pathname;
+                if (pathname != "/MyCar" && pathname != "/remoteMeter" && pathname != "/remoteControl") {
+                    return;
+                }
+                // console.log(pathname);
+                let token = setTimeout(() => {
+                    //发送ajax获取车辆运行数据,成功返回后间隔5秒发送一次
+                    runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
+                }, 5000);
+                this.setState({
+                    tokenSetTimeout: token
                 });
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
@@ -55,20 +68,24 @@ export default class CarStatus extends React.Component {
         //         bb: a
         //     })
         // }, 1000)
-
-        //发送ajax获取车辆运行数据,第一次加载页面就执行一次
-        runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+        // console.log("car status componentDidMount");
+        // //发送ajax获取车辆运行数据,第一次加载页面就执行一次
+        // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
 
         setInterval(() => {
             //发送ajax获取车辆运行数据
             // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
-        }, 1000);
-
+        }, 5000);
+    }
+    startQueryCarStatus = () => {
+        clearTimeout(this.state.tokenSetTimeout);
+        //发送ajax获取车辆运行数据,子组件通知父组件，开始查询车辆运行数据啦。
+        runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
     }
     render() {
         return (
             <div className="car-status-box" >
-                {this.props.children && React.cloneElement(this.props.children, this.state)}
+                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus})}
             </div>
         )
     }

@@ -161,12 +161,12 @@ export default class PageMyCar extends React.Component{
         }
     }
     onActive = (index) => {
-        console.log(index);
+        // console.log(index);
         var path = "/";
         index == 0 ? path = "/remoteMeter" : "";
         index == 1 ? path = "/modifyControlCodeFirst" : "";
         index == 2 ? path = "/remoteControl" : "";
-        console.log(path)
+        // console.log(path)
         hashHistory.push({
             pathname: path
         }); 
@@ -177,6 +177,20 @@ export default class PageMyCar extends React.Component{
     componentDidMount() {
         //发送ajax获取车辆运行数据
         // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+        //重新向后端获取车辆运行数据
+        this.props.queryCarStatus();
+    }
+    componentWillMount() {
+        let vincode = localStorage.getItem("vincode");
+        if (!vincode) {
+            //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+            hashHistory.push({
+                pathname: '/MyCarLogin',
+                query: { form: 'promise' }
+            });
+            return;
+        }
+        this.setState(this.props.carStatus)
     }
     onClickTab = (tab, index) => {
         let state = tab.title.props.state;
@@ -226,7 +240,9 @@ export default class PageMyCar extends React.Component{
                         mode="light"
                     >我的车辆</NavBar>
                     <div className="my-car-big-box" style={{ "padding-top": "4.6rem" }}>
-                        <div className="my-car-img-box"></div>
+                        <div className="my-car-img-box">
+                            <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no"): ""}</span>
+                        </div>
                         <div className="my-car-soc-box">
                             <span className="soc">SOC</span>
                             <span className="txt">{this.state.soc}%</span>
@@ -239,9 +255,12 @@ export default class PageMyCar extends React.Component{
                         <div className="my-car-switchKey-box">
                             <img src={imgUrl.icon}/>
                             <div>
-                                <span className={ this.state.acc == 0 ? "off active" : "off" }>OFF</span>
+                                {/* <span className={ this.state.acc == 0 ? "off active" : "off" }>OFF</span>
                                 <span className={this.state.acc == 1 ? "acc active" : "acc"}>ACC</span>
-                                <span className={this.state.acc == 2 ? "on active" : "on"}>ON</span>
+                                <span className={this.state.acc == 2 ? "on active" : "on"}>ON</span> */}
+                                <span className="icon" style={{ "display": this.state.acc == 0 ? "block" : "none" }}>OFF</span>
+                                <span className="icon" style={{ "display": this.state.acc == 1 ? "block" : "none" }}>ACC</span>
+                                <span className="icon" style={{ "display": this.state.acc == 2 ? "block" : "none" }}>ON</span>
                             </div>
                         </div>
                         <Tabs
@@ -259,7 +278,7 @@ export default class PageMyCar extends React.Component{
                         >
                         </Tabs>
                     </div>
-                    <div className="page-my-car-WingBlank" size="lg" style={{ "padding": "3rem 2rem 0" }}>
+                    <div className="page-my-car-WingBlank" size="lg" style={{ "margin": "3rem 2rem 0", "height": "calc(100% - 50rem)", "position": "relative" }}>
                         <Flex>
                             <Flex.Item><MyCarBtn index="0" text="远程仪表" imgURL={imgUrl.meter} onActive={this.onActive} /></Flex.Item>
                             <Flex.Item><MyCarBtn index="1" text="控制码修改" imgURL={imgUrl.code} onActive={this.onActive} /></Flex.Item>

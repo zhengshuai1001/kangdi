@@ -87,6 +87,7 @@ export default class PagePersonalCenter extends React.Component {
         localStorage.removeItem("token");
         localStorage.removeItem("vincode");
         localStorage.removeItem("controlCode");
+        localStorage.removeItem("car_no");
         //跳转到登录页
         hashHistory.push({
             pathname: '/login',
@@ -94,7 +95,6 @@ export default class PagePersonalCenter extends React.Component {
         });
     }
     render() {
-        console.log("render");
         return (
             <QueueAnim
                 type="right"

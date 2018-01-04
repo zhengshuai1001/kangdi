@@ -14,7 +14,7 @@ export default class PageLogin extends React.Component {
         //发送登录后的处理函数
         this.handleLogin = (req) =>{
             let res = req.result;
-            console.log(res);
+            // console.log(res);
             if (res.code == 1000) {
                 //拿到token，保存到本地存储里
                 if (res.data.token) {

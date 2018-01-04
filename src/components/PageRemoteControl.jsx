@@ -124,7 +124,22 @@ export default class PageRemoteControl extends React.Component{
             acc: 0, // 自适应巡航
             soc: 0, //电量
             temperature: 0, //室内温度
-            onClickTabName: "" //点击tab的state名字
+            onClickTabName: "", //点击tab的state名字
+            enabledList: { // 存储按钮是否可点击的状态，按钮在点击后必须隔5秒才能再次点击
+                trunk: true, 
+                lock: true,  
+                horn: true,
+                lamp:true,
+                plusEngine: true,
+                reduceEngine: true,
+                openWindow: true,
+                closeWindow: true,
+                AirConditioner: true,
+                ac: true,
+                ptc: true,
+                defrost: true
+            }
+
         }
         //发送完车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
@@ -203,7 +218,26 @@ export default class PageRemoteControl extends React.Component{
     }
     onActive = (state) => {
         this.setState({ onClickTabName: state });
-        if (state != "plusEngine" && state != "reduceEngine" && state != "openWindow" && state != "closeWindow") {
+        if (!this.state.enabledList[state]) {
+            Toast.offline("操作太频繁", 1);
+            return;
+        } else {
+            let enabledListMixin = this.state.enabledList;
+
+            Object.assign(enabledListMixin, { [state]: false });
+            this.setState({
+                enabledList: enabledListMixin
+            })
+
+            let token = setTimeout(() => {
+                Object.assign(enabledListMixin, { [state]: true });
+                this.setState({
+                    enabledList: enabledListMixin
+                })
+                clearTimeout(token);
+            }, 5000);
+        }
+        if (state != "horn" &&state != "plusEngine" && state != "reduceEngine" && state != "openWindow" && state != "closeWindow") {
             let suffix = this.state[state] == 1 ? "0" : "1";
             let param = state + suffix;
             //发送ajax设置车身控制
@@ -213,10 +247,21 @@ export default class PageRemoteControl extends React.Component{
         }
         //闪灯鸣笛
         if (state == "horn") {
-            //发送ajax设置车身控制 ,闪灯鸣笛
+            //发送ajax设置车身控制 ,鸣笛
             runPromise("controlCar", {
                 contrlpara: { "part": "9", "para": "" }
             }, this.handleControlCarOne, true, true);
+            //发送ajax设置车身控制 ,闪灯
+            runPromise("controlCar", {
+                contrlpara: { "part": "10", "para": "" }
+            }, this.handleControlCarOne, true, true);
+            //3秒后发送ajax设置车身控制 ,关闭闪光
+            let token = setTimeout(() => {
+                runPromise("controlCar", {
+                    contrlpara: { "part": "11", "para": "" }
+                }, this.handleControlCarOne, true, true);
+                clearTimeout(token);
+            }, 3000);
         }
         //电机加锁
         if (state == "plusEngine") {
@@ -249,6 +294,25 @@ export default class PageRemoteControl extends React.Component{
     }
     onActiveAir = (state) => {
         this.setState({ onClickTabName: state });
+        if (!this.state.enabledList[state]) {
+            Toast.offline("操作太频繁", 1);
+            return;
+        } else {
+            let enabledListMixin = this.state.enabledList;
+
+            Object.assign(enabledListMixin, { [state]: false });
+            this.setState({
+                enabledList: enabledListMixin
+            })
+
+            let token = setTimeout(() => {
+                Object.assign(enabledListMixin, { [state]: true });
+                this.setState({
+                    enabledList: enabledListMixin
+                })
+                clearTimeout(token);
+            }, 5000);
+        }
         let suffix = this.state[state] == 1 ? "0" : "1";
         let param = state + suffix;
         //发送ajax设置车身控制 ,空调
@@ -263,6 +327,8 @@ export default class PageRemoteControl extends React.Component{
     componentDidMount() {
         //发送ajax获取车辆运行数据
         // runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
+        //重新向后端获取车辆运行数据
+        this.props.queryCarStatus();
     }
     onClickTab = (tab, index) => {
         let state = tab.title.props.state;
@@ -329,14 +395,16 @@ export default class PageRemoteControl extends React.Component{
                             <Flex.Item><ShortAirBtn active={this.state.AirConditioner ? 1 : 0} state="AirConditioner" imgURL={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} onActive={this.onActiveAir} /></Flex.Item>
                         </Flex>
                     </div>
-                    <div className="my-car-img-box"></div>
+                    <div className="my-car-img-box">
+                        <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no") : ""}</span>
+                    </div>
                     <Tabs
                         prefixCls="my-car-tabs"
                         tabBarBackgroundColor="transparent"
                         tabBarUnderlineStyle={{"display":"none"}}
                         tabs={tabs}
                         initialPage={0}
-                        onChange={(tab, index) => { console.log('onChange', index, tab); }}
+                        // onChange={(tab, index) => { console.log('onChange', index, tab); }}
                         onTabClick={this.onClickTab}
                     >
                     </Tabs>

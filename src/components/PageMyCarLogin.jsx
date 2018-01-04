@@ -87,7 +87,7 @@ export default class PageMyCarLogin extends React.Component {
     //点击下拉列表的某一列
     onActiveCarModel = (index) => {
         let car_model = this.state.data_car_model_list[index];
-        console.log(car_model)
+        // console.log(car_model)
         this.setState({
             data_car_model_selected: car_model,
             data_vincode_list: this.getVincodeList(car_model),
@@ -136,14 +136,19 @@ export default class PageMyCarLogin extends React.Component {
         }
     }
     onClickNext = () => {
-        let { data_car_model_selected, data_vincode_selected, controlCode } = this.state;
+        let { data_car_model_selected, data_vincode_selected, car_no, controlCode } = this.state;
         if (this.test_car_model_selected(data_car_model_selected) && this.test_vincode_selected(data_vincode_selected) && this.test_controlCode(controlCode)) {
             localStorage.setItem("controlCode", controlCode);
             localStorage.setItem("vincode", data_vincode_selected);
-            hashHistory.push({
-                pathname: '/MyCar',
-                state: this.state
-            });            
+            localStorage.setItem("car_no", car_no); //保存车牌号码
+            // hashHistory.push({
+            //     pathname: '/MyCar',
+            //     state: this.state
+            // });    
+            //跳转到首页,MyCar
+            this.context.router.push({
+                pathname: '/MyCar'
+            });        
         }
     }
     render() {

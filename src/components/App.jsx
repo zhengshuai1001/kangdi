@@ -21,6 +21,9 @@ export default class App extends React.Component {
             });
         }
     }
+    shouldComponentUpdate() {
+        return this.props.router.location.action === 'POP';
+    }
     render() {
         return (
             <div className="container-app">
@@ -69,7 +72,7 @@ export default class App extends React.Component {
                         }}
                     ></TabBar.Item>
                 </TabBar>
-                {this.props.children && React.cloneElement(this.props.children, {carStatus:this.props.carStatus})}
+                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.props.carStatus, queryCarStatus: this.props.queryCarStatus})}
             </div>
         );
     }

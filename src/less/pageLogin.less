@@ -229,7 +229,7 @@ html:not([data-scale]) .am-button::before {
   bottom: 5.5rem;
   width: 5.6rem;
   height: 5.6rem;
-  font-size: 0.5rem;
+  font-size: 12px;
   background-color: #a0256c;
   color: #fff;
   border-radius: 50%;
@@ -553,8 +553,8 @@ html:not([data-scale]) .am-button::before {
     font-size: 1.6rem;
     width: 340px;
     margin: 0 auto;
-    line-height: 2rem;
-    height: 2rem;
+    line-height: 2.2rem;
+    height: 2.2rem;
 }
 .shortcut-flex .shortcut-box{
     width: 40px;
@@ -612,6 +612,9 @@ html:not([data-scale]) .am-button::before {
 .air-conditioner-box .temperature-img-box.active{
     border: 2px solid #9f236a;
 }
+.air-conditioner-box .temperature-img-box:active{
+    border: 2px solid #9f236a;
+}
 .air-conditioner-box .temperature-img-box img{
     width: 3rem;
     height: 3rem;
@@ -629,6 +632,18 @@ html:not([data-scale]) .am-button::before {
     height: 216.6px;
     background-image: url("../images/my-car.png");
     background-size: 100% 100%;
+    perspective:150;     
+    -webkit-perspective: 500; /* Safari 和 Chrome */  
+    position: relative;
+}
+.my-car-img-box .car-no-span{
+    display: inline-block;
+    font-size: 13px;
+    transform: scale(0.55) rotate(15deg);
+    position: absolute;
+    bottom: 75px;
+    left: 58.5px;
+    color: #ffffff;
 }
 .tabs-one{
     // width: 5rem;
@@ -865,7 +880,7 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     position: absolute;
     top: 50%;
     margin-top: -15px;
-    left: -2.6rem;
+    left: -2.1rem;
 }
 .my-car-switchKey-box .acc{
     border-radius: 2px;
@@ -884,6 +899,12 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
 }
 .my-car-switchKey-box span.active{
     background-color: #f6008b;
+}
+.my-car-switchKey-box span.icon{
+    width: 40px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 40px;
 }
 .avatar-box .img-corner-box{
     width: 20px;
@@ -949,10 +970,16 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     line-height: 3rem;
     font-size: 1.6rem;
 }
-.am-flexbox.am-flexbox-align-center{
-    width: 80%;
+.air-conditioner-box .am-flexbox.am-flexbox-align-center{
+    width: 90%;
     margin: 0 auto;
 }
 .am-flexbox-item.temperature-flex-item{
     display: none;
+}
+.page-my-car-WingBlank .am-flexbox{
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    margin-top: -60px;
 }

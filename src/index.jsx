@@ -33,7 +33,7 @@ import './index.less';
 ReactDOM.render(
     <Router history={hashHistory}>
         <Route path="/" component={CarStatus}>
-            <Route path="" component={App}>
+            <Route component={App}>
                 <IndexRoute component={PageMyCar} />
                 <Route path="MyCar" component={PageMyCar} />
                 <Route path="MyCarLogin" component={PageMyCarLogin} />

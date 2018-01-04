@@ -186,10 +186,10 @@ export default function (mileageOld, reMileage, socOld) {
     });
     view2.interval().position('type*value').color("#cf2a89").size(3);
     view2.guide().html({
-        position: ['50%', '55%'],
+        position: ['50%', '58%'],
         html: '<div style="width: 200px;text-align: center;">'
             + '<p style="font-size: 14px; color: #fff;margin: 0">剩余里程： <span style="color: #cf2a89">' + reMileage +'km</span></p>'
-            + '<p style="font-size: 14px;color: #fff;margin: 0;">SOC： <span style="color: #cf2a89">' + soc+'%</span></p>'
+            + '<p style="padding-top:6px; font-size: 14px;color: #fff;margin: 0;">SOC： <span style="color: #cf2a89">' + soc+'%</span></p>'
             + '</div>'
     });
     view2.guide().html({
@@ -204,8 +204,15 @@ export default function (mileageOld, reMileage, socOld) {
             + '<p style="font-size: 14px; color: #fff;margin: 0">100%</p>'
             + '</div>'
     });
-
+    chart.animate(false); // 关闭动画
+    chart2.animate(false); // 关闭动画
     chart.render();
     chart2.render();
     G2.track(false);
+
+    return function () {
+        //销毁图表，删除生成的图表对象。
+        chart.destroy();
+        chart2.destroy();
+    }
 }
