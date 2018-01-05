@@ -188,7 +188,7 @@ export default class PageRemoteMeter extends React.Component{
                             <Flex.Item>
                                 {/* <div className="shortcut-box"><img src={require('../images/shortcut-btn-trunk.png')} /></div>
                                 <span className="shortcut-text">后备箱</span> */}
-                                <MyCarBtn active={this.state.trunk ? 1 : 0} text="远程仪表" imgURL={this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} />
+                                <MyCarBtn active={this.state.trunk ? 1 : 0} text="后备箱" imgURL={this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} />
                             </Flex.Item>
                             <Flex.Item>
                                 {/* <div className="shortcut-box"><img src={require('../images/shortcut-btn-lock.png')} /></div>

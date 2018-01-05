@@ -101,9 +101,9 @@ class PageUploadAvatar2 extends React.Component {
         let { img, img1, width, height } = this.state;
         // console.log(img1);
         setTimeout(() => {            
-            // let AvatarBoxDOM = ReactDOM.findDOMNode(this.refs.img2);
-            let AvatarBoxDOM = document.getElementById("img2");
-            AvatarBoxDOM.style.height = document.body.clientHeight - 45 + "px";
+            let AvatarBoxDOM = ReactDOM.findDOMNode(this.refs.img2);
+            // let AvatarBoxDOM = document.getElementById("img2");
+            // AvatarBoxDOM.style.height = document.body.clientHeight - 45 + "px";
             AvatarBoxDOM.innerHTML = "";
             AvatarBoxDOM.appendChild(img);
             let imageCanvas = document.querySelector("#img2 > canvas");
@@ -141,9 +141,11 @@ class PageUploadAvatar2 extends React.Component {
     componentDidMount () {
         let self = this;
         let { img } = this.state;
-        setTimeout(() => {
+        // setTimeout(() => {
             // let uploadBtn = document.querySelector(".uploadButton");
-            let AvatarBoxDOM = document.getElementById("img2");
+            let AvatarBoxDOM = ReactDOM.findDOMNode(this.refs.img2);
+            // console.log(AvatarBoxDOM);
+            // let AvatarBoxDOM = document.getElementById("img2");
             AvatarBoxDOM.style.height = document.body.clientHeight - 45 + "px";
             let pc = new PhotoClip(AvatarBoxDOM,{
                 size: [250, 250],
@@ -157,7 +159,7 @@ class PageUploadAvatar2 extends React.Component {
             this.setState({
                 pc:pc
             })
-        }, 0);
+        // }, 0);
     }
     onClickUpload = () => {
         let { pc } = this.state;
@@ -170,11 +172,11 @@ class PageUploadAvatar2 extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-register page-login">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -185,7 +187,7 @@ class PageUploadAvatar2 extends React.Component {
                     ></NavBar>
                     <div id="img2" ref="img2" className="cropperAvatarBox"></div>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

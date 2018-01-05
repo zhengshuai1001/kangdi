@@ -30,7 +30,10 @@ export default class PageForgetPassword extends React.Component {
             console.log(res);
             if (res.code == 1000) {
                 //忘记密码重置成功
-                
+                //修改密码成功
+                Toast.success('重置密码成功', 2, () => {
+                    hashHistory.goBack();
+                });
                 
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);

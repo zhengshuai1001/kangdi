@@ -18,25 +18,25 @@ export default class CarStatus extends React.Component {
                 //获取车辆运行数据后保存
                 this.setState({
                     carStatus: {
-                        trunk: data.BcmData.Trunk,
-                        lock: data.BcmData.CentralLock,
-                        engine: data.BcmData.BatteryDoor, //假的
-                        door: data.BcmData.LFDoor,  //左前门,先用左前门代替车门
+                        trunk: data.BcmData.Trunk,  //后备箱
+                        lock: data.BcmData.CentralLock, //车锁
+                        engine: data.BcmData.BatteryDoor, //电机加锁，现在用不了
+                        door: data.BcmData.LFDoor,  //左前门,综合属性，不显示
                         doorLF: data.BcmData.LFDoor,  //左前门
                         doorRF: data.BcmData.RFDoor,  //右前门
                         doorLR: data.BcmData.LRDoor,  //左后门
                         doorRR: data.BcmData.RRDoor,  //右后门
-                        lamp: data.BcmData.Headlight, //大灯
-                        AirConditioner: data.EasData.AirConditioner,
-                        ac: data.EasData.AC,
-                        ptc: data.EasData.PTC,
-                        defrost: data.EasData.WindDirection == 3 ? 1 : 0,
-                        acc: data.KDData.ACC,
-                        soc: data.CarData.SOC,
+                        lamp: (data.BcmData.Headlight == 1 || data.BcmData.Headlight == 2 ? 1 :0), //大灯
+                        AirConditioner: data.EasData.AirConditioner,  //
+                        ac: data.EasData.AC,  //
+                        ptc: data.EasData.PTC,  //
+                        defrost: data.EasData.WindDirection == 3 ? 1 : 0, //
+                        acc: data.KDData.ACC, //
+                        soc: data.CarData.SOC, //
                         temperature: 0, //室内温度不知道
-                        Mileage: data.CarData.Speed, 
-                        ReMileage: data.KDData.ReMileage, 
-                        TotalV: data.CarData.TotalV, 
+                        Mileage: data.CarData.Speed * 0.1, //
+                        ReMileage: data.KDData.ReMileage * 0.1, //
+                        TotalV: data.CarData.TotalV * 0.1, //
                         TotalA: data.CarData.TotalA //本来要显示最低单体电压，现在用总电流代替
                     }
                 });
