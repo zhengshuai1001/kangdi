@@ -18,7 +18,13 @@ export default class PageModifyControlCodeSecond extends React.Component {
             console.log(res);
             if (res.code == 1000) {
                 //修改控制码成功
-                
+                Toast.success('修改控制码成功', 2, () => {
+                    //跳转到登录页
+                    hashHistory.push({
+                        pathname: '/MyCarLogin',
+                        query: { form: 'modifyControlCodeSecond' }
+                    });
+                });
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -26,7 +32,7 @@ export default class PageModifyControlCodeSecond extends React.Component {
     }
     testOldControlCode(val) {
         let value = val.replace(" ", "");
-        if (!(/^.{1,20}$/.test(value))) {
+        if (!(/^.{6}$/.test(value))) {
             Toast.info("请输入正确密码", 1);
             return false;
         } else {
@@ -35,7 +41,7 @@ export default class PageModifyControlCodeSecond extends React.Component {
     }
     testNewControlCode(val) {
         let value = val.replace(" ", "");
-        if (!(/^.{1,20}$/.test(value))) {
+        if (!(/^.{6}$/.test(value))) {
             Toast.info("请输入正确密码", 1);
             return false;
         } else {
@@ -43,9 +49,11 @@ export default class PageModifyControlCodeSecond extends React.Component {
         }
     }
     testConfirmControlCode(val) {
-        let value = val.replace(" ", "");
+        // let value = val.replace(" ", "");
         //判断两次密码是否相等
-        if (!(val === this.state.newPassword)) {
+        // console.log(val, this.state.newControlCode);
+        // console.log(val  == this.state.newPassword)
+        if (!(val === this.state.newControlCode)) {
             Toast.info("两次输入密码不相同", 1);
             return false;
         } else {
@@ -64,7 +72,8 @@ export default class PageModifyControlCodeSecond extends React.Component {
                 "vericode": MixinState.SMSCode,
                 "oldpsd": oldControlCode,
                 "newpsd": newControlCode,
-                "busitype": "2"
+                "vincode": localStorage.getItem("vincode"),
+                "busitype": 2
             }, this.handleControlCode, false, true);
 
         }
@@ -85,33 +94,39 @@ export default class PageModifyControlCodeSecond extends React.Component {
                     >修改控制码</NavBar>
                     <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
                         <InputItem
-                            type="password"
+                            type="number"
+                            className="input-text-security"
+                            pattern="[0-9]*"
                             placeholder="请输入原控制码"
-                            maxLength="20"
+                            maxLength="6"
                             value={this.state.oldControlCode}
-                            onChange={(val) => { this.setState({ oldControlCode: val }) }}
+                            onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ oldControlCode: val }) }}
                             onBlur={(val) => { this.testOldControlCode(val) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-modify-control-code.png')} />
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
-                            type="password"
+                            type="number"
+                            className="input-text-security"
+                            pattern="[0-9]*"
                             placeholder="设置新控制码"
-                            maxLength="20"
+                            maxLength="6"
                             value={this.state.newControlCode}
-                            onChange={(val) => { this.setState({ newControlCode: val }) }}
+                            onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ newControlCode: val }) }}
                             onBlur={(val) => { this.testNewControlCode(val) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-modify-control-code.png')} />
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
-                            type="password"
+                            type="number"
+                            className="input-text-security"
+                            pattern="[0-9]*"
                             placeholder="确认新控制码"
-                            maxLength="20"
+                            maxLength="6"
                             value={this.state.confirmControlCode}
-                            onChange={(val) => { this.setState({ confirmControlCode: val }) }}
+                            onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ confirmControlCode: val }) }}
                             onBlur={(val) => { this.testConfirmControlCode(val) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-modify-control-code.png')} />

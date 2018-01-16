@@ -86,7 +86,7 @@ export default class PagePersonalCenter extends React.Component {
         localStorage.removeItem("kangdid");
         localStorage.removeItem("token");
         localStorage.removeItem("vincode");
-        localStorage.removeItem("controlCode");
+        // localStorage.removeItem("controlCode");
         localStorage.removeItem("car_no");
         //跳转到登录页
         hashHistory.push({

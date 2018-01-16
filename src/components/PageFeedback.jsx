@@ -37,7 +37,7 @@ export default class PageFeedback extends React.Component {
     }
 
     testPhone(val) {
-        if (!(/^1(2|3|4|5|6|7|8|9)\d{9}$/.test(val))) {
+        if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(val))) {
             Toast.info("请输入正确手机号！", 1);
             return false;
         } else {
@@ -86,7 +86,7 @@ export default class PageFeedback extends React.Component {
                         <InputItem
                             className="phone"
                             type="number"
-                            maxLength="20"
+                            maxLength="11"
                             placeholder="选填，便于我们及时回复您"
                             value={this.state.phone}
                             onChange={(val) => { this.setState({ phone: val }) }}

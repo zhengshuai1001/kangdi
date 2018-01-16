@@ -12,7 +12,10 @@ export default class PageForgetPassword extends React.Component {
             phone: '',
             password: '',
             SMSCode: '',
-            SMSCodeTxt: '获取验证码'
+            SMSCodeTxt: '获取验证码',
+            passwordLength: 20,
+            NavBarTitle: "重置密码",
+            NewPasswordPlaceholder: "请输入新密码"
         }
         //发送短信验证码后的处理函数
         this.handleSendSMSCode = (req) => {
@@ -41,7 +44,7 @@ export default class PageForgetPassword extends React.Component {
         }
     }
     testPhone(val) {
-        if (!(/^1(2|3|4|5|6|7|8|9)\d{9}$/.test(val))) {
+        if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(val))) {
             Toast.info("请输入正确手机号！", 1);
             return false;
         } else {
@@ -89,10 +92,17 @@ export default class PageForgetPassword extends React.Component {
         let phoneValue = this.state.phone;
         if (this.testPhone(phoneValue) && this.state.SMSCodeTxt == "获取验证码") {
             //发送ajax获取短信验证码
-            runPromise("smsNumsend", {
-                "mobile": phoneValue,
-                "busitype": 2
-            }, this.handleSendSMSCode, false);
+            if (this.props.location.query.form == "myCarLogin") {
+                runPromise("smsNumsend", {
+                    "mobile": phoneValue,
+                    "busitype": 4
+                }, this.handleSendSMSCode, false);
+            }else{
+                runPromise("smsNumsend", {
+                    "mobile": phoneValue,
+                    "busitype": 2
+                }, this.handleSendSMSCode, false);
+            }
         }
     }
     onClickForgetPassword = () =>{
@@ -100,15 +110,35 @@ export default class PageForgetPassword extends React.Component {
         let password = this.state.password;
         let SMSCode = this.state.SMSCode;
         if (this.testPhone(phone) && this.testPassword(password) && this.testSMSCode(SMSCode, true)) {
+            if (this.props.location.query.form == "myCarLogin") {
+                //发送ajax完成重置密码
+                runPromise("passwordForget", {
+                    "kangdid": phone,
+                    "newpsd": password,
+                    "busitype": 2,
+                    "vericode": SMSCode,
+                    "vincode": localStorage.getItem("vincode")
+                }, this.handleForgetPassword, true);
+                return;
+            }
             //发送ajax完成重置密码
             runPromise("passwordForget", {
                 "kangdid": phone,
                 "newpsd": password,
-                "busitype": "1",
+                "busitype": 1,
                 "vericode": SMSCode,
                 "vincode": ""
             }, this.handleForgetPassword, false);
 
+        }
+    }
+    componentDidMount(){
+        if (this.props.location.query.form == "myCarLogin") {
+            this.setState({
+                passwordLength: 6,
+                NavBarTitle: "重置控制码",
+                NewPasswordPlaceholder: "请输入新控制码"
+            })
         }
     }
     render() {
@@ -124,12 +154,12 @@ export default class PageForgetPassword extends React.Component {
                     mode="light"
                     icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                     onLeftClick={() => hashHistory.goBack()}
-                >重置密码</NavBar>
+                >{this.state.NavBarTitle}</NavBar>
                 <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
                     <InputItem
                         type="number"
                         placeholder="请输入手机号"
-                        maxLength="20"
+                        maxLength="11"
                         value={this.state.phone}
                         onChange={(val) => { this.setState({ phone: val }) }}
                         onBlur={(val) => { this.testPhone(val) }}
@@ -154,10 +184,10 @@ export default class PageForgetPassword extends React.Component {
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
                         type="password"
-                        placeholder="请输入新密码"
-                        maxLength="20"
+                        placeholder={this.state.NewPasswordPlaceholder}
+                        maxLength={this.state.passwordLength}
                         value={this.state.password}
-                        onChange={(val) => { this.setState({ password: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ password: val }) }}
                         onBlur={(val) => { this.testPassword(val) }}
                         clear
                     >

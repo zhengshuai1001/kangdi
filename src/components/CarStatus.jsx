@@ -21,7 +21,7 @@ export default class CarStatus extends React.Component {
                         trunk: data.BcmData.Trunk,  //后备箱
                         lock: data.BcmData.CentralLock, //车锁
                         engine: data.BcmData.BatteryDoor, //电机加锁，现在用不了
-                        door: data.BcmData.LFDoor,  //左前门,综合属性，不显示
+                        door: (data.BcmData.LFDoor || data.BcmData.RFDoor || data.BcmData.LRDoor || data.BcmData.RRDoor) ? 1 : 0,  //门,综合属性
                         doorLF: data.BcmData.LFDoor,  //左前门
                         doorRF: data.BcmData.RFDoor,  //右前门
                         doorLR: data.BcmData.LRDoor,  //左后门
@@ -34,9 +34,9 @@ export default class CarStatus extends React.Component {
                         acc: data.KDData.ACC, //
                         soc: data.CarData.SOC, //
                         temperature: 0, //室内温度不知道
-                        Mileage: data.CarData.Speed * 0.1, //
-                        ReMileage: data.KDData.ReMileage * 0.1, //
-                        TotalV: data.CarData.TotalV * 0.1, //
+                        Mileage: parseInt(data.KDData.ReMileage * 0.1), //
+                        ReMileage: parseInt(data.KDData.ReMileage * 0.1), //
+                        TotalV: parseInt(data.CarData.TotalV * 0.1), //
                         TotalA: data.CarData.TotalA //本来要显示最低单体电压，现在用总电流代替
                     }
                 });

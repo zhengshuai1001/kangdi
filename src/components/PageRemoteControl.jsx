@@ -47,6 +47,11 @@ const imgUrl = {
     doorRF: require('../images/shortcut-btn-doorRF.png'),
     doorLR: require('../images/shortcut-btn-doorLR.png'),
     doorRR: require('../images/shortcut-btn-doorRR.png'),
+    doorActive: require('../images/shortcut-btn-door-active.png'),
+    doorLFActive: require('../images/shortcut-btn-doorLF-active.png'),
+    doorRFActive: require('../images/shortcut-btn-doorRF-active.png'),
+    doorLRActive: require('../images/shortcut-btn-doorLR-active.png'),
+    doorRRActive: require('../images/shortcut-btn-doorRR-active.png'),
     lamp: require('../images/shortcut-btn-lamp.png'),
     switch: require('../images/shortcut-btn-switch.png'),
     refrigeration: require('../images/shortcut-btn-refrigeration.png'),
@@ -64,7 +69,7 @@ const imgUrl = {
     trunkActive: require('../images/shortcut-btn-trunk-active.png'), //以下是活动状态的图标
     lockActive: require('../images/shortcut-btn-lock-active.png'),
     engineActive: require('../images/shortcut-btn-engine-active.png'),
-    doorActive: require('../images/shortcut-btn-door-active.png'),
+    // doorActive: require('../images/shortcut-btn-door-active.png'),
     lampActive: require('../images/shortcut-btn-lamp-active.png'),
     switchActive: require('../images/shortcut-btn-switch-active.png'),
     refrigerationActive: require('../images/shortcut-btn-refrigeration-active.png'),
@@ -125,6 +130,7 @@ export default class PageRemoteControl extends React.Component{
             soc: 0, //电量
             temperature: 0, //室内温度
             onClickTabName: "", //点击tab的state名字
+            car_tail: localStorage.getItem("car_tail") || "", //车辆型号
             enabledList: { // 存储按钮是否可点击的状态，按钮在点击后必须隔5秒才能再次点击
                 trunk: true, 
                 lock: true,  
@@ -361,12 +367,13 @@ export default class PageRemoteControl extends React.Component{
         }, this.handleControlCarWindow, true, true);
     }
     render() {
-        const doorAllClassName = `tabs-one door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
+        const doorAllClassName = `tabs-one ${this.state.door ? "active" : ""} door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
         const tabs = [
             { title: <div state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
             { title: <div state="lock" className={this.state.lock ? "tabs-one active" : "tabs-one"}><img src={this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
             // { title: <div state="engine" className={this.state.engine ? "tabs-one active" : "tabs-one"}><img src={this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
-            { title: <div state="door" className={doorAllClassName}><img className="bg" src={imgUrl.door} /><img className="lf" src={imgUrl.doorLF} /><img className="rf" src={imgUrl.doorRF} /><img className="lr" src={imgUrl.doorLR} /><img className="rr" src={imgUrl.doorRR} /><span>车门</span></div> },
+            // { title: <div state="door" className={doorAllClassName}><img className="bg" src={imgUrl.door} /><img className="lf" src={imgUrl.doorLF} /><img className="rf" src={imgUrl.doorRF} /><img className="lr" src={imgUrl.doorLR} /><img className="rr" src={imgUrl.doorRR} /><span>车门</span></div> },
+            { title: <div state="door" className={doorAllClassName}><img className="bg" src={!this.state.door ? imgUrl.door : imgUrl.doorActive} /><img className="lf" src={!this.state.door ? imgUrl.doorLF : imgUrl.doorLFActive} /><img className="rf" src={!this.state.door ? imgUrl.doorRF : imgUrl.doorRFActive} /><img className="lr" src={!this.state.door ? imgUrl.doorLR : imgUrl.doorLRActive} /><img className="rr" src={!this.state.door ? imgUrl.doorRR : imgUrl.doorRRActive} /><span>车门</span></div> },
             { title: <div state="lamp" className={this.state.lamp ? "tabs-one active" : "tabs-one"}><img src={this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
             { title: <div state="AirConditioner" className={this.state.AirConditioner ? "tabs-one active" : "tabs-one"}><img src={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
             { title: <div state="ac" className={this.state.ac ? "tabs-one active" : "tabs-one"}><img src={this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
@@ -395,7 +402,7 @@ export default class PageRemoteControl extends React.Component{
                             <Flex.Item><ShortAirBtn active={this.state.AirConditioner ? 1 : 0} state="AirConditioner" imgURL={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} onActive={this.onActiveAir} /></Flex.Item>
                         </Flex>
                     </div>
-                    <div className="my-car-img-box">
+                    <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" : "my-car-img-box"}>
                         <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no") : ""}</span>
                     </div>
                     <Tabs

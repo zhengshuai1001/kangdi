@@ -61,7 +61,7 @@ export default class PageModifyPassword extends React.Component {
             runPromise("passwordChange", {
                 "oldpsd": oldPassword,
                 "newpsd": newPassword,
-                "busitype": "1",
+                "busitype": 1,
                 "vericode": "",
                 "vincode": ""
             }, this.handleChangePassword);

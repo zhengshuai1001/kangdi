@@ -15,14 +15,25 @@ const imgUrl = {
     doorRF: require('../images/shortcut-btn-doorRF.png'),
     doorLR: require('../images/shortcut-btn-doorLR.png'),
     doorRR: require('../images/shortcut-btn-doorRR.png'),
+    doorActive: require('../images/shortcut-btn-door-active.png'),
+    doorLFActive: require('../images/shortcut-btn-doorLF-active.png'),
+    doorRFActive: require('../images/shortcut-btn-doorRF-active.png'),
+    doorLRActive: require('../images/shortcut-btn-doorLR-active.png'),
+    doorRRActive: require('../images/shortcut-btn-doorRR-active.png'),
     lamp: require('../images/shortcut-btn-lamp.png'),
     switch: require('../images/shortcut-btn-switch.png'),
     trunkActive: require('../images/shortcut-btn-trunk-active.png'), //以下是活动状态的图标
     lockActive: require('../images/shortcut-btn-lock-active.png'),
     engineActive: require('../images/shortcut-btn-engine-active.png'),
-    doorActive: require('../images/shortcut-btn-door-active.png'),
+    // doorActive: require('../images/shortcut-btn-door-active.png'),
     lampActive: require('../images/shortcut-btn-lamp-active.png'),
-    switchActive: require('../images/shortcut-btn-switch-active.png')
+    switchActive: require('../images/shortcut-btn-switch-active.png'),
+    refrigeration: require('../images/shortcut-btn-refrigeration.png'),
+    heating: require('../images/shortcut-btn-heating.png'),
+    defrost: require('../images/shortcut-btn-defrost.png'),
+    refrigerationActive: require('../images/shortcut-btn-refrigeration-active.png'),
+    heatingActive: require('../images/shortcut-btn-heating-active.png'),
+    defrostActive: require('../images/shortcut-btn-defrost-active.png'),
 }
 
 const MyCarBtn = (props) => (
@@ -30,7 +41,7 @@ const MyCarBtn = (props) => (
         className={props.active ? "shortcut-box-out active" : "shortcut-box-out"}
     >
     {
-            props.text == "车门" ? <div style={{ "position": "relative"}} className={props.doorAllClassName}><img className="bg" src={imgUrl.door} /><img className="lf" src={imgUrl.doorLF} /><img className="rf" src={imgUrl.doorRF} /><img className="lr" src={imgUrl.doorLR} /><img className="rr" src={imgUrl.doorRR} /></div> : <div className="shortcut-box"><img src={props.imgURL} /></div>
+            props.text == "车门" ? <div style={{ "position": "relative"}} className={props.doorAllClassName}><img className="bg" src={!props.active ? imgUrl.door : imgUrl.doorActive} /><img className="lf" src={!props.active ? imgUrl.doorLF : imgUrl.doorLFActive} /><img className="rf" src={!props.active ? imgUrl.doorRF : imgUrl.doorRFActive} /><img className="lr" src={!props.active ? imgUrl.doorLR : imgUrl.doorLRActive} /><img className="rr" src={!props.active ? imgUrl.doorRR : imgUrl.doorRRActive} /></div> : <div className="shortcut-box"><img src={props.imgURL} /></div>
     }
         {/* <div className="shortcut-box">
             <img src={props.imgURL} />
@@ -54,6 +65,10 @@ export default class PageRemoteMeter extends React.Component{
             ReMileage: 0, //剩余里程
             TotalV: 0, //总压
             TotalA: 0, //本来要显示最低单体电压，现在用总电流代替
+            AirConditioner: 0, //空调
+            ac: 0, // AC降温
+            ptc: 0, // PTC加热
+            defrost: 0, // 除雾除霜
         }
         //发送完车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
@@ -73,6 +88,9 @@ export default class PageRemoteMeter extends React.Component{
                     doorRR: data.BcmData.RRDoor,  //右后门
                     lamp: data.BcmData.Headlight, //大灯
                     AirConditioner: data.EasData.AirConditione,
+                    ac: data.EasData.AC,
+                    ptc: data.EasData.PTC,
+                    defrost: data.EasData.WindDirection == 3 ? 1 : 0,
                     soc: data.CarData.SOC,
                     Mileage: data.KDData.Mileage, 
                     ReMileage: data.KDData.ReMileage, 
@@ -123,18 +141,21 @@ export default class PageRemoteMeter extends React.Component{
     render(){
         const doorAllClassName = `shortcut-box tabs-one door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
-                <div key="1" className="page-login  page-remote-instrument">
+            <div key="1" className="page-login  page-remote-instrument">
                     <NavBar
+                        className="remote-meter-navbar"
                         style={{ "background-color": "#000" }}
                         mode="light"
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
                     >远程仪表</NavBar>
+            <QueueAnim
+                type="right"
+                duration="500"
+                ease="easeOutBack"
+            >
+                    <div key="1">
+                    <div className="backgroud-NavBar"></div>
                     <div id="backgroud">
                         <div id="mountNode"></div>
                         <div id="mountNode2"></div>
@@ -205,18 +226,33 @@ export default class PageRemoteMeter extends React.Component{
                                 <span className="shortcut-text">车门</span> */}
                                 <MyCarBtn doorAllClassName={doorAllClassName} active={this.state.door ? 1 : 0} text="车门" imgURL={this.state.door ? imgUrl.doorActive : imgUrl.door} />
                             </Flex.Item>
-                            <Flex.Item>
                                 {/* <div className="shortcut-box"><img src={require('../images/shortcut-btn-switch.png')} /></div>
                                 <span className="shortcut-text">空调</span> */}
+                            {/* <Flex.Item>
                                 <MyCarBtn active={this.state.AirConditioner ? 1 : 0} text="空调" imgURL={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} />
-                            </Flex.Item>
+                            </Flex.Item> */}
                             {/* <Flex.Item>
                                 <MyCarBtn active={this.state.engine ? 1 : 0} text="电机加锁" imgURL={this.state.engine ? imgUrl.engineActive : imgUrl.engine} />
                             </Flex.Item> */}
                         </Flex>
+                        <Flex justify="center" className="shortcut-flex flex-new-two">
+                            <Flex.Item>
+                                <MyCarBtn active={this.state.ac ? 1 : 0} text="AC" imgURL={this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} />
+                            </Flex.Item>
+                            <Flex.Item>
+                                <MyCarBtn active={this.state.ptc ? 1 : 0} text="PTC" imgURL={this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} />
+                            </Flex.Item>
+                            <Flex.Item>
+                                <MyCarBtn active={this.state.defrost ? 1 : 0} text="除雾除霜" imgURL={this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} />
+                            </Flex.Item>
+                            <Flex.Item>
+                                <MyCarBtn active={this.state.AirConditioner ? 1 : 0} text="空调" imgURL={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} />
+                            </Flex.Item>
+                        </Flex>
                     </div>
+                    </div>
+                    </QueueAnim>
                 </div>
-            </QueueAnim>
         )
     }
 }

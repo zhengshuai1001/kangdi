@@ -26,8 +26,8 @@ export default class PageMyCarLogin extends React.Component {
         this.state = {
             carType: '',
             frameCode: '',
-            controlCode: '',
-            rememberControlCode: true,
+            controlCode: localStorage.getItem("controlCode") || "",
+            rememberControlCode: false,
             showControlCode: false,
             data:[],
             data_car_model_list: [],
@@ -48,6 +48,19 @@ export default class PageMyCarLogin extends React.Component {
                     data: res.data,
                     data_car_model_list: this.getCarModelList(res.data)
                 });
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+        //点击下一步，车主登录后的处理函数
+        this.handleMyCarLogin = (req) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                //跳转到首页,MyCar
+                this.context.router.push({
+                    pathname: '/MyCar'
+                }); 
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -98,13 +111,16 @@ export default class PageMyCarLogin extends React.Component {
     onActiveVincode = (index) => {
         let vincode = this.state.data_vincode_list[index];
         let car_no = "";
+        let car_tail = "";
         let data = this.state.data;
         data.map((value) => {
-            value.vincode == vincode ? car_no = value.car_no : ""
+            value.vincode == vincode ? car_no = value.car_no : "";
+            value.vincode == vincode ? car_tail = value.car_tail : "";
         });
         this.setState({ 
             data_vincode_selected: vincode,
             car_no: car_no,
+            car_tail: car_tail,
             show_vincode_list: false 
         });
     }
@@ -128,7 +144,7 @@ export default class PageMyCarLogin extends React.Component {
     }
     test_controlCode(val) {
         let value = val.replace(" ", "");
-        if (!(/^.{1,20}$/.test(value))) {
+        if (!(/^.{6}$/.test(value))) {
             Toast.info("请输入正确车辆控制码", 1);
             return false;
         } else {
@@ -136,19 +152,26 @@ export default class PageMyCarLogin extends React.Component {
         }
     }
     onClickNext = () => {
-        let { data_car_model_selected, data_vincode_selected, car_no, controlCode } = this.state;
+        let { data_car_model_selected, data_vincode_selected, car_no, car_tail, controlCode } = this.state;
         if (this.test_car_model_selected(data_car_model_selected) && this.test_vincode_selected(data_vincode_selected) && this.test_controlCode(controlCode)) {
-            localStorage.setItem("controlCode", controlCode);
+            if (this.state.rememberControlCode) {
+                localStorage.setItem("controlCode", controlCode);
+            } else {
+                localStorage.removeItem("controlCode");
+            }
             localStorage.setItem("vincode", data_vincode_selected);
             localStorage.setItem("car_no", car_no); //保存车牌号码
+            localStorage.setItem("car_tail", car_tail); //保存车辆型号
             // hashHistory.push({
             //     pathname: '/MyCar',
             //     state: this.state
             // });    
-            //跳转到首页,MyCar
-            this.context.router.push({
-                pathname: '/MyCar'
-            });        
+            //发送ajax,车主登录
+            runPromise("accountLogin", {
+                "psd": this.state.controlCode,
+                "vincode": data_vincode_selected,
+                "logintype": 2
+            }, this.handleMyCarLogin, true);     
         }
     }
     render() {
@@ -193,19 +216,21 @@ export default class PageMyCarLogin extends React.Component {
                     <DropDownList show={this.state.show_vincode_list} list={this.state.data_vincode_list} onActive={this.onActiveVincode} />
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
-                        type={this.state.showControlCode ? "string" : "password"}
+                        type={this.state.showControlCode ? "number" : "password"}
+                        pattern="[0-9]*"
                         placeholder="请输入车辆控制码"
-                        maxLength="20"
+                        maxLength="6"
                         value={this.state.controlCode}
-                        onChange={(val) => { this.setState({ controlCode: val }) }}
+                        onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ controlCode: val }) }}
+                        onBlur={(val) => { this.test_controlCode(val) }}
                         extra={<img className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                         onExtraClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }}
                     >
                         <img style={{"width":"26px"}} className="page-login-password-img" src={require('../images/page-myCar-lock.png')} />
                     </InputItem>
                     <Flex style={{ "margin-top": "1rem" }}>
-                        <Flex.Item onClick={this.handleRememberControlCode} style={{ "textAlign": "left", "paddingLeft": "1rem", "color": "#b3aeae", "font-size": "1.4rem" }}><span className="check-mark-span"><img ref="checkMarkImg" src={require('../images/check-mark-icon.png')}/></span>记住车辆控制码</Flex.Item>
-                        <Flex.Item style={{ "textAlign": "right", "paddingRight": "1rem" }}><Link style={{"color":"#b3aeae"}} to="/forgetPassword">忘记控制码？</Link></Flex.Item>
+                        <Flex.Item onClick={this.handleRememberControlCode} style={{ "textAlign": "left", "paddingLeft": "1rem", "color": "#b3aeae", "font-size": "1.4rem" }}><span className="check-mark-span"><img style={{ "visibility": "hidden"}} ref="checkMarkImg" src={require('../images/check-mark-icon.png')}/></span>记住车辆控制码</Flex.Item>
+                        <Flex.Item style={{ "textAlign": "right", "paddingRight": "1rem" }}><Link style={{ "color": "#b3aeae" }} to={{ pathname: "/forgetPassword", query: { form: 'myCarLogin' } }}>忘记控制码？</Link></Flex.Item>
                     </Flex>
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />

@@ -16,26 +16,39 @@ export default class PageMoreInfo extends React.Component {
         //发送完成注册后的处理函数
         this.handleRegister = (req) => {
             let res = req.result;
-            console.log(res);
             if (res.code == 1000) {
                 //注册成功，弹出弹框
-                this.onShowPopUp("successPopUp");
+                this.onShowPopUp();
+                let token = setTimeout(() => {
+                    this.onClosePopUp();
+                    clearTimeout(token);
+                    //跳转到登录页
+                    hashHistory.push({
+                        pathname: '/login',
+                        query: { form: 'register' }
+                    });
+                }, 1500);
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
         }
     }
-    onShowPopUp = key => (e) => {
-        e.preventDefault(); // 修复 Android 上点击穿透
+    onShowPopUp = (e) => {
+        // e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
-            [key]: true,
+            successPopUp: true,
         });
     }
-    onClosePopUp = key => () => {
+    onClosePopUp = (e) => {
         this.setState({
-            [key]: false,
+            successPopUp: false,
         });
     }
+    // onClosePopUp = key => () => {
+    //     this.setState({
+    //         [key]: false,
+    //     });
+    // }
 
     testNickName(val) {
         let value = val.replace(" ", "");
@@ -128,7 +141,7 @@ export default class PageMoreInfo extends React.Component {
                     <InputItem
                         type="string"
                         placeholder="请输入您的身份证号码"
-                        maxLength="20"
+                        maxLength="18"
                         value={this.state.ID_number}
                         onChange={(val) => { this.setState({ ID_number: val }) }}
                         onBlur={(val) => { this.testIDNumber(val) }}

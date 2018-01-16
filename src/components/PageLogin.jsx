@@ -33,7 +33,7 @@ export default class PageLogin extends React.Component {
     }
 
     testAccount(val) {
-        if (!(/^1(2|3|4|5|6|7|8|9)\d{9}$/.test(val))) {
+        if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(val))) {
             Toast.info("请输入正确手机号！", 1);
             return false;
         } else {
@@ -72,9 +72,9 @@ export default class PageLogin extends React.Component {
                 </div>
                 <WingBlank className="page-login-WingBlank" size="lg">
                     <InputItem
-                        type="string"
-                        placeholder="请输入您的用户名"
-                        maxLength="20"
+                        type="number"
+                        placeholder="请输入您的手机号"
+                        maxLength="11"
                         value = {this.state.account}
                         onChange={(val) => { this.setState({ account: val }) }}
                         onBlur={(val) => { this.testAccount(val) }}
@@ -87,7 +87,7 @@ export default class PageLogin extends React.Component {
                         placeholder="请输入密码"
                         maxLength="20"
                         value={this.state.password}
-                        onChange={(val) => { this.setState({ password: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ password: val }) }}
                         onBlur={(val) => { this.testPassword(val) }}
                     >
                         <img className="page-login-password-img" src={require('../images/page-login-password.png')} />

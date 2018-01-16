@@ -26,7 +26,7 @@ export default class PageRegister extends React.Component {
         }
     }
     testPhone(val) {
-        if (!(/^1(2|3|4|5|6|7|8|9)\d{9}$/.test(val))) {
+        if (!(/^1(3|4|5|6|7|8|9)\d{9}$/.test(val))) {
             Toast.info("请输入正确手机号！", 1);
             return false;
         } else {
@@ -110,7 +110,7 @@ export default class PageRegister extends React.Component {
                     <InputItem
                         type="number"
                         placeholder="请输入手机号"
-                        maxLength="20"
+                        maxLength="11"
                         value= {this.state.phone}
                         onChange={(val) => { this.setState({ phone: val }) }}
                         onBlur={(val) => { this.testPhone(val) }}
@@ -124,7 +124,7 @@ export default class PageRegister extends React.Component {
                         placeholder="请输入密码"
                         maxLength="20"
                         value={this.state.password}
-                        onChange={(val) => { this.setState({ password: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ password: val }) }}
                         onBlur={(val) => { this.testPassword(val) }}
                         clear
                     >
