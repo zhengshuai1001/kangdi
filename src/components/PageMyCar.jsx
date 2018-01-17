@@ -103,7 +103,8 @@ export default class PageMyCar extends React.Component{
             temperature: 0, //室内温度
             onClickTabName: "", //点击tab的state名字
             // car_tail: "K17A", //车辆型号
-            car_tail: localStorage.getItem("car_tail") || "" //车辆型号
+            car_tail: localStorage.getItem("car_tail") || "", //车辆型号
+            initialPage: 0
         }
         //发送完车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
@@ -224,16 +225,16 @@ export default class PageMyCar extends React.Component{
     render() {
         const doorAllClassName = `tabs-one ${this.state.door ? "active" : ""} door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
         const tabs = [
-            { title: <div state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={ this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
-            { title: <div state="lock" className={this.state.lock ? "tabs-one active" : "tabs-one"}><img src={ this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={ this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="lock" className={this.state.lock ? "tabs-one active" : "tabs-one"}><img src={ this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
             // { title: <div state="engine" className={this.state.engine ? "tabs-one active" : "tabs-one"}><img src={ this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
             // { title: <div state="door" className={this.state.door ? "tabs-one active" : "tabs-one"}><img src={ this.state.door ? imgUrl.doorActive : imgUrl.door} /><span>车门</span></div> },
-            { title: <div state="door" className={doorAllClassName}><img className="bg" src={!this.state.door ? imgUrl.door : imgUrl.doorActive} /><img className="lf" src={!this.state.door ? imgUrl.doorLF : imgUrl.doorLFActive} /><img className="rf" src={!this.state.door ? imgUrl.doorRF : imgUrl.doorRFActive} /><img className="lr" src={!this.state.door ? imgUrl.doorLR : imgUrl.doorLRActive} /><img className="rr" src={!this.state.door ? imgUrl.doorRR : imgUrl.doorRRActive} /><span>车门</span></div> },
-            { title: <div state="lamp" className={this.state.lamp ? "tabs-one active" : "tabs-one"}><img src={ this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
-            { title: <div state="AirConditioner" className={this.state.AirConditioner ? "tabs-one active" : "tabs-one"}><img src={ this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
-            { title: <div state="ac" className={this.state.ac ? "tabs-one active" : "tabs-one"}><img src={ this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
-            { title: <div state="ptc" className={this.state.ptc ? "tabs-one active" : "tabs-one"}><img src={ this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
-            { title: <div state="defrost" className={this.state.defrost ? "tabs-one active" : "tabs-one"}><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="door" className={doorAllClassName}><img className="bg" src={!this.state.door ? imgUrl.door : imgUrl.doorActive} /><img className="lf" src={!this.state.door ? imgUrl.doorLF : imgUrl.doorLFActive} /><img className="rf" src={!this.state.door ? imgUrl.doorRF : imgUrl.doorRFActive} /><img className="lr" src={!this.state.door ? imgUrl.doorLR : imgUrl.doorLRActive} /><img className="rr" src={!this.state.door ? imgUrl.doorRR : imgUrl.doorRRActive} /><span>车门</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="lamp" className={this.state.lamp ? "tabs-one active" : "tabs-one"}><img src={ this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="AirConditioner" className={this.state.AirConditioner ? "tabs-one active" : "tabs-one"}><img src={ this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="ac" className={this.state.ac ? "tabs-one active" : "tabs-one"}><img src={ this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="ptc" className={this.state.ptc ? "tabs-one active" : "tabs-one"}><img src={ this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="defrost" className={this.state.defrost ? "tabs-one active" : "tabs-one"}><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
         ];
         return (
             <QueueAnim
@@ -275,11 +276,8 @@ export default class PageMyCar extends React.Component{
                             tabBarBackgroundColor="transparent"
                             tabBarUnderlineStyle={{ "display": "none" }}
                             tabs={tabs}
-                            initialPage={0}
-                            animated={false}
-                            usePaged={false}
+                            page={this.state.initialPage}
                             swipeable={false}
-                            useOnPan={false}
                             // onChange={(tab, index) => { console.log('onChange', index, tab); }}
                             onTabClick={this.onClickTab}
                         >

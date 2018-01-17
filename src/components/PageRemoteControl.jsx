@@ -144,7 +144,8 @@ export default class PageRemoteControl extends React.Component{
                 ac: true,
                 ptc: true,
                 defrost: true
-            }
+            },
+            initialPage: 0
 
         }
         //发送完车辆运行数据查询后的处理函数
@@ -299,6 +300,10 @@ export default class PageRemoteControl extends React.Component{
         }
     }
     onActiveAir = (state) => {
+        //康迪测试修改
+        if (state == "ac" || state == "ptc" || state == "defrost" || state == "AirConditioner") {
+            this.setState({ initialPage: 7 });
+        }
         this.setState({ onClickTabName: state });
         if (!this.state.enabledList[state]) {
             Toast.offline("操作太频繁", 1);
@@ -369,16 +374,16 @@ export default class PageRemoteControl extends React.Component{
     render() {
         const doorAllClassName = `tabs-one ${this.state.door ? "active" : ""} door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
         const tabs = [
-            { title: <div state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
-            { title: <div state="lock" className={this.state.lock ? "tabs-one active" : "tabs-one"}><img src={this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({ initialPage: 0 }) }} state="lock" className={this.state.lock ? "tabs-one active" : "tabs-one"}><img src={this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
             // { title: <div state="engine" className={this.state.engine ? "tabs-one active" : "tabs-one"}><img src={this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
             // { title: <div state="door" className={doorAllClassName}><img className="bg" src={imgUrl.door} /><img className="lf" src={imgUrl.doorLF} /><img className="rf" src={imgUrl.doorRF} /><img className="lr" src={imgUrl.doorLR} /><img className="rr" src={imgUrl.doorRR} /><span>车门</span></div> },
-            { title: <div state="door" className={doorAllClassName}><img className="bg" src={!this.state.door ? imgUrl.door : imgUrl.doorActive} /><img className="lf" src={!this.state.door ? imgUrl.doorLF : imgUrl.doorLFActive} /><img className="rf" src={!this.state.door ? imgUrl.doorRF : imgUrl.doorRFActive} /><img className="lr" src={!this.state.door ? imgUrl.doorLR : imgUrl.doorLRActive} /><img className="rr" src={!this.state.door ? imgUrl.doorRR : imgUrl.doorRRActive} /><span>车门</span></div> },
-            { title: <div state="lamp" className={this.state.lamp ? "tabs-one active" : "tabs-one"}><img src={this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
-            { title: <div state="AirConditioner" className={this.state.AirConditioner ? "tabs-one active" : "tabs-one"}><img src={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
-            { title: <div state="ac" className={this.state.ac ? "tabs-one active" : "tabs-one"}><img src={this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
-            { title: <div state="ptc" className={this.state.ptc ? "tabs-one active" : "tabs-one"}><img src={this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
-            { title: <div state="defrost" className={this.state.defrost ? "tabs-one active" : "tabs-one"}><img src={this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
+            { title: <div onTouchEnd={() => { this.setState({ initialPage: 0 }) }} state="door" className={doorAllClassName}><img className="bg" src={!this.state.door ? imgUrl.door : imgUrl.doorActive} /><img className="lf" src={!this.state.door ? imgUrl.doorLF : imgUrl.doorLFActive} /><img className="rf" src={!this.state.door ? imgUrl.doorRF : imgUrl.doorRFActive} /><img className="lr" src={!this.state.door ? imgUrl.doorLR : imgUrl.doorLRActive} /><img className="rr" src={!this.state.door ? imgUrl.doorRR : imgUrl.doorRRActive} /><span>车门</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({ initialPage: 0 }) }} state="lamp" className={this.state.lamp ? "tabs-one active" : "tabs-one"}><img src={this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({ initialPage: 7 }) }} state="AirConditioner" className={this.state.AirConditioner ? "tabs-one active" : "tabs-one"}><img src={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({ initialPage: 7 }) }} state="ac" className={this.state.ac ? "tabs-one active" : "tabs-one"}><img src={this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({ initialPage: 7 }) }} state="ptc" className={this.state.ptc ? "tabs-one active" : "tabs-one"}><img src={this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({ initialPage: 7 }) }} state="defrost" className={this.state.defrost ? "tabs-one active" : "tabs-one"}><img src={this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
         ];
         return (
             <QueueAnim
@@ -394,12 +399,18 @@ export default class PageRemoteControl extends React.Component{
                         onLeftClick={() => hashHistory.goBack()}
                     >远程控制</NavBar>
                     <div className="air-conditioner-box" style={{ "margin-top": "2rem","padding":"0 1rem 1rem 2rem"}}>
-                        <Flex>
+                        {/* <Flex>
                             <Flex.Item className="temperature-flex-item"><span style={{"display":"none"}} className="temperature">{this.state.temperature}℃</span></Flex.Item>
                             <Flex.Item><ShortAirBtn active={this.state.ac ? 1 : 0} state="ac" imgURL={this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} onActive={this.onActiveAir} /></Flex.Item>
                             <Flex.Item><ShortAirBtn active={this.state.ptc ? 1 : 0} state="ptc" imgURL={this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} onActive={this.onActiveAir} /></Flex.Item>
                             <Flex.Item><ShortAirBtn active={this.state.defrost ? 1 : 0} state="defrost" imgURL={this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} onActive={this.onActiveAir} /></Flex.Item>
                             <Flex.Item><ShortAirBtn active={this.state.AirConditioner ? 1 : 0} state="AirConditioner" imgURL={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} onActive={this.onActiveAir} /></Flex.Item>
+                        </Flex> */}
+                        <Flex>
+                            <Flex.Item><ShortcutBtn state="ac" text="AC" imgURL={imgUrl.refrigeration} onActive={this.onActiveAir} /></Flex.Item>
+                            <Flex.Item><ShortcutBtn state="ptc" text="PTC" imgURL={imgUrl.heating} onActive={this.onActiveAir} /></Flex.Item>
+                            <Flex.Item><ShortcutBtn state="defrost" text="除雾除霜" imgURL={imgUrl.defrost} onActive={this.onActiveAir} /></Flex.Item>
+                            <Flex.Item><ShortcutBtn state="AirConditioner" text="空调" imgURL={imgUrl.switch} onActive={this.onActiveAir} /></Flex.Item>
                         </Flex>
                     </div>
                     <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" : "my-car-img-box"}>
@@ -410,9 +421,11 @@ export default class PageRemoteControl extends React.Component{
                         tabBarBackgroundColor="transparent"
                         tabBarUnderlineStyle={{"display":"none"}}
                         tabs={tabs}
-                        initialPage={0}
-                        // onChange={(tab, index) => { console.log('onChange', index, tab); }}
+                        page={this.state.initialPage}
+                        swipeable={false}
+                        // onChange={(tab, index) => { console.log('onChange', index); }}
                         onTabClick={this.onClickTab}
+                        // onTabClick={(tab, index) => { console.log('onTabClick', index); }}
                     >
                     </Tabs>
                     <div className="page-login-WingBlank-diy" size="lg" style={{ "padding":"3rem 1rem 0" }}>

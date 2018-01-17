@@ -84,7 +84,10 @@ export default class PageMyCarLogin extends React.Component {
     getCarModelList(data) {
         let carModelList = new Set();
         data.map((value) => {
-            carModelList.add(value.car_model);
+            // carModelList.add(value.car_model);
+            //康迪测试更改
+            carModelList.add(value.car_tail);
+            
         });
         return Array.from(carModelList);
     }
@@ -93,7 +96,9 @@ export default class PageMyCarLogin extends React.Component {
         let res = this.state.data; 
         let vincodeList = [];
         res.map((value) => {
-            value.car_model == data ? vincodeList.push(value.vincode) : ""
+            // value.car_model == data ? vincodeList.push(value.vincode) : ""
+            //康迪测试更改
+            value.car_tail == data ? vincodeList.push(value.vincode) : ""
         });
         return vincodeList;
     }
