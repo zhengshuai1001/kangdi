@@ -282,6 +282,11 @@ export default class PageMyCar extends React.Component{
                             onTabClick={this.onClickTab}
                         >
                         </Tabs>
+                        {/* 按康迪测试的要求更改 */}
+                        <div className="my-car-click-mask">
+                            <span onTouchStart={() => { this.setState({ initialPage: 0 }) }} className="left"></span>
+                            <span onTouchStart={() => { this.setState({ initialPage: 7 }) }} className="right"></span>
+                        </div>
                     </div>
                     <div className="page-my-car-WingBlank" size="lg" style={{ "margin": "3rem 2rem 0", "height": "calc(100% - 50rem)", "position": "relative" }}>
                         <Flex>

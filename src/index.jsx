@@ -8,6 +8,8 @@ import PageRegister from './components/PageRegister';
 import PageForgetPassword from './components/PageForgetPassword';
 import PageMoreInfo from './components/PageMoreInfo';
 import PageUseHelp from './components/PageUseHelp';
+import PageUseHelp2 from './components/PageUseHelp2';
+import PageUseHelpDetail from './components/PageUseHelpDetail';
 import PageFeedback from './components/PageFeedback';
 import PageSettings from './components/PageSettings';
 import PagePersonalCenter from './components/PagePersonalCenter';
@@ -37,7 +39,7 @@ ReactDOM.render(
                 <IndexRoute component={PageMyCar} />
                 <Route path="MyCar" component={PageMyCar} />
                 <Route path="MyCarLogin" component={PageMyCarLogin} />
-                <Route path="UseHelp" component={PageUseHelp} />
+                <Route path="UseHelp" component={PageUseHelp2} />
                 <Route path="MoreOptions" component={PageSettings} />
             </Route>
             <Route path="login" component={PageLogin} />
@@ -54,6 +56,7 @@ ReactDOM.render(
             <Route path="uploadAvatar2" component={PageUploadAvatar2} />
             <Route path="modifyControlCodeFirst" component={PageModifyControlCodeFirst} />
             <Route path="modifyControlCodeSecond" component={PageModifyControlCodeSecond} />
+            <Route path="useHelpDetail" component={PageUseHelpDetail} />
         </Route>
     </Router>
     , document.getElementById('example'));

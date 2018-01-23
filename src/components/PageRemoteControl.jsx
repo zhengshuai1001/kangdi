@@ -416,18 +416,25 @@ export default class PageRemoteControl extends React.Component{
                     <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" : "my-car-img-box"}>
                         <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no") : ""}</span>
                     </div>
-                    <Tabs
-                        prefixCls="my-car-tabs"
-                        tabBarBackgroundColor="transparent"
-                        tabBarUnderlineStyle={{"display":"none"}}
-                        tabs={tabs}
-                        page={this.state.initialPage}
-                        swipeable={false}
-                        // onChange={(tab, index) => { console.log('onChange', index); }}
-                        onTabClick={this.onClickTab}
-                        // onTabClick={(tab, index) => { console.log('onTabClick', index); }}
-                    >
-                    </Tabs>
+                    <div className="my-car-click-mask-out">
+                        <Tabs
+                            prefixCls="my-car-tabs"
+                            tabBarBackgroundColor="transparent"
+                            tabBarUnderlineStyle={{"display":"none"}}
+                            tabs={tabs}
+                            page={this.state.initialPage}
+                            swipeable={false}
+                            // onChange={(tab, index) => { console.log('onChange', index); }}
+                            onTabClick={this.onClickTab}
+                            // onTabClick={(tab, index) => { console.log('onTabClick', index); }}
+                        >
+                        </Tabs>
+                        {/* 按康迪测试的要求更改 */}
+                        <div className="my-car-click-mask">
+                            <span onTouchStart={() => { this.setState({ initialPage: 0 }) }} className="left"></span>
+                            <span onTouchStart={() => { this.setState({ initialPage: 7 }) }} className="right"></span>
+                        </div>
+                    </div>
                     <div className="page-login-WingBlank-diy" size="lg" style={{ "padding":"3rem 1rem 0" }}>
                         <Flex>
                             <Flex.Item><ShortcutBtn state="trunk" text="后备箱" imgURL={imgUrl.trunk} onActive={this.onActive}  /></Flex.Item>
