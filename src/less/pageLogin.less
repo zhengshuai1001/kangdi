@@ -632,15 +632,18 @@ html:not([data-scale]) .am-button::before {
 .my-car-img-box{
     width: 360px;
     margin: 0 auto; 
-    height: 216.6px;
-    background-image: url("../images/my-car.png");
+    // height: 216.6px;
+    height: 220.3125px;
+    // background-image: url("../images/my-car.png");
+    background-image: url("../images/K12/main_car_setting_effect_car.png");
     background-size: 100% 100%;
     perspective:150;     
     -webkit-perspective: 500; /* Safari 和 Chrome */  
     position: relative;
 }
 .my-car-img-box.K17A{
-    background-image: url("../images/my-car-k17a.png");
+    // background-image: url("../images/my-car-k17a.png");
+    background-image: url("../images/K17/main_car_setting_effect_car_global.png");
 }
 .my-car-img-box.K17A .car-no-span{
     transform: scale(0.42) rotate(18deg);
@@ -1082,4 +1085,14 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
 }
 .my-list .am-list-item .am-list-line .am-list-content span{
     font-size: 1.7rem;
+}
+.car-status-img{
+    width: 360px;
+    height: 220.3125px;
+}
+.car-status-img.Window0,
+.car-status-img.Window1{
+    width: 31px;
+    height: 31px;
+    position: absolute;
 }

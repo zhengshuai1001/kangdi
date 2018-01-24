@@ -38,6 +38,32 @@ const transformParam = {
     horn0: "11", //关闭双跳
     horn1: "10", //打开双跳
 }
+
+const carStatusImg = {
+    K12: {
+        trunk0: require('../images/shortcut-btn-trunk.png'),
+        trunk1: require('../images/shortcut-btn-trunk.png'),
+        lock0: require('../images/shortcut-btn-trunk.png'),
+        lock1: require('../images/shortcut-btn-trunk.png'),
+        horn1: require('../images/shortcut-btn-trunk.png'),
+        lamp0: require('../images/shortcut-btn-trunk.png'),
+        lamp1: require('../images/shortcut-btn-trunk.png'),
+        Window0: require('../images/shortcut-btn-trunk.png'),
+        Window1: require('../images/shortcut-btn-trunk.png')
+    },
+    K17: {
+        trunk0: require('../images/K17/main_car_setting_effect_car_houbei_lock.png'),
+        trunk1: require('../images/K17/main_car_setting_effect_car_houbei_unlock.png'),
+        lock0: require('../images/K17/main_car_setting_effect_car_door_lock.png'),
+        lock1: require('../images/K17/main_car_setting_effect_car_door_unlock.png'),
+        horn1: require('../images/K17/main_car_setting_effect_alert_light.png'),
+        lamp0: require('../images/K17/main_car_setting_effect_near_light.png'),
+        lamp1: require('../images/K17/main_car_setting_effect_far_light.png'),
+        Window0: require('../images/K17/main_car_setting_left_window_icon_up.png'),
+        Window1: require('../images/K17/main_car_setting_left_window_icon_down.png')
+    }
+}
+
 const imgUrl = {
     trunk: require('../images/shortcut-btn-trunk.png'),
     lock: require('../images/shortcut-btn-lock.png'),
@@ -145,7 +171,10 @@ export default class PageRemoteControl extends React.Component{
                 ptc: true,
                 defrost: true
             },
-            initialPage: 0
+            initialPage: 0,
+            carStatusImgURL: "", //汽车状态改变图片闪烁的URL
+            carStatusImgShow: false, //汽车状态改变图片闪烁是否显示
+            carStatusImgClassName: "car-status-img" //汽车状态改变图片闪烁的className
 
         }
         //发送完车辆运行数据查询后的处理函数
@@ -192,6 +221,18 @@ export default class PageRemoteControl extends React.Component{
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
         }
+        //康迪改，发送完车身控制后的处理函数，弹窗提示一秒后，车型图片闪烁相应的状态改变
+        this.handleControlCarMore = (req, handleParam) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                if (handleParam) {
+                    Toast.success("指令下达成功", 1, () => { this.changeCarImgStatus(handleParam) });
+                }
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
         //发送完车身控制的单个开关后的处理函数，展示没有处理，因为不能展示状态
         this.handleControlCarOne = (req, handleParam) => {
             let res = req.result;
@@ -199,6 +240,7 @@ export default class PageRemoteControl extends React.Component{
             if (res.code == 1000) {
                 if (handleParam) {
                     // Toast.success(handleParam, 1);
+                    Toast.success("指令下达成功", 1);
                 }
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
@@ -223,6 +265,33 @@ export default class PageRemoteControl extends React.Component{
             }
         }
     }
+    //点击按钮下达指令一秒后，修改汽车图片，显示一个闪烁的图片，显示一秒后消失
+    changeCarImgStatus(handleParam) {
+        let car_tail = !!~(this.state.car_tail.indexOf("K17A"))  ? "K17" : "K12" ;
+        let carStatusImgURL = carStatusImg[car_tail][handleParam];
+        let carStatusImgClassName = `car-status-img ${handleParam}`;
+        let carStatusImgShow = true;
+        let num = 0;
+
+        this.setState({
+            carStatusImgURL: carStatusImgURL,
+            carStatusImgShow: carStatusImgShow,
+            carStatusImgClassName: carStatusImgClassName
+        })
+
+        let token = setInterval(() => {
+            this.setState({
+                carStatusImgURL: carStatusImgURL,
+                carStatusImgShow: carStatusImgShow,
+                carStatusImgClassName: carStatusImgClassName
+            })
+            num++;
+            carStatusImgShow = !carStatusImgShow;
+            if (num > 4) {
+                clearInterval(token);
+            }
+        },150)
+    }
     onActive = (state) => {
         this.setState({ onClickTabName: state });
         if (!this.state.enabledList[state]) {
@@ -244,6 +313,15 @@ export default class PageRemoteControl extends React.Component{
                 clearTimeout(token);
             }, 3000);
         }
+        if (state == "trunk" || state == "lock" || state == "lamp") {
+            let suffix = this.state[state] == 1 ? "0" : "1";
+            let param = state + suffix;
+            //发送ajax设置车身控制
+            runPromise("controlCar", {
+                contrlpara: { "part": transformParam[param], "para": "" }
+            }, this.handleControlCarMore, true, true, param);
+            return;
+        }
         if (state != "horn" &&state != "plusEngine" && state != "reduceEngine" && state != "openWindow" && state != "closeWindow") {
             let suffix = this.state[state] == 1 ? "0" : "1";
             let param = state + suffix;
@@ -261,7 +339,7 @@ export default class PageRemoteControl extends React.Component{
             //发送ajax设置车身控制 ,鸣笛
             runPromise("controlCar", {
                 contrlpara: { "part": "9", "para": "" }
-            }, this.handleControlCarOne, true, true);
+            }, this.handleControlCarMore, true, true, "horn1");
             //发送ajax设置车身控制 ,闪灯
             runPromise("controlCar", {
                 contrlpara: { "part": "10", "para": "" }
@@ -293,14 +371,14 @@ export default class PageRemoteControl extends React.Component{
             //发送ajax设置车身控制 ,开窗
             runPromise("controlCar", {
                 contrlpara: { "part": "3", "para": "" }
-            }, this.handleControlCarOne, true, true, "开窗成功");
+            }, this.handleControlCarMore, true, true, "Window1");
         }
         //关窗
         if (state == "closeWindow") {
             //发送ajax设置车身控制 ,关窗
             runPromise("controlCar", {
                 contrlpara: { "part": "4", "para": "" }
-            }, this.handleControlCarOne, true, true, "关窗成功");
+            }, this.handleControlCarMore, true, true, "Window0");
         }
     }
     onActiveAir = (state) => {
@@ -418,6 +496,11 @@ export default class PageRemoteControl extends React.Component{
                         </Flex>
                     </div>
                     <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" : "my-car-img-box"}>
+                        <img 
+                            style={{"display": this.state.carStatusImgShow ? "block" : "none" }}
+                            className={this.state.carStatusImgClassName} 
+                            src={this.state.carStatusImgURL}
+                        />
                         <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no") : ""}</span>
                     </div>
                     <div className="my-car-click-mask-out">
