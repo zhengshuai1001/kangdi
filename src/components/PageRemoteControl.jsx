@@ -242,7 +242,7 @@ export default class PageRemoteControl extends React.Component{
                     enabledList: enabledListMixin
                 })
                 clearTimeout(token);
-            }, 5000);
+            }, 3000);
         }
         if (state != "horn" &&state != "plusEngine" && state != "reduceEngine" && state != "openWindow" && state != "closeWindow") {
             let suffix = this.state[state] == 1 ? "0" : "1";
@@ -251,6 +251,10 @@ export default class PageRemoteControl extends React.Component{
             runPromise("controlCar", {
                 contrlpara: { "part": transformParam[param], "para": "" }
             }, this.handleControlCar, true, true);
+        }
+        //康迪测试修改，如果用户点击的是第一页的按钮，中间的状态栏跳到第一页（页面下部的按钮只有调到首页，没有跳到第二页）
+        if (state == "trunk" || state == "lock" || state == "lamp" ) {
+            this.setState({ initialPage: 0});
         }
         //闪灯鸣笛
         if (state == "horn") {
@@ -322,7 +326,7 @@ export default class PageRemoteControl extends React.Component{
                     enabledList: enabledListMixin
                 })
                 clearTimeout(token);
-            }, 5000);
+            }, 3000);
         }
         let suffix = this.state[state] == 1 ? "0" : "1";
         let param = state + suffix;

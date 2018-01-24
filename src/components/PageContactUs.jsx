@@ -25,32 +25,32 @@ export default class PageContactUs extends React.Component {
                         <List className="my-list">
                             <List.Item>
                                 <span className="contact-us-left">公司名称</span>
-                                <span className="contact-us-right">浙江康迪车业有限公司</span>
+                                <span className="contact-us-right">康迪电动汽车集团有限公司</span>
                             </List.Item>
-                            <List.Item>
+                            <List.Item className="addr-wrap">
                                 <span className="contact-us-left">地址</span>
-                                <span className="contact-us-right">杭州市西湖区</span>
+                                <span className="contact-us-right">杭州市西湖区教工路1号西湖数源软件园11幢西</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">网址</span>
-                                <span className="contact-us-right">www.kangdi.com</span>
+                                <span className="contact-us-right">www.kandigroup.com.cn</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">联系电话</span>
-                                <span className="contact-us-right">18297532703</span>
+                                <span className="contact-us-right">86-571-89775550</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">传真</span>
-                                <span className="contact-us-right">5645-345-154</span>
+                                <span className="contact-us-right">86-571-89774235</span>
                             </List.Item>
-                            <List.Item>
+                            {/* <List.Item>
                                 <span className="contact-us-left">Q Q </span>
                                 <span className="contact-us-right">1234567</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">微信</span>
                                 <span className="contact-us-right">KANGDI123</span>
-                            </List.Item>
+                            </List.Item> */}
                         </List>
                     </WingBlank>
                 </div>

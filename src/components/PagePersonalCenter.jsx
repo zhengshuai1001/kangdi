@@ -83,7 +83,7 @@ export default class PagePersonalCenter extends React.Component {
     }
     //退出登录
     signOut = () => {
-        localStorage.removeItem("kangdid");
+        // localStorage.removeItem("kangdid");
         localStorage.removeItem("token");
         localStorage.removeItem("vincode");
         // localStorage.removeItem("controlCode");

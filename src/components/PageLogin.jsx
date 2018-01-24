@@ -8,7 +8,7 @@ export default class PageLogin extends React.Component {
         super(props);
         this.state= {
             nick_name: '',
-            account: '',
+            account: localStorage.getItem("kangdid") || '',
             password: ''
         }
         //发送登录后的处理函数

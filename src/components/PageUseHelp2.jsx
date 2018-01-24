@@ -13,7 +13,7 @@ const imgUrl = [
 const Card = (props) => (
     <div 
         className="card-item"
-        onTouchStart={()=>{ props.touchCard(props.index) }}
+        onClick={()=>{ props.touchCard(props.index) }}
     >
         <img src={imgUrl[props.index]} alt=""/>
     </div>
@@ -31,7 +31,7 @@ export default class PageUseHelp2 extends React.Component {
         // simulate img loading
     }
     handleTouchCard = (index) => {
-        console.log(index);
+        // console.log(index);
         hashHistory.push({
             pathname: '/useHelpDetail',
             query: { form: 'pageUseHelp2' },
@@ -46,7 +46,7 @@ export default class PageUseHelp2 extends React.Component {
                 <NavBar
                     style={{ "background-color": "#000" }}
                     mode="light"
-                >使用帮助2</NavBar>
+                >使用帮助</NavBar>
                 <WingBlank className="card-item-WingBlank" size="lg">
                     <Card index="0" touchCard={this.handleTouchCard} />
                     <Card index="1" touchCard={this.handleTouchCard} />

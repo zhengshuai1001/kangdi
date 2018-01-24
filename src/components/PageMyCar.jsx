@@ -290,9 +290,9 @@ export default class PageMyCar extends React.Component{
                     </div>
                     <div className="page-my-car-WingBlank" size="lg" style={{ "margin": "3rem 2rem 0", "height": "calc(100% - 50rem)", "position": "relative" }}>
                         <Flex>
+                            <Flex.Item><MyCarBtn index="2" text="远程控制" imgURL={imgUrl.control} onActive={this.onActive} /></Flex.Item>
                             <Flex.Item><MyCarBtn index="0" text="远程仪表" imgURL={imgUrl.meter} onActive={this.onActive} /></Flex.Item>
                             <Flex.Item><MyCarBtn index="1" text="控制码修改" imgURL={imgUrl.code} onActive={this.onActive} /></Flex.Item>
-                            <Flex.Item><MyCarBtn index="2" text="远程控制" imgURL={imgUrl.control} onActive={this.onActive} /></Flex.Item>
                         </Flex>
                     </div>
                 </div>
