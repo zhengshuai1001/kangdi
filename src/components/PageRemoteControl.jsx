@@ -287,7 +287,7 @@ export default class PageRemoteControl extends React.Component{
             })
             num++;
             carStatusImgShow = !carStatusImgShow;
-            if (num > 4) {
+            if (num > 5) {
                 clearInterval(token);
             }
         },150)
