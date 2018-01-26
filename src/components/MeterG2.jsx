@@ -1,7 +1,7 @@
 import G2 from '@antv/g2';
 
 export default function (mileageOld, reMileage, socOld) {
-    let mileage = parseInt(mileageOld / 2);
+    let mileage = parseInt(mileageOld / 3);
     let soc = parseInt(socOld);
     mileage > 120 ? mileage = 120 : "";
     const data1 = [];
@@ -25,6 +25,7 @@ export default function (mileageOld, reMileage, socOld) {
         container: 'mountNode',
         width: 340,
         height: 340,
+        // forceFit: true,
         padding: [-80, 0, 0, 0]
     });
     chart.scale({
@@ -54,12 +55,14 @@ export default function (mileageOld, reMileage, socOld) {
             offset: -20,
             autoRotate: false,
             textStyle: function (type) {
-                var color = type <= mileage && mileage != 0 ? "#cf2a89" : "#fff";
+                var color = type <= mileage && mileage != 0 ? "#cf2a89" : "#555";
                 var shadowBlur = type <= mileage && mileage != 0 ? 10 : 0;
-                var shadowColor = type <= mileage && mileage != 0 ? "#cf2a89" : "#fff";
+                var shadowColor = type <= mileage && mileage != 0 ? "#cf2a89" : "#555";
+                var fillColor = type <= mileage && mileage != 0 ? "#fff" : "#555";
                 return {
                     textAlign: 'center',
-                    fill: "#fff",
+                    // fill: "#555",
+                    fill: fillColor,
                     shadowBlur: shadowBlur,
                     shadowColor: shadowColor,
                     fontSize: 20,
@@ -70,9 +73,14 @@ export default function (mileageOld, reMileage, socOld) {
             },
             formatter: val => {
                 if (val === '120') {
-                    return 240;
+                    return 360;
                 }
-                return val * 2;
+                // return val * 3;
+                if ((val/10)%2) {
+                    return;
+                } else {
+                    return val * 3;
+                }
             }
         }
     });
@@ -89,7 +97,8 @@ export default function (mileageOld, reMileage, socOld) {
         .style('type', { // 使用回调函数设置属性
             // lineWidth: (type, value) => { },
             fill: function (type) {
-                return type < mileage ? "#cf2a89" : "#fff"
+                return type < mileage ? "#cf2a89" : (type == mileage ? "#fff" : "#555")
+                // return type < mileage ? "#cf2a89" : "#ccc"
             },
             shadowBlur: function (type) {
                 return type < mileage ? 10 : 0
@@ -186,10 +195,20 @@ export default function (mileageOld, reMileage, socOld) {
     });
     view2.interval().position('type*value').color("#cf2a89").size(3);
     view2.guide().html({
-        position: ['50%', '58%'],
+        position: ['50%', '-32%'],
         html: '<div style="width: 200px;text-align: center;">'
-            + '<p style="font-size: 14px; color: #fff;margin: 0">剩余里程： <span style="color: #cf2a89">' + reMileage +'km</span></p>'
-            + '<p style="padding-top:6px; font-size: 14px;color: #fff;margin: 0;">SOC： <span style="color: #cf2a89">' + soc+'%</span></p>'
+            + '<p style="font-size: 16px; color: #fff;margin: 0">剩余里程 Km</p>'
+    });
+    view2.guide().html({
+        position: ['50%', '8%'],
+        html: '<div style="width: 200px;text-align: center;">'
+            + '<p style="font-size: 22px; color: #fff;margin: 0"><span style="color: #fff">' + reMileage + '</span></p>'
+    });
+    view2.guide().html({
+        position: ['50%', '56%'],
+        html: '<div style="width: 200px;text-align: center;">'
+            // + '<p style="font-size: 14px; color: #fff;margin: 0"><span style="color: #cf2a89">' + reMileage +'km</span></p>'
+            + '<p style="padding-top:6px; font-size: 18px;color: #fff;margin: 0;">SOC： <span style="color: #cf2a89">' + soc+'%</span></p>'
             + '</div>'
     });
     view2.guide().html({

@@ -6,6 +6,7 @@ export default class CarStatus extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            sendAjax: true,
             carStatus: {},
             queryCarStatus: this.startQueryCarStatus
         }
@@ -41,14 +42,14 @@ export default class CarStatus extends React.Component {
                     }
                 });
                 let pathname = this.props.location.pathname;
-                if (pathname != "/MyCar" && pathname != "/remoteMeter" && pathname != "/remoteControl") {
+                if (pathname != "/MyCar" && pathname != "/remoteMeter" && pathname != "/remoteControl" || !this.state.sendAjax ) {
                     return;
                 }
                 // console.log(pathname);
                 let token = setTimeout(() => {
                     //发送ajax获取车辆运行数据,成功返回后间隔5秒发送一次
                     runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
-                }, 5000);
+                }, 3000);
                 this.setState({
                     tokenSetTimeout: token
                 });
@@ -72,10 +73,27 @@ export default class CarStatus extends React.Component {
         // //发送ajax获取车辆运行数据,第一次加载页面就执行一次
         // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
 
-        setInterval(() => {
-            //发送ajax获取车辆运行数据
-            // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
-        }, 5000);
+        // setInterval(() => {
+        //     //发送ajax获取车辆运行数据
+        //     runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+        // }, 5000);
+        let then = this;
+        // api.addEventListener({
+        //     name: 'pause'
+        // }, function (ret, err) {
+        //     then.setState({
+        //         sendAjax: false
+        //     })
+        // });
+        // api.addEventListener({
+        //     name: 'resume'
+        // }, function (ret, err) {
+        //     then.setState({
+        //         sendAjax: true
+        //     });
+        //     then.startQueryCarStatus();
+        // });
+
     }
     startQueryCarStatus = () => {
         clearTimeout(this.state.tokenSetTimeout);

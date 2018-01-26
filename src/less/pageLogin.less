@@ -434,6 +434,8 @@ html:not([data-scale]) .am-button::before {
 #backgroud{
     width: 340px;
     height: 340px;
+    // width: 100vw;
+    
     margin: 0 auto;
     margin-top: 1.6rem;
     background-image: url("../images/dashboard-background.png");
@@ -441,7 +443,7 @@ html:not([data-scale]) .am-button::before {
     position: relative;
 }
 #mountNode{
-    width: 340px;
+    // width: 340px;
     margin: 0 auto;
 }
 #mountNode2{
@@ -640,23 +642,32 @@ html:not([data-scale]) .am-button::before {
     perspective:150;     
     -webkit-perspective: 500; /* Safari 和 Chrome */  
     position: relative;
+    width: 100vw;
+    // height: 61vw;
+    height: 61.1979vw;
 }
 .my-car-img-box.K17A{
     // background-image: url("../images/my-car-k17a.png");
     background-image: url("../images/K17/main_car_setting_effect_car_global.png");
 }
 .my-car-img-box.K17A .car-no-span{
-    transform: scale(0.42) rotate(18deg);
-    bottom: 68px;
-    left: 33px;
+    transform: scale(0.45) rotate(17deg);
+    // bottom: 75px;
+    // left: 40px;
+    top: 59.5%;
+    left: 11.5%;
+    // right: 72.5%;
 }
 .my-car-img-box .car-no-span{
     display: inline-block;
     font-size: 13px;
-    transform: scale(0.55) rotate(15deg);
+    transform: scale(0.55) rotate(17deg);
     position: absolute;
-    bottom: 75px;
-    left: 58.5px;
+    // bottom: 86px;
+    // left: 57px;
+    // bottom: 39.3%;
+    top: 54%;
+    left: 16%;
     color: #ffffff;
 }
 .tabs-one{
@@ -1058,14 +1069,18 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
 .page-use-help .card-item-WingBlank .card-item{
     border-top-left-radius: 12px;
     border-top-right-radius: 12px;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
+    // border-bottom-left-radius: 5px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
     overflow: hidden;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     box-shadow: 0px -2px 2px 0px rgba(255, 255, 255, 0.3);
+    height: 34.423vw;
 }
 .page-use-help .card-item-WingBlank .card-item img{
     width: 100%;
+    width: 100vw;
+    height: 34.423vw;
 }
 .page-use-help-detail{
     background-color: #f0f0f0;
@@ -1089,10 +1104,10 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
 .car-status-img{
     width: 360px;
     height: 220.3125px;
+    width: 100vw;
+    height: 61vw;
 }
-.car-status-img.Window0,
-.car-status-img.Window1{
-    width: 31px;
-    height: 31px;
-    position: absolute;
+#mountNode canvas{
+    position: relative;
+    top: -5px;
 }

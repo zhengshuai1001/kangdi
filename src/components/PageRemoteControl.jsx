@@ -41,21 +41,21 @@ const transformParam = {
 
 const carStatusImg = {
     K12: {
-        trunk0: require('../images/shortcut-btn-trunk.png'),
-        trunk1: require('../images/shortcut-btn-trunk.png'),
-        lock0: require('../images/shortcut-btn-trunk.png'),
-        lock1: require('../images/shortcut-btn-trunk.png'),
-        horn1: require('../images/shortcut-btn-trunk.png'),
-        lamp0: require('../images/shortcut-btn-trunk.png'),
-        lamp1: require('../images/shortcut-btn-trunk.png'),
-        Window0: require('../images/shortcut-btn-trunk.png'),
-        Window1: require('../images/shortcut-btn-trunk.png')
+        trunk0: require('../images/K12/k12_main_car_setting_effect_car_houbei_lock.png'),
+        trunk1: require('../images/K12/k12_main_car_setting_effect_car_houbei_unlock.png'),
+        lock0: require('../images/K12/k12_main_car_setting_effect_car_door_unlock.png'),
+        lock1: require('../images/K12/k12_main_car_setting_effect_car_door_lock.png'),
+        horn1: require('../images/K12/k12_main_car_setting_effect_alert_light.png'),
+        lamp0: require('../images/K12/k12_main_car_setting_effect_far_light.png'),
+        lamp1: require('../images/K12/k12_main_car_setting_effect_far_light.png'),
+        Window0: require('../images/K12/k12_main_car_setting_left_window_icon_up.png'),
+        Window1: require('../images/K12/k12_main_car_setting_right_window_icon_down.png')
     },
     K17: {
         trunk0: require('../images/K17/main_car_setting_effect_car_houbei_lock.png'),
         trunk1: require('../images/K17/main_car_setting_effect_car_houbei_unlock.png'),
-        lock0: require('../images/K17/main_car_setting_effect_car_door_lock.png'),
-        lock1: require('../images/K17/main_car_setting_effect_car_door_unlock.png'),
+        lock0: require('../images/K17/main_car_setting_effect_car_door_unlock.png'),
+        lock1: require('../images/K17/main_car_setting_effect_car_door_lock.png'),
         horn1: require('../images/K17/main_car_setting_effect_alert_light.png'),
         lamp0: require('../images/K17/main_car_setting_effect_near_light.png'),
         lamp1: require('../images/K17/main_car_setting_effect_far_light.png'),

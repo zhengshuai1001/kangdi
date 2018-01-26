@@ -182,7 +182,7 @@ export default class PageRemoteMeter extends React.Component{
                             </p>
                         </div>
                         <div className="am-flexbox-item" style={{ "display": this.state.TotalV == 0 ? "block" : "block" }}>
-                            <p className="bar-title">{this.state.TotalV}v</p>
+                            <p className="bar-title">{this.state.TotalV}V</p>
                             <div className={this.state.TotalV == 0 ? "bar empty" : (this.state.TotalV == 500 ? "bar full" : "bar") }>
                                 <span className="bar-left bar-head"></span>
                                 <span className="bar-unfill">
@@ -195,15 +195,15 @@ export default class PageRemoteMeter extends React.Component{
                                 <span className="bar-right bar-head"></span>
                             </div>
                             <p className="bar-bottom">
-                                <span className="bar-bottom-left">0v</span>
+                                <span className="bar-bottom-left">0V</span>
                                 <p className="bar-bottom-text">总压</p>
-                                <p className="bar-bottom-right">500v</p>
+                                <p className="bar-bottom-right">500V</p>
                             </p>
                         </div>
                     </div>
-                    <p className="mileage bar-center-text">当前电量{this.state.soc}%，大约可行驶{this.state.ReMileage}KM！</p>
+                    <p className="mileage bar-center-text">当前电量{this.state.soc}%，大约可行驶{this.state.ReMileage}Km！</p>
                     {/* <p className="voltage bar-center-text">总电压 {this.state.TotalV}V，最低单体电压 {this.state.TotalA}V</p> */}
-                    <p className="voltage bar-center-text">总电压 {this.state.TotalV}V</p>
+                    <p className="voltage bar-center-text">总电压{this.state.TotalV}V</p>
                     <div className="shortcut-WingBlank" size="lg" style={{ "padding": "1rem 2rem 0 2rem" }}>
                         <Flex justify="center" className="shortcut-flex">
                             <Flex.Item>

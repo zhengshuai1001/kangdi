@@ -1,5 +1,5 @@
 import { hashHistory } from 'react-router';
-// import { Toast } from 'antd-mobile';
+import { Toast } from 'antd-mobile';
 
 import axios from 'axios';
 
@@ -27,6 +27,7 @@ const ajaxURLList = {
     queryCarStatus: "control/queryCarStatus", //车辆运行数据查询
     controlCar: "control/car", //车身控制
     controlAc: "control/ac", //空调控制
+    appHelp: "app/help", //使用帮助
 }
 
 //定义一个基于Promise的异步任务执行器
@@ -103,7 +104,8 @@ function sendAjax(url, param) {
             resolve(req);
         }).catch(error => {
             //全局处理网络请求错误
-            console.log(error);
+            // console.log(error);
+            // Toast.offline("网络错误",2)
             reject(error);
         });
     });
