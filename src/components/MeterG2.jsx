@@ -1,6 +1,6 @@
 import G2 from '@antv/g2';
 
-export default function (mileageOld, reMileage, socOld) {
+export default function (mileageOld = 0 , reMileage = 0, socOld = 0) {
     let mileage = parseInt(mileageOld / 3);
     let soc = parseInt(socOld);
     mileage > 120 ? mileage = 120 : "";

@@ -45,7 +45,7 @@ export default class PageUseHelpDetail extends React.Component {
         this.pdfReader.openView({
             rect: {
                 x: 0,
-                y: 55,
+                y: 65,
                 w: 'auto',
                 h: 'auto'
             },
