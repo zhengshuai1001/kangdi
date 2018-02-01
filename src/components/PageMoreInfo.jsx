@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Icon, Toast, Modal } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 export default class PageMoreInfo extends React.Component {
@@ -85,7 +85,7 @@ export default class PageMoreInfo extends React.Component {
         let ID_number = this.state.ID_number;
         if (this.testNickName(nick_name) && this.testFullName(full_name) && this.testIDNumber(ID_number)) {
             //首先获取到从上一个页面跳过来的state，也就说获取手机号，密码和短信验证码
-            let MixinState = this.props.location.state;  //上一页的state
+            let MixinState = this.props.location.query;  //上一页的state
             Object.assign(MixinState, this.state);
             //发送ajax完成注册
             runPromise("accountRegister", {
@@ -101,11 +101,11 @@ export default class PageMoreInfo extends React.Component {
     } 
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
             <div key="1" className="page-register page-login">
                 <NavBar
                     style={{ "background-color": "#000" }}
@@ -162,7 +162,7 @@ export default class PageMoreInfo extends React.Component {
                     <span>注册成功!</span>
                 </Modal>
             </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

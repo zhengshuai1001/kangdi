@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { NavBar, Icon, WingBlank, List } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 
 export default class PageContactUs extends React.Component {
     constructor(props) {
@@ -9,11 +9,11 @@ export default class PageContactUs extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-login page-contactUs">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -54,7 +54,7 @@ export default class PageContactUs extends React.Component {
                         </List>
                     </WingBlank>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

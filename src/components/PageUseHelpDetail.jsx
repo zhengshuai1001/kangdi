@@ -2,7 +2,7 @@ import React from "react";
 import { hashHistory, Link } from "react-router";
 import { NavBar, Icon, Toast } from "antd-mobile";
 
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 
 // const PDFUrl = [
 //     'widget://res/maintenance.pdf',
@@ -29,8 +29,8 @@ export default class PageUseHelpDetail extends React.Component {
         this.pdfReader = api.require('pdfReader');
     }
     componentDidMount() {
-        let name = this.props.location.state.name;
-        let doc_url = decodeURI(this.props.location.state.doc_url);
+        let name = this.props.location.query.name;
+        let doc_url = decodeURI(this.props.location.query.doc_url);
         // let url = PDFUrl[0];
         // if (name == "智慧出行APP系统说明书") {
         //     url = "https://www.huakewang.com/mhkw/%E4%B8%AD%E6%96%87doc.pdf";
@@ -68,10 +68,10 @@ export default class PageUseHelpDetail extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            // >
                 <div key="1" className="page-login  page-use-help-detail">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -82,7 +82,7 @@ export default class PageUseHelpDetail extends React.Component {
                     >{this.state.navBarTitle}</NavBar>
                     {/* <iframe src="" frameborder="0"></iframe> */}
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

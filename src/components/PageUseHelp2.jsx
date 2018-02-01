@@ -52,8 +52,8 @@ export default class PageUseHelp2 extends React.Component {
         // console.log(index);
         hashHistory.push({
             pathname: '/useHelpDetail',
-            query: { form: 'pageUseHelp2' },
-            state:{
+            // query: { form: 'pageUseHelp2' },
+            query:{
                 name: this.state.useHelpData[index].name,
                 doc_url: this.state.useHelpData[index].doc_url
             }

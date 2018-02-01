@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Icon, Toast } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 export default class PageForgetPassword extends React.Component {
@@ -143,11 +143,11 @@ export default class PageForgetPassword extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
             <div key="1" className="page-register page-login">
                 <NavBar
                     style={{ "background-color": "#000" }}
@@ -197,7 +197,7 @@ export default class PageForgetPassword extends React.Component {
                     <Button onClick={this.onClickForgetPassword} className="page-login-bottom">确认</Button>
                 </WingBlank>
             </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

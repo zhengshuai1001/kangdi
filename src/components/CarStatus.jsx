@@ -2,13 +2,17 @@ import React from 'react';
 import { Toast } from 'antd-mobile';
 import { runPromise } from '../common/promise';
 
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
+import style from "../less/Container.css";
+
 export default class CarStatus extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             sendAjax: true,
             carStatus: {},
-            queryCarStatus: this.startQueryCarStatus
+            queryCarStatus: this.startQueryCarStatus,
+            showTransition: false,
         }
         //发送完车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
@@ -61,6 +65,13 @@ export default class CarStatus extends React.Component {
     getChildContext() {
         return { carStatus: this.state.carStatus }
     }
+    componentWillMount() {
+        document.body.style.margin = "0px";
+        // 这是防止页面被拖拽
+        document.body.addEventListener('touchmove', (ev) => {
+            ev.preventDefault();
+        });
+    }
     componentDidMount() {
         // let a = 0;
         // setInterval(() => {
@@ -78,21 +89,21 @@ export default class CarStatus extends React.Component {
         //     runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
         // }, 5000);
         let then = this;
-        // api.addEventListener({
-        //     name: 'pause'
-        // }, function (ret, err) {
-        //     then.setState({
-        //         sendAjax: false
-        //     })
-        // });
-        // api.addEventListener({
-        //     name: 'resume'
-        // }, function (ret, err) {
-        //     then.setState({
-        //         sendAjax: true
-        //     });
-        //     then.startQueryCarStatus();
-        // });
+        api.addEventListener({
+            name: 'pause'
+        }, function (ret, err) {
+            then.setState({
+                sendAjax: false
+            })
+        });
+        api.addEventListener({
+            name: 'resume'
+        }, function (ret, err) {
+            then.setState({
+                sendAjax: true
+            });
+            then.startQueryCarStatus();
+        });
 
     }
     startQueryCarStatus = () => {
@@ -100,11 +111,43 @@ export default class CarStatus extends React.Component {
         //发送ajax获取车辆运行数据,子组件通知父组件，开始查询车辆运行数据啦。
         runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
     }
+    shouldComponentUpdate() {
+        return this.props.router.location.action === 'POP';
+    }
+    // componentWillUpdate() {
+    //     let pathname = this.props.location.pathname;
+    //     if (pathname == "/MyCar" || pathname == "/MyCarLogin" || pathname == "/UseHelp" || pathname == "/MoreOptions") {
+    //         this.setState({ showTransition: false})
+    //     } else {
+    //         this.setState({ showTransition: true })
+    //     }
+    // }
     render() {
+        let pathname = this.props.location.pathname;
+        let showTransition = false;
+        if (pathname == "/MyCar" || pathname == "/MyCarLogin" || pathname == "/UseHelp" || pathname == "/MoreOptions") {
+            showTransition = false;
+        } else {
+            showTransition = true;
+        }
+        
         return (
-            <div className="car-status-box" >
-                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus})}
-            </div>
+            // <div className="car-status-box" >
+            //     {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus})}
+            // </div>
+            <ReactCSSTransitionGroup
+                transitionName={showTransition ? "transitionWrapper" : "no-transitionWrapper"}
+                component="div"
+                className={ showTransition ? style.transitionWrapper : ""}
+                transitionEnterTimeout={200}
+                transitionLeaveTimeout={200}>
+                <div 
+                    className="car-status-box"
+                    key={this.props.location.pathname} 
+                    style={{ position: "absolute", width: "100%", height: "100%" }}>
+                    {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus})}
+                </div>
+            </ReactCSSTransitionGroup>
         )
     }
 }

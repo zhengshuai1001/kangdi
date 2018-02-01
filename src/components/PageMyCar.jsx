@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { NavBar, Icon, Flex, Tabs, Toast } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 // const imgUrl = [require('../images/shortcut-btn-trunk.png'),
@@ -237,11 +237,11 @@ export default class PageMyCar extends React.Component{
             { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="defrost" className={this.state.defrost ? "tabs-one active" : "tabs-one"}><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
         ];
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-login  page-my-car">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -296,7 +296,7 @@ export default class PageMyCar extends React.Component{
                         </Flex>
                     </div>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

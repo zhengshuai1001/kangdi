@@ -16,9 +16,16 @@ export default class App extends React.Component {
         if (!token) {
             this.context.router.push('/login');
         } else {
-            this.setState({
-                selectedTab: this.props.location.pathname
-            });
+            if (this.props.location.pathname == "/MyCarLogin") {
+                this.setState({
+                    selectedTab: "/MyCar"
+                });
+            } else {
+                this.setState({
+                    selectedTab: this.props.location.pathname
+                });
+            }
+            
         }
     }
     shouldComponentUpdate() {
@@ -27,6 +34,7 @@ export default class App extends React.Component {
     render() {
         return (
             <div className="container-app">
+                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.props.carStatus, queryCarStatus: this.props.queryCarStatus })}
                 <TabBar
                     barTintColor="transparent"
                     unselectedTintColor="#fff"
@@ -43,7 +51,14 @@ export default class App extends React.Component {
                                 selectedTab: '/MyCar',
                             });
                             // this.context.router.push("/MyCar");
-                            hashHistory.replace("/MyCar");
+                            // hashHistory.replace("/MyCar");
+                            let vincode = localStorage.getItem("vincode");
+                            if (!vincode) {
+                                //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+                                hashHistory.replace('/MyCarLogin');
+                            } else {
+                                hashHistory.replace("/MyCar");
+                            }
                         }}
                     ></TabBar.Item>
                     <TabBar.Item
@@ -75,7 +90,7 @@ export default class App extends React.Component {
                         }}
                     ></TabBar.Item>
                 </TabBar>
-                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.props.carStatus, queryCarStatus: this.props.queryCarStatus})}
+                
             </div>
         );
     }

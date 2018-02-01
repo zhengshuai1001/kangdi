@@ -22,9 +22,16 @@ export default class PageLogin extends React.Component {
                     localStorage.setItem("token", res.data.token);
                     localStorage.setItem("kangdid", this.state.account);
                     //跳转到首页,MyCar
-                    this.context.router.push({
-                        pathname: '/MyCar'
-                    });
+                    // this.context.router.push({
+                    //     pathname: '/MyCar'
+                    // });
+                    let vincode = localStorage.getItem("vincode");
+                    if (!vincode) {
+                        //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+                        hashHistory.replace('/MyCarLogin');
+                    } else {
+                        hashHistory.replace("/MyCar");
+                    }
                 }
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);

@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { NavBar, Icon, Flex } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 import MeterG2 from "./MeterG2";
@@ -110,15 +110,16 @@ export default class PageRemoteMeter extends React.Component{
             //绘制仪表盘,这是特例
             // MeterG2(nextProps.carStatus.Mileage, nextProps.carStatus.ReMileage, nextProps.carStatus.soc);
             // this.state.updateMeterG2(nextProps.carStatus.Mileage, nextProps.carStatus.ReMileage, nextProps.carStatus.soc)
-            if (this.state.destroyMeterG2) {
-                this.state.destroyMeterG2(); //销毁图层
-            }
-            //绘制仪表盘,这是特例
-            let destroyMeterG2 = MeterG2(nextProps.carStatus.Mileage, nextProps.carStatus.ReMileage, nextProps.carStatus.soc)
-            this.setState({
-                destroyMeterG2: destroyMeterG2
-            })
+            
         },0)   
+        if (this.state.destroyMeterG2) {
+            this.state.destroyMeterG2(); //销毁图层
+        }
+        //绘制仪表盘,这是特例
+        let destroyMeterG2 = MeterG2(nextProps.carStatus.Mileage, nextProps.carStatus.ReMileage, nextProps.carStatus.soc)
+        this.setState({
+            destroyMeterG2: destroyMeterG2
+        })
         this.setState({token: token})
     }
     componentDidMount() {

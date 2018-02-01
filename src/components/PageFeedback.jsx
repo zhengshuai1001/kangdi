@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, TextareaItem, NavBar, Icon, Toast } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 import { setInterval } from 'core-js/library/web/timers';
 
@@ -57,11 +57,11 @@ export default class PageFeedback extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-login page-feedback">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -95,7 +95,7 @@ export default class PageFeedback extends React.Component {
                         <Button onClick={this.onClickSubmit} className="page-login-bottom">提交</Button>
                     </WingBlank>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Icon, Toast } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 export default class PageModifyControlCodeFirst extends React.Component {
@@ -74,19 +74,24 @@ export default class PageModifyControlCodeFirst extends React.Component {
         let SMSCode = this.state.SMSCode;
         if (this.testPhone(phone) && this.testSMSCode(SMSCode, true)) {
             //跳转到下一页
-            this.context.router.push({
+            // this.context.router.push({
+            //     pathname: '/modifyControlCodeSecond',
+            //     state: this.state
+            // });
+            hashHistory.push({
                 pathname: '/modifyControlCodeSecond',
-                state: this.state
+                query: this.state
             });
+            // hashHistory.push('/modifyControlCodeSecond');
         }
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-register page-login">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -131,7 +136,7 @@ export default class PageModifyControlCodeFirst extends React.Component {
                         </Button>
                     </WingBlank>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

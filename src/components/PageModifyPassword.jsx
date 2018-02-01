@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { NavBar, Icon, WingBlank, WhiteSpace, InputItem, Button, Toast } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 export default class PageModifyPassword extends React.Component {
@@ -70,11 +70,11 @@ export default class PageModifyPassword extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-login page-modifyPassword">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -121,7 +121,7 @@ export default class PageModifyPassword extends React.Component {
                         <Button onClick={this.handleConfirmChange} className="page-login-bottom">确认修改</Button>
                     </WingBlank>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

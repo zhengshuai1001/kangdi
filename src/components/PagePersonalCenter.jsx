@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory, Link } from 'react-router';
 import { NavBar, Icon, WingBlank, WhiteSpace, List, Button, Modal } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
-import { cropperToUpload } from './uploadAvatar';
+// import { cropperToUpload } from './uploadAvatar';
 import { cropperToUpload2 } from './uploadAvatar2';
 
 export default class PagePersonalCenter extends React.Component {
@@ -96,11 +96,11 @@ export default class PagePersonalCenter extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-login page-personalCenter page-contactUs">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -147,7 +147,7 @@ export default class PagePersonalCenter extends React.Component {
                         <Button onClick={ this.signOut }  className="page-login-bottom">退出当前账号</Button>
                     </WingBlank>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

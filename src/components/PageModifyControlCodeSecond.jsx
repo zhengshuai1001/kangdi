@@ -1,7 +1,7 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Icon, Toast, Modal } from 'antd-mobile';
-import QueueAnim from 'rc-queue-anim';
+// import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
 export default class PageModifyControlCodeSecond extends React.Component {
@@ -64,7 +64,7 @@ export default class PageModifyControlCodeSecond extends React.Component {
         let { oldControlCode, newControlCode, confirmControlCode } = this.state;
         if (this.testOldControlCode(oldControlCode) && this.testNewControlCode(newControlCode) && this.testConfirmControlCode(confirmControlCode)) {
             //首先获取到从上一个页面跳过来的state，也就说获取手机号，和短信验证码
-            let MixinState = this.props.location.state;  //上一页的state
+            let MixinState = this.props.location.query;  //上一页的state
             Object.assign(MixinState, this.state);
             //发送ajax完成修改控制码
             runPromise("controlCodeChange", {
@@ -80,11 +80,11 @@ export default class PageModifyControlCodeSecond extends React.Component {
     }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            // >
                 <div key="1" className="page-register page-login">
                     <NavBar
                         style={{ "background-color": "#000" }}
@@ -135,7 +135,7 @@ export default class PageModifyControlCodeSecond extends React.Component {
                         <Button type="" className="page-login-bottom" onClick={this.handleConfirmChange}>确认修改</Button>
                     </WingBlank>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }
