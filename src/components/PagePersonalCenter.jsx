@@ -27,7 +27,7 @@ export default class PagePersonalCenter extends React.Component {
                     nick_name: res.data.nick_name || "",
                     real_name: res.data.real_name || "",
                     certid: res.data.certid || "",
-                    avatar: "http://kd.hetaoyun.com" + res.data.header_img_url || require("../images/avatar.png")
+                    avatar: "http://47.96.17.228:9001" + res.data.header_img_url || require("../images/avatar.png")
                 });               
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);

@@ -42,7 +42,8 @@ export default class App extends React.Component {
                             this.setState({
                                 selectedTab: '/MyCar',
                             });
-                            this.context.router.push("/MyCar");
+                            // this.context.router.push("/MyCar");
+                            hashHistory.replace("/MyCar");
                         }}
                     ></TabBar.Item>
                     <TabBar.Item
@@ -55,7 +56,8 @@ export default class App extends React.Component {
                             this.setState({
                                 selectedTab: '/UseHelp',
                             });
-                            this.context.router.push("/UseHelp");
+                            // this.context.router.push("/UseHelp");
+                            hashHistory.replace("/UseHelp");
                         }}
                     ></TabBar.Item>
                     <TabBar.Item
@@ -68,7 +70,8 @@ export default class App extends React.Component {
                             this.setState({
                                 selectedTab: '/MoreOptions',
                             });
-                            this.context.router.push("/MoreOptions");
+                            // this.context.router.push("/MoreOptions");
+                            hashHistory.replace("/MoreOptions");
                         }}
                     ></TabBar.Item>
                 </TabBar>

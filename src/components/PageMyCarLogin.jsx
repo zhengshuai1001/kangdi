@@ -179,6 +179,13 @@ export default class PageMyCarLogin extends React.Component {
             }, this.handleMyCarLogin, true);     
         }
     }
+    handleClickModel() {
+        if (this.state.data_car_model_list.length > 0) {
+            this.setState({ show_car_model_list: true });
+        } else {
+            Toast.info("该账号未绑定车辆", 1)
+        }
+    }
     render() {
         return (
             <div key="1" className="page-login">
@@ -197,7 +204,7 @@ export default class PageMyCarLogin extends React.Component {
                         editable={false}
                         value={this.state.data_car_model_selected}
                         onChange={(val) => { this.setState({ data_car_model_selected: val }) }}
-                        onClick={() => { this.setState({ show_car_model_list: true }) }}
+                        onClick={() => { this.handleClickModel() }}
                         onBlur={() => { this.setState({ show_car_model_list: false })}}
                         extra={<div className="triangle-down-icon"></div>}
                     >
@@ -212,7 +219,7 @@ export default class PageMyCarLogin extends React.Component {
                         editable={false}
                         value={this.state.data_vincode_selected}
                         onChange={(val) => { this.setState({ data_vincode_selected: val }) }}
-                        onClick={() => { this.state.data_vincode_list.length > 0 ? this.setState({ show_vincode_list: true }) : "" }}
+                        onClick={() => { this.state.data_vincode_list.length > 0 ? this.setState({ show_vincode_list: true }) : Toast.info("请先选择车型", 1) }}
                         onBlur={() => { this.setState({ show_vincode_list: false }) }}
                         extra={<div className="triangle-down-icon"></div>}
                     >

@@ -23,9 +23,10 @@ export default function (mileageOld = 0 , reMileage = 0, socOld = 0) {
 
     const chart = new G2.Chart({
         container: 'mountNode',
-        width: 340,
-        height: 340,
-        // forceFit: true,
+        // width: 340,
+        // height: 340,
+        height: document.getElementById("backgroud").clientHeight,
+        forceFit: true,
         padding: [-80, 0, 0, 0]
     });
     chart.scale({
@@ -194,13 +195,20 @@ export default function (mileageOld = 0 , reMileage = 0, socOld = 0) {
         }
     });
     view2.interval().position('type*value').color("#cf2a89").size(3);
-    view2.guide().html({
-        position: ['50%', '-32%'],
+    view1.guide().html({
+        // position: ['50%', '-32%'],
+        // position: ['50%', '40%'],
+        position: function (xScale, yScale) {
+            let width = document.getElementById("backgroud").clientWidth;
+            // console.log(width);
+            return width < 300 ? ['50%', '43%'] : ['50%', '40%']
+        },
         html: '<div style="width: 200px;text-align: center;">'
             + '<p style="font-size: 16px; color: #fff;margin: 0">剩余里程 Km</p>'
     });
-    view2.guide().html({
-        position: ['50%', '8%'],
+    view1.guide().html({
+        // position: ['50%', '8%'],
+        position: ['50%', '59%'],
         html: '<div style="width: 200px;text-align: center;">'
             + '<p style="font-size: 22px; color: #fff;margin: 0"><span style="color: #fff">' + reMileage + '</span></p>'
     });

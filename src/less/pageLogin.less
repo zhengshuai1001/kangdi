@@ -445,7 +445,8 @@ html:not([data-scale]) .am-button::before {
     // width: 100vw;
     
     margin: 0 auto;
-    margin-top: 1.6rem;
+    // margin-top: 1.6rem;
+    margin-top: 2.5rem;
     background-image: url("../images/dashboard-background.png");
     background-size: 100% 100%;
     position: relative;
@@ -454,12 +455,23 @@ html:not([data-scale]) .am-button::before {
     // width: 340px;
     margin: 0 auto;
 }
+.page-remote-instrument #backgroud{
+    width: 90vw;
+    height: 90vw;
+}
 #mountNode2{
     width: 200px;
     margin: 0 auto;
-    margin-left: 70px;
+    // margin-left: 70px;
     position: absolute;
-    top:155px;
+    // top:155px;
+}
+.page-remote-instrument #mountNode2{
+    left: 0;
+    right: 0;
+    // top:41vw;
+    bottom: -5vw;
+    // margin-left: -100px;
 }
 #dashboardCenter{
     padding-top: 8px;
@@ -473,8 +485,9 @@ html:not([data-scale]) .am-button::before {
     bottom: 0;
 }
 #mountNode3{
-    width: 340px;
-    height: 110px;
+    // width: 340px;
+    // height: 110px;
+    height: 90px;
     margin: 0 auto;
 }
 
@@ -1118,4 +1131,44 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
 #mountNode canvas{
     position: relative;
     top: -5px;
+}
+
+@media screen and (max-width: 350px) {
+    .addr-wrap .contact-us-right{
+        font-size: 14px!important;
+    }
+}
+
+//安卓版本时修改
+.am-list-item:not(:last-child) .am-list-line {
+    border-bottom: 1px solid #2c2c2d!important;
+}
+.page-feedback .am-list-item:not(:last-child) .am-list-line {
+    border-bottom: 1px solid #7d7d7d!important;
+}
+.am-list-item .am-input-control input::placeholder {
+    color: #bbb;
+    line-height: 1!important;
+}
+.page-my-car-WingBlank.diy-position{
+    position: relative;
+    // height: calc(((100% - 61.1979vw) - 12.2rem) - 147px);
+    margin: 0 2rem 0;
+}
+@media screen and (max-width: 350px) {
+    .page-my-car-WingBlank .am-flexbox{
+        margin-top: -30px;
+    }
+    .page-my-car-WingBlank.diy-position .my-car-btn-img-box{
+        width: 4rem;
+        height: 4rem;
+    }
+    .page-my-car-WingBlank.diy-position .my-car-btn-img-box img{
+        width: 3rem;
+        height: 3rem;
+        margin-top: -1.5rem;
+    }
+    .page-my-car-WingBlank.diy-position .my-car-btn-box span{
+        margin-top: 0.5rem;
+    }
 }

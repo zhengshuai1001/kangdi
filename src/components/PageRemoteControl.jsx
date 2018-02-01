@@ -226,6 +226,10 @@ export default class PageRemoteControl extends React.Component{
             let res = req.result;
             // console.log(res);
             if (res.code == 1000) {
+                if (handleParam == "trunkStepTwo") {
+                    Toast.success("请注意，车辆已解防", 2, () => { this.changeCarImgStatus("trunk1") });
+                    return;
+                }
                 if (handleParam) {
                     Toast.success("指令下达成功", 1, () => { this.changeCarImgStatus(handleParam) });
                 }
@@ -248,6 +252,27 @@ export default class PageRemoteControl extends React.Component{
         }
         //发送完车身控制的空调部分的处理函数
         this.handleControlCarAir = (req) => {
+            console.log("handleControlCarAir");
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                let data = res.data;
+                Toast.success("指令下达成功", 1);
+                //将相应的state取反操作
+                // this.setState({
+                //     [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
+                // });
+
+                //空调操作后做的应该是重新获取空调的数据。
+                //发送ajax获取车辆运行数据
+                // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+        //发送完车身控制的空调部分的处理函数,按康迪的要求修改
+        this.handleControlCarAir2 = (req, handleParam) => {
+            console.log("handleControlCarAir2");
             let res = req.result;
             // console.log(res);
             if (res.code == 1000) {
@@ -260,6 +285,33 @@ export default class PageRemoteControl extends React.Component{
                 //空调操作后做的应该是重新获取空调的数据。
                 //发送ajax获取车辆运行数据
                 // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+                if (handleParam != "ptc") {
+                    this.onActiveAir(handleParam, false); //加false,是不想出发操作太频繁的动作
+                } else {
+                    //发送空调，打开温度设置成26
+                    runPromise("controlAc", {
+                        contrlpara: { "part": "15", "para": "26" }
+                    }, this.handleControlCarAir2PTC, true, true, handleParam);
+                }
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+        this.handleControlCarAir2PTC = (req, handleParam) => {
+            let res = req.result;
+            if (res.code == 1000) {
+                let data = res.data;
+                this.onActiveAir(handleParam, false); //加false,是不想出发操作太频繁的动作
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+        //打开后备箱，按康迪的改
+        this.handleControlCarTrunk = (req, handleParam) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                this.onActive("trunkStepTwo", false); //加false,是不想出发操作太频繁的动作
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -292,11 +344,17 @@ export default class PageRemoteControl extends React.Component{
             }
         },150)
     }
-    onActive = (state) => {
+    onActive = (state, handleControlCarAir2 = true ) => {
+        //康迪测试修改，如果用户点击的是第一页的按钮，中间的状态栏跳到第一页（页面下部的按钮只有调到首页，没有跳到第二页）
+        if (state == "trunk" || state == "lock" || state == "lamp" || state == "trunkStepTwo") {
+            this.setState({ initialPage: 0 });
+        }
         this.setState({ onClickTabName: state });
         if (!this.state.enabledList[state]) {
-            Toast.offline("操作太频繁", 1);
-            return;
+            if (handleControlCarAir2) {
+                Toast.offline("操作太频繁", 1);
+                return;
+            } 
         } else {
             let enabledListMixin = this.state.enabledList;
 
@@ -312,6 +370,23 @@ export default class PageRemoteControl extends React.Component{
                 })
                 clearTimeout(token);
             }, 3000);
+        }
+        //打开后备箱要先解防
+        if (state == "trunk" && this.state[state] == "0" ) {
+            let suffix = this.state[state] == 1 ? "0" : "1";
+            let param = state + suffix;
+            //发送ajax设置车身控制
+            runPromise("controlCar", {
+                contrlpara: { "part": "26", "para": "" }
+            }, this.handleControlCarTrunk, true, true, transformParam[param]);
+            return ;
+        }
+        if (state == "trunkStepTwo") {
+            //发送ajax设置车身控制
+            runPromise("controlCar", {
+                contrlpara: { "part": "17", "para": "" }
+            }, this.handleControlCarMore, true, true, "trunkStepTwo");
+            return;
         }
         if (state == "trunk" || state == "lock" || state == "lamp") {
             let suffix = this.state[state] == 1 ? "0" : "1";
@@ -329,10 +404,6 @@ export default class PageRemoteControl extends React.Component{
             runPromise("controlCar", {
                 contrlpara: { "part": transformParam[param], "para": "" }
             }, this.handleControlCar, true, true);
-        }
-        //康迪测试修改，如果用户点击的是第一页的按钮，中间的状态栏跳到第一页（页面下部的按钮只有调到首页，没有跳到第二页）
-        if (state == "trunk" || state == "lock" || state == "lamp" ) {
-            this.setState({ initialPage: 0});
         }
         //闪灯鸣笛
         if (state == "horn") {
@@ -381,7 +452,42 @@ export default class PageRemoteControl extends React.Component{
             }, this.handleControlCarMore, true, true, "Window0");
         }
     }
-    onActiveAir = (state) => {
+    onActiveAir = (state, handleControlCarAir2 = true ) => {
+        //康迪测试修改
+        if (state == "ac" || state == "ptc" || state == "defrost" || state == "AirConditioner") {
+            this.setState({ initialPage: 7 });
+        }
+        this.setState({ onClickTabName: state });
+        if (!this.state.enabledList[state]) {
+            if (handleControlCarAir2) {
+                Toast.offline("操作太频繁", 1);
+                return;
+            } 
+        } else {
+            let enabledListMixin = this.state.enabledList;
+
+            Object.assign(enabledListMixin, { [state]: false });
+            this.setState({
+                enabledList: enabledListMixin
+            })
+
+            let token = setTimeout(() => {
+                Object.assign(enabledListMixin, { [state]: true });
+                this.setState({
+                    enabledList: enabledListMixin
+                })
+                clearTimeout(token);
+            }, 3000);
+        }
+        let suffix = this.state[state] == 1 ? "0" : "1";
+        let param = state + suffix;
+        //发送ajax设置车身控制 ,空调
+        runPromise("controlAc", {
+            contrlpara: { "part": transformParam[param], "para": "" }
+        }, this.handleControlCarAir, true, true);
+
+    }
+    onActiveAir2 = (state) => {
         //康迪测试修改
         if (state == "ac" || state == "ptc" || state == "defrost" || state == "AirConditioner") {
             this.setState({ initialPage: 7 });
@@ -408,11 +514,17 @@ export default class PageRemoteControl extends React.Component{
         }
         let suffix = this.state[state] == 1 ? "0" : "1";
         let param = state + suffix;
-        //发送ajax设置车身控制 ,空调
-        runPromise("controlAc", {
-            contrlpara: { "part": transformParam[param], "para": "" }
-        }, this.handleControlCarAir, true, true);
-
+        //先打开空调
+        if (state == "AirConditioner" || this.state[state] == 1) {
+            //发送ajax设置车身控制 ,空调
+            runPromise("controlAc", {
+                contrlpara: { "part": transformParam[param], "para": "" }
+            }, this.handleControlCarAir, true, true);
+        } else {
+            runPromise("controlAc", {
+                contrlpara: { "part": "1", "para": "" }
+            }, this.handleControlCarAir2, true, true, state);
+        }
     }
     componentWillReceiveProps(nextProps) {
         this.setState(nextProps.carStatus)
@@ -489,9 +601,9 @@ export default class PageRemoteControl extends React.Component{
                             <Flex.Item><ShortAirBtn active={this.state.AirConditioner ? 1 : 0} state="AirConditioner" imgURL={this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} onActive={this.onActiveAir} /></Flex.Item>
                         </Flex> */}
                         <Flex>
-                            <Flex.Item><ShortcutBtn state="ac" text="AC" imgURL={imgUrl.refrigeration} onActive={this.onActiveAir} /></Flex.Item>
-                            <Flex.Item><ShortcutBtn state="ptc" text="PTC" imgURL={imgUrl.heating} onActive={this.onActiveAir} /></Flex.Item>
-                            <Flex.Item><ShortcutBtn state="defrost" text="除雾除霜" imgURL={imgUrl.defrost} onActive={this.onActiveAir} /></Flex.Item>
+                            <Flex.Item><ShortcutBtn state="ac" text="AC" imgURL={imgUrl.refrigeration} onActive={this.onActiveAir2} /></Flex.Item>
+                            <Flex.Item><ShortcutBtn state="ptc" text="PTC" imgURL={imgUrl.heating} onActive={this.onActiveAir2} /></Flex.Item>
+                            <Flex.Item><ShortcutBtn state="defrost" text="除雾除霜" imgURL={imgUrl.defrost} onActive={this.onActiveAir2} /></Flex.Item>
                             <Flex.Item><ShortcutBtn state="AirConditioner" text="空调" imgURL={imgUrl.switch} onActive={this.onActiveAir} /></Flex.Item>
                         </Flex>
                     </div>

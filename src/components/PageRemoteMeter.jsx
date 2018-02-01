@@ -149,11 +149,11 @@ export default class PageRemoteMeter extends React.Component{
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
                     >远程仪表</NavBar>
-            <QueueAnim
+            {/* <QueueAnim
                 type="right"
                 duration="500"
                 ease="easeOutBack"
-            >
+            > */}
                     <div key="1">
                     <div className="backgroud-NavBar"></div>
                     <div id="backgroud">
@@ -251,7 +251,7 @@ export default class PageRemoteMeter extends React.Component{
                         </Flex>
                     </div>
                     </div>
-                    </QueueAnim>
+                    {/* </QueueAnim> */}
                 </div>
         )
     }

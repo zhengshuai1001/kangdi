@@ -288,7 +288,7 @@ export default class PageMyCar extends React.Component{
                             <span onTouchStart={() => { this.setState({ initialPage: 7 }) }} className="right"></span>
                         </div>
                     </div>
-                    <div className="page-my-car-WingBlank" size="lg" style={{ "margin": "3rem 2rem 0", "height": "calc(100% - 50rem)", "position": "relative" }}>
+                    <div className="page-my-car-WingBlank diy-position" size="lg" style={{ "height": "calc(100% - 61.1979vw - 12.2rem - 147px)"}}>
                         <Flex>
                             <Flex.Item><MyCarBtn index="2" text="远程控制" imgURL={imgUrl.control} onActive={this.onActive} /></Flex.Item>
                             <Flex.Item><MyCarBtn index="0" text="远程仪表" imgURL={imgUrl.meter} onActive={this.onActive} /></Flex.Item>
