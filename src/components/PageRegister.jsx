@@ -86,9 +86,9 @@ export default class PageRegister extends React.Component {
         let SMSCode = this.state.SMSCode;
         if (this.testPhone(phone) && this.testPassword(password) && this.testSMSCode(SMSCode, true)) {
             //跳转到下一页
-            this.context.router.push({
+            hashHistory.push({
                 pathname: '/moreInfo',
-                state: this.state
+                query: this.state
             });
         }
     }
@@ -139,8 +139,9 @@ export default class PageRegister extends React.Component {
                         placeholder="请输入验证码"
                         maxLength="6"
                         onBlur={(val) => { this.testSMSCode(val) }}
-                        extra={<span>{this.state.SMSCodeTxt}</span>}
-                        onExtraClick={() => { this.handleSMSCode() }}
+                        // extra={<span>{this.state.SMSCodeTxt}</span>}
+                        // onExtraClick={() => { this.handleSMSCode() }}
+                        extra={<span onClick={() => { this.handleSMSCode() }} >{this.state.SMSCodeTxt}</span>}
                     >
                         <img className="page-login-code-img" src={require('../images/page-register-code.png')} />
                     </InputItem> 

@@ -58,7 +58,7 @@ export default class PageMyCarLogin extends React.Component {
             // console.log(res);
             if (res.code == 1000) {
                 //跳转到首页,MyCar
-                this.context.router.push({
+                hashHistory.push({
                     pathname: '/MyCar'
                 }); 
             } else {
@@ -235,8 +235,9 @@ export default class PageMyCarLogin extends React.Component {
                         value={this.state.controlCode}
                         onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ controlCode: val }) }}
                         onBlur={(val) => { this.test_controlCode(val) }}
-                        extra={<img className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
-                        onExtraClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }}
+                        // extra={<img className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                        // onExtraClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }}
+                        extra={<img onClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}                        
                     >
                         <img style={{"width":"26px"}} className="page-login-password-img" src={require('../images/page-myCar-lock.png')} />
                     </InputItem>

@@ -64,7 +64,7 @@ export default class PageModifyControlCodeSecond extends React.Component {
         let { oldControlCode, newControlCode, confirmControlCode } = this.state;
         if (this.testOldControlCode(oldControlCode) && this.testNewControlCode(newControlCode) && this.testConfirmControlCode(confirmControlCode)) {
             //首先获取到从上一个页面跳过来的state，也就说获取手机号，和短信验证码
-            let MixinState = this.props.location.state;  //上一页的state
+            let MixinState = this.props.location.query;  //上一页的state
             Object.assign(MixinState, this.state);
             //发送ajax完成修改控制码
             runPromise("controlCodeChange", {

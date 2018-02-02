@@ -8,7 +8,7 @@ export default class PageSettings extends React.Component {
     }
     onClickList(e) {
         let path = `/${e}`;
-        this.context.router.push(path); 
+        hashHistory.push(path); 
     }
     render() {
         return (

@@ -59,9 +59,9 @@ export default class PagePersonalCenter extends React.Component {
     onChangeFile = (e) => {
         // console.log(e.target.files[0]);
         //跳转到裁切图片页
-        this.context.router.push({
+        hashHistory.push({
             pathname: '/uploadAvatar2',
-            state: {
+            query: {
                 img: e.target.files[0]
             }
         });
