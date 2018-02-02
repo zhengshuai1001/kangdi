@@ -79,7 +79,7 @@ export default class PagePersonalCenter extends React.Component {
                     runPromise("appuserUpdate", { "nick_name": value}, this.handleChangeNickName);
                 }
             },
-        ], 'default', null, ['输入昵称']);
+        ], 'default', null, ['输入昵称'], "android");
     }
     //退出登录
     signOut = () => {
