@@ -28,6 +28,7 @@ const ajaxURLList = {
     controlCar: "control/car", //车身控制
     controlAc: "control/ac", //空调控制
     appHelp: "app/help", //使用帮助
+    controlWakeup: "control/wakeup", //唤醒车辆
 }
 
 //定义一个基于Promise的异步任务执行器
@@ -101,7 +102,10 @@ function runPromise(ajaxName, param, handle, mustLogin = true, mustCarLogin = fa
 function sendAjax(url, param) {
     return new Promise(function (resolve, reject) {
         Ajax.post(url, param).then(req => {
-            resolve(req);
+            if (ServerJudgeLogon(req)) {
+                resolve(req);
+            }
+            // resolve(req);
         }).catch(error => {
             //全局处理网络请求错误
             // console.log(error);
@@ -109,6 +113,27 @@ function sendAjax(url, param) {
             reject(error);
         });
     });
+}
+
+
+/**
+ * 服务器判断是否登录
+ * 
+ * @author ZhengGuoQing
+ * @param {any} req 
+ */
+function ServerJudgeLogon(req){
+    let res = req.result;
+    if (req.result && res.code != 1000 && res.errmsg == 124) {
+        //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+        hashHistory.push({
+            pathname: '/MyCarLogin',
+            query: { form: 'promise' }
+        });
+        return false;
+    } else {
+        return true;
+    }
 }
 
 export { runPromise };

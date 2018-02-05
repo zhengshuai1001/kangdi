@@ -75,7 +75,7 @@ export default class App extends React.Component {
                         }}
                     ></TabBar.Item>
                 </TabBar>
-                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.props.carStatus, queryCarStatus: this.props.queryCarStatus})}
+                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.props.carStatus, queryCarStatus: this.props.queryCarStatus, refreshWakeup: this.props.refreshWakeup})}
             </div>
         );
     }

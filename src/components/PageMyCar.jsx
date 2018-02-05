@@ -1,6 +1,6 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
-import { NavBar, Icon, Flex, Tabs, Toast } from 'antd-mobile';
+import { NavBar, Icon, Flex, Tabs, Toast, Button } from 'antd-mobile';
 import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
@@ -246,6 +246,7 @@ export default class PageMyCar extends React.Component{
                     <NavBar
                         style={{ "background-color": "#000" }}
                         mode="light"
+                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}></Button>}
                     >我的车辆</NavBar>
                     <div className="my-car-big-box" style={{ "padding-top": "4.6rem" }}>
                         <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" :"my-car-img-box"}>

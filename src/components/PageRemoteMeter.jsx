@@ -1,6 +1,6 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
-import { NavBar, Icon, Flex } from 'antd-mobile';
+import { NavBar, Icon, Flex, Button } from 'antd-mobile';
 import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
@@ -148,6 +148,7 @@ export default class PageRemoteMeter extends React.Component{
                         mode="light"
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
+                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}></Button>}
                     >远程仪表</NavBar>
             {/* <QueueAnim
                 type="right"

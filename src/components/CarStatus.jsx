@@ -57,6 +57,15 @@ export default class CarStatus extends React.Component {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
         }
+        this.handleRefreshWakeup = (req) => {
+            let res = req.result;
+            if (res.code == 1000) {
+                Toast.success("车辆状态已更新", 1);
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+
+        }
     }
     getChildContext() {
         return { carStatus: this.state.carStatus }
@@ -78,21 +87,21 @@ export default class CarStatus extends React.Component {
         //     runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
         // }, 5000);
         let then = this;
-        // api.addEventListener({
-        //     name: 'pause'
-        // }, function (ret, err) {
-        //     then.setState({
-        //         sendAjax: false
-        //     })
-        // });
-        // api.addEventListener({
-        //     name: 'resume'
-        // }, function (ret, err) {
-        //     then.setState({
-        //         sendAjax: true
-        //     });
-        //     then.startQueryCarStatus();
-        // });
+        api.addEventListener({
+            name: 'pause'
+        }, function (ret, err) {
+            then.setState({
+                sendAjax: false
+            })
+        });
+        api.addEventListener({
+            name: 'resume'
+        }, function (ret, err) {
+            then.setState({
+                sendAjax: true
+            });
+            then.startQueryCarStatus();
+        });
 
     }
     startQueryCarStatus = () => {
@@ -100,10 +109,15 @@ export default class CarStatus extends React.Component {
         //发送ajax获取车辆运行数据,子组件通知父组件，开始查询车辆运行数据啦。
         runPromise("queryCarStatus", {}, this.handleQueryCarStatus, true, true);
     }
+    //车辆唤醒，查询接口
+    refreshWakeup = () =>{
+        //发送ajax唤醒车辆。
+        runPromise("controlWakeup", {}, this.handleRefreshWakeup, true, true);
+    }
     render() {
         return (
             <div className="car-status-box" >
-                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus})}
+                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus, refreshWakeup: this.refreshWakeup})}
             </div>
         )
     }

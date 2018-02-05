@@ -1,6 +1,6 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
-import { NavBar, Icon, Flex, Tabs, Toast, Modal } from 'antd-mobile';
+import { NavBar, Icon, Flex, Tabs, Toast, Modal, Button } from 'antd-mobile';
 import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
@@ -591,6 +591,7 @@ export default class PageRemoteControl extends React.Component{
                         mode="light"
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
+                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}></Button>}
                     >远程控制</NavBar>
                     <div className="air-conditioner-box" style={{ "margin-top": "2rem","padding":"0 1rem 1rem 2rem"}}>
                         {/* <Flex>
