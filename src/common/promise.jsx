@@ -126,6 +126,7 @@ function ServerJudgeLogon(req){
     let res = req.result;
     if (req.result && res.code != 1000 && res.errmsg == 124) {
         //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+        localStorage.removeItem("vincode");
         hashHistory.push({
             pathname: '/MyCarLogin',
             query: { form: 'promise' }
