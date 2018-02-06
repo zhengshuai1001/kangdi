@@ -30,7 +30,16 @@ export default class PageUseHelpDetail extends React.Component {
     }
     componentDidMount() {
         let name = this.props.location.state.name;
-        let doc_url = decodeURI(this.props.location.state.doc_url);
+        // let doc_url = decodeURI(this.props.location.state.doc_url);
+
+        let doc_url = "";
+        let form = this.props.location.query.form;
+        if (form == "pageMyCarLogin") {
+            doc_url = PDFUrl2[0];
+        } else {
+            doc_url = decodeURI(this.props.location.state.doc_url);
+        }
+        
         // let url = PDFUrl[0];
         // if (name == "智慧出行APP系统说明书") {
         //     url = "https://www.huakewang.com/mhkw/%E4%B8%AD%E6%96%87doc.pdf";
