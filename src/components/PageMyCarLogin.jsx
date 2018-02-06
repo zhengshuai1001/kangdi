@@ -185,6 +185,16 @@ export default class PageMyCarLogin extends React.Component {
             Toast.info("该账号未绑定车辆", 1)
         }
     }
+    clickControl = () => {
+        hashHistory.push({
+            pathname: '/useHelpDetail',
+            query: { form: 'pageMyCarLogin' },
+            state:{
+                name: "车辆控制码",
+                doc_url: ""
+            }
+        });
+    }
     render() {
         return (
             <div key="1" className="page-login">
@@ -247,7 +257,7 @@ export default class PageMyCarLogin extends React.Component {
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <Button onClick={this.onClickNext} className="page-login-bottom">下一步</Button>
-                    <p className="what-is-control-code">什么是车辆控制码？</p>
+                    <p className="what-is-control-code" onClick={this.clickControl} >什么是车辆控制码？</p>
                 </WingBlank>
             </div>
         )
