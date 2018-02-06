@@ -61,7 +61,7 @@ export default class PagePersonalCenter extends React.Component {
         //跳转到裁切图片页
         hashHistory.push({
             pathname: '/uploadAvatar2',
-            query: {
+            state: {
                 img: e.target.files[0]
             }
         });
@@ -79,7 +79,7 @@ export default class PagePersonalCenter extends React.Component {
                     runPromise("appuserUpdate", { "nick_name": value}, this.handleChangeNickName);
                 }
             },
-        ], 'default', null, ['输入昵称'], "ios");
+        ], 'default', null, ['输入昵称'], "android");
     }
     //退出登录
     signOut = () => {

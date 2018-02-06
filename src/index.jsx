@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory, IndexRoute, Link } from 'react-router';
 
+import 'babel-polyfill';
+
 import App from './components/App';
 import PageLogin from './components/PageLogin';
 import PageRegister from './components/PageRegister';

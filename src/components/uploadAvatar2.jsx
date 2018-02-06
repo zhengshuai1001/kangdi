@@ -95,7 +95,7 @@ class PageUploadAvatar2 extends React.Component {
     //     }, this.handleUploadAvatar);
     // }
     componentWillMount () {
-        this.setState(this.props.location.query);
+        this.setState(this.props.location.state);
     }
     componentDidMount2 () {
         let { img, img1, width, height } = this.state;

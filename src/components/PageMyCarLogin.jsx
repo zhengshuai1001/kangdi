@@ -41,7 +41,6 @@ export default class PageMyCarLogin extends React.Component {
         //发送完后车辆查询后的处理函数
         this.handleChangePassword = (req) => {
             let res = req.result;
-            // console.log(res);
             if (res.code == 1000) {
                 //获取车辆信息后保存
                 this.setState({ 

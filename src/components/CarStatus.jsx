@@ -86,22 +86,22 @@ export default class CarStatus extends React.Component {
         //     //发送ajax获取车辆运行数据
         //     runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
         // }, 5000);
-        // let then = this;
-        // api.addEventListener({
-        //     name: 'pause'
-        // }, function (ret, err) {
-        //     then.setState({
-        //         sendAjax: false
-        //     })
-        // });
-        // api.addEventListener({
-        //     name: 'resume'
-        // }, function (ret, err) {
-        //     then.setState({
-        //         sendAjax: true
-        //     });
-        //     then.startQueryCarStatus();
-        // });
+        let then = this;
+        api.addEventListener({
+            name: 'pause'
+        }, function (ret, err) {
+            then.setState({
+                sendAjax: false
+            })
+        });
+        api.addEventListener({
+            name: 'resume'
+        }, function (ret, err) {
+            then.setState({
+                sendAjax: true
+            });
+            then.startQueryCarStatus();
+        });
 
     }
     startQueryCarStatus = () => {

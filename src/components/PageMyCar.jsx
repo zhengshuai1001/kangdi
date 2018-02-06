@@ -198,7 +198,10 @@ export default class PageMyCar extends React.Component{
             });
             return;
         }
-        this.setState(this.props.carStatus)
+        this.setState(this.props.carStatus);
+        let u = navigator.userAgent;
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        this.setState({ isiOS });        
     }
     onClickTab = (tab, index) => {
         let state = tab.title.props.state;
@@ -289,7 +292,16 @@ export default class PageMyCar extends React.Component{
                             <span onTouchStart={() => { this.setState({ initialPage: 7 }) }} className="right"></span>
                         </div>
                     </div>
-                    <div className="page-my-car-WingBlank diy-position" size="lg" style={{ "height": "calc(100% - 61.1979vw - 12.2rem - 147px)"}}>
+                    <div 
+                        className="page-my-car-WingBlank diy-position" 
+                        size="lg" 
+                        // style={{ 
+                        //     "height": "144px",
+                        //     "height": "-webkit-calc(100% - 61.1979vw - 12.2rem - 147px)",
+                        //     "height": "calc(100% - 61.1979vw - 12.2rem - 147px)"
+                        // }}
+                        style={{ "height": this.state.isiOS ? "calc(100% - 61.1979vw - 12.2rem - 147px)" : "144px" }}
+                        >
                         <Flex>
                             <Flex.Item><MyCarBtn index="2" text="远程控制" imgURL={imgUrl.control} onActive={this.onActive} /></Flex.Item>
                             <Flex.Item><MyCarBtn index="0" text="远程仪表" imgURL={imgUrl.meter} onActive={this.onActive} /></Flex.Item>
