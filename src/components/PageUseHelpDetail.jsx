@@ -20,6 +20,10 @@ import QueueAnim from 'rc-queue-anim';
 // ];
 // var pdfReader = api.require('pdfReader');
 
+const PDFUrl2 = [
+    'widget://res/car_control_code.pdf'
+]
+
 export default class PageUseHelpDetail extends React.Component {
     constructor(props) {
         super(props)
