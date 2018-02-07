@@ -381,6 +381,11 @@ export default class PageRemoteControl extends React.Component{
             }, this.handleControlCarTrunk, true, true, transformParam[param]);
             return ;
         }
+        //后备箱不能关闭，只需要提示后备箱已打开,不用发请求
+        if (state == "trunk" && this.state[state] == "1" ) {
+            Toast.success("后备箱已打开", 1);
+            return;
+        }
         if (state == "trunkStepTwo") {
             //发送ajax设置车身控制
             runPromise("controlCar", {
