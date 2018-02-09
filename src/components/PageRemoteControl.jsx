@@ -619,6 +619,11 @@ export default class PageRemoteControl extends React.Component{
                             className={this.state.carStatusImgClassName} 
                             src={this.state.carStatusImgURL}
                         />
+                        <img
+                            style={{ "display": this.state.lamp ? "block" : "none" }}
+                            className="car-status-img-continued-lamp"
+                            src={!!~(this.state.car_tail.indexOf("K17A")) ? require('../images/K17/main_car_setting_effect_far_light.png') : require('../images/K12/k12_main_car_setting_effect_far_light.png')}
+                        />
                         <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no") : ""}</span>
                     </div>
                     <div className="my-car-click-mask-out">
