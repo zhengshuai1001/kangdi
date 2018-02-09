@@ -19,8 +19,8 @@ import { runPromise } from '../common/promise';
 const transformParam = {
     trunk0: "18",
     trunk1: "17",
-    lock0: "8",
-    lock1: "7",
+    lock1: "8",
+    lock0: "7",
     engine0: "24",
     engine1: "23",
     door0: "2",
@@ -43,8 +43,8 @@ const carStatusImg = {
     K12: {
         trunk0: require('../images/K12/k12_main_car_setting_effect_car_houbei_lock.png'),
         trunk1: require('../images/K12/k12_main_car_setting_effect_car_houbei_unlock.png'),
-        lock0: require('../images/K12/k12_main_car_setting_effect_car_door_unlock.png'),
-        lock1: require('../images/K12/k12_main_car_setting_effect_car_door_lock.png'),
+        lock1: require('../images/K12/k12_main_car_setting_effect_car_door_unlock.png'),
+        lock0: require('../images/K12/k12_main_car_setting_effect_car_door_lock.png'),
         horn1: require('../images/K12/k12_main_car_setting_effect_alert_light.png'),
         lamp0: require('../images/K12/k12_main_car_setting_effect_far_light.png'),
         lamp1: require('../images/K12/k12_main_car_setting_effect_far_light.png'),
@@ -54,8 +54,8 @@ const carStatusImg = {
     K17: {
         trunk0: require('../images/K17/main_car_setting_effect_car_houbei_lock.png'),
         trunk1: require('../images/K17/main_car_setting_effect_car_houbei_unlock.png'),
-        lock0: require('../images/K17/main_car_setting_effect_car_door_unlock.png'),
-        lock1: require('../images/K17/main_car_setting_effect_car_door_lock.png'),
+        lock1: require('../images/K17/main_car_setting_effect_car_door_unlock.png'),
+        lock0: require('../images/K17/main_car_setting_effect_car_door_lock.png'),
         horn1: require('../images/K17/main_car_setting_effect_alert_light.png'),
         lamp0: require('../images/K17/main_car_setting_effect_near_light.png'),
         lamp1: require('../images/K17/main_car_setting_effect_far_light.png'),
@@ -596,7 +596,7 @@ export default class PageRemoteControl extends React.Component{
                         mode="light"
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
-                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}></Button>}
+                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}><span className="txt">刷新</span></Button>}
                     >远程控制</NavBar>
                     <div className="air-conditioner-box" style={{ "margin-top": "2rem","padding":"0 1rem 1rem 2rem"}}>
                         {/* <Flex>

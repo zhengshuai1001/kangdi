@@ -10,7 +10,10 @@ export default class PageModifyControlCodeSecond extends React.Component {
         this.state = {
             oldControlCode: '',
             newControlCode: '',
-            confirmControlCode: ''
+            confirmControlCode: '',
+            showControlCode0: false,
+            showControlCode1: false,
+            showControlCode2: false,
         }
         //发送完成修改控制码后的处理函数
         this.handleControlCode = (req) => {
@@ -94,7 +97,9 @@ export default class PageModifyControlCodeSecond extends React.Component {
                     >修改控制码</NavBar>
                     <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
                         <InputItem
-                            type="number"
+                            // type="number"
+                            type={this.state.showControlCode0 ? "number" : "password"}
+                            extra={<img onClick={() => { this.setState({ showControlCode0: !this.state.showControlCode0 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="请输入原控制码"
@@ -107,7 +112,9 @@ export default class PageModifyControlCodeSecond extends React.Component {
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
-                            type="number"
+                            // type="number"
+                            type={this.state.showControlCode1 ? "number" : "password"}
+                            extra={<img onClick={() => { this.setState({ showControlCode1: !this.state.showControlCode1 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="设置新控制码"
@@ -120,7 +127,9 @@ export default class PageModifyControlCodeSecond extends React.Component {
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
-                            type="number"
+                            // type="number"
+                            type={this.state.showControlCode2 ? "number" : "password"}
+                            extra={<img onClick={() => { this.setState({ showControlCode2: !this.state.showControlCode2 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="确认新控制码"

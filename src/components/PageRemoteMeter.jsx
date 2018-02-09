@@ -148,7 +148,7 @@ export default class PageRemoteMeter extends React.Component{
                         mode="light"
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
-                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}></Button>}
+                    rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}><span className="txt">刷新</span></Button>}
                     >远程仪表</NavBar>
             {/* <QueueAnim
                 type="right"
@@ -162,7 +162,7 @@ export default class PageRemoteMeter extends React.Component{
                         <div id="mountNode2"></div>
                         <img id="dashboardCenter" src={require('../images/dashboard-Center.png')} />
                     </div>
-                    <div id="mountNode3" className="am-flexbox am-flexbox-align-center am-flexbox-justify-center">
+                    <div style={{"height":"16px"}} id="mountNode3" className="am-flexbox am-flexbox-align-center am-flexbox-justify-center">
                         <div className="am-flexbox-item" style={{"display":"none"}}>
                             <p className="bar-title">{this.state.TotalA}v</p>
                             <div className={this.state.TotalA == 0 ? "bar empty" : (this.state.TotalA == 5 ? "bar full" : "bar")}>
@@ -182,7 +182,7 @@ export default class PageRemoteMeter extends React.Component{
                                 <p className="bar-bottom-right">5v</p>
                             </p>
                         </div>
-                        <div className="am-flexbox-item" style={{ "display": this.state.TotalV == 0 ? "block" : "block" }}>
+                        <div className="am-flexbox-item" style={{ "display": this.state.TotalV == 0 ? "none" : "none" }}>
                             <p className="bar-title">{this.state.TotalV}V</p>
                             <div className={this.state.TotalV == 0 ? "bar empty" : (this.state.TotalV == 500 ? "bar full" : "bar") }>
                                 <span className="bar-left bar-head"></span>
@@ -204,7 +204,7 @@ export default class PageRemoteMeter extends React.Component{
                     </div>
                     <p className="mileage bar-center-text">当前电量{this.state.soc}%，大约可行驶{this.state.ReMileage}Km！</p>
                     {/* <p className="voltage bar-center-text">总电压 {this.state.TotalV}V，最低单体电压 {this.state.TotalA}V</p> */}
-                    <p className="voltage bar-center-text">总电压{this.state.TotalV}V</p>
+                    <p style={{"display":"none"}} className="voltage bar-center-text">总电压{this.state.TotalV}V</p>
                     <div className="shortcut-WingBlank" size="lg" style={{ "padding": "1rem 2rem 0 2rem" }}>
                         <Flex justify="center" className="shortcut-flex">
                             <Flex.Item>

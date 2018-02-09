@@ -180,7 +180,7 @@ export default class PageMyCarLogin extends React.Component {
     }
     handleClickModel() {
         if (this.state.data_car_model_list.length > 0) {
-            this.setState({ show_car_model_list: true });
+            this.setState({ show_car_model_list: !this.state.show_car_model_list });
         } else {
             Toast.info("该账号未绑定车辆", 1)
         }
@@ -216,6 +216,7 @@ export default class PageMyCarLogin extends React.Component {
                         onClick={() => { this.handleClickModel() }}
                         onBlur={() => { this.setState({ show_car_model_list: false })}}
                         extra={<div className="triangle-down-icon"></div>}
+                        onExtraClick={() => { this.handleClickModel() }}
                     >
                         <img className="page-login-account-img" src={require('../images/page-myCar-arrow.png')} />
                     </InputItem>
@@ -228,9 +229,10 @@ export default class PageMyCarLogin extends React.Component {
                         editable={false}
                         value={this.state.data_vincode_selected}
                         onChange={(val) => { this.setState({ data_vincode_selected: val }) }}
-                        onClick={() => { this.state.data_vincode_list.length > 0 ? this.setState({ show_vincode_list: true }) : Toast.info("请先选择车型", 1) }}
+                        onClick={() => { this.state.data_vincode_list.length > 0 ? this.setState({ show_vincode_list: !this.state.show_vincode_list }) : Toast.info("请先选择车型", 1) }}
                         onBlur={() => { this.setState({ show_vincode_list: false }) }}
                         extra={<div className="triangle-down-icon"></div>}
+                        onExtraClick={() => { this.state.data_vincode_list.length > 0 ? this.setState({ show_vincode_list: !this.state.show_vincode_list }) : Toast.info("请先选择车型", 1) }}
                     >
                         <img className="page-login-password-img" src={require('../images/page-myCar-car.png')} />
                     </InputItem>

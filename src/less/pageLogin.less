@@ -161,7 +161,7 @@ html:not([data-scale]) .am-button::before {
 .am-list-item .am-input-label  img{
     height: auto;
 }
-.page-register .am-list-line .am-input-extra{
+.page-register .SMSInput .am-input-extra{
     display: inline-block;
     padding: 0.5rem;
     color: #a0256c;
@@ -579,7 +579,8 @@ html:not([data-scale]) .am-button::before {
     text-align: center;
     color: #fff;
     // font-size: 1.6rem;
-    font-size: 16px;
+    // font-size: 16px;
+    font-size: 18px;
     width: 340px;
     margin: 0 auto;
     line-height: 2.2rem;
@@ -623,6 +624,7 @@ html:not([data-scale]) .am-button::before {
 }
 .shortcut-WingBlank{
     background-color: #181819;
+    margin-top: 20px;
 }
 .air-conditioner-box .temperature{
     font-size: 5rem;
@@ -926,8 +928,10 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
 .my-car-switchKey-box{
     display: inline-block;
     position: absolute;
-    top: 0rem;
-    right: 2.6rem;
+    // top: 0rem;
+    top: 1rem;
+    // right: 2.6rem;
+    left: 2.6rem;
     width: 40px;
 }
 .my-car-switchKey-box span{
@@ -947,7 +951,8 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     position: absolute;
     top: 50%;
     margin-top: -15px;
-    left: -2.1rem;
+    // left: -2.1rem;
+    right: -2.1rem;
 }
 .my-car-switchKey-box .acc{
     border-radius: 2px;
@@ -1059,7 +1064,8 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     position: fixed;
     width: 100%;
     top: 0;
-    z-index: 1;
+    // z-index: 1;
+    z-index: 30;
 }
 .backgroud-NavBar{
     height: 45px;
@@ -1185,7 +1191,8 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     // font-size: 14px;
     // padding: 0px 15px;
     margin-right: 10px;
-    height: 30px;
+    // height: 30px;
+    height: 60px;
     width: 50px;
     // background-color: #3f3f3f;
     background-color: transparent;
@@ -1211,4 +1218,47 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
 }
 .am-button.refreshButton.am-button-active{
     background-color: #000;
+}
+
+// 改顶部栏高度
+
+// .am-navbar-light.am-navbar{
+//     padding-bottom: 5px;
+// }
+// .backgroud-NavBar {
+//     height: 50px;
+// }
+.am-navbar-left-icon .am-icon-lg{
+    width: 45px;
+    height: 45px;
+}
+.am-navbar-light .am-navbar-title{
+    font-size: 20px;
+}
+.am-button.refreshButton{
+    position: relative;
+    top: -10px;
+    background-size: 26px 26px;
+}
+.am-navbar-light .am-navbar-right{
+    position: relative;
+}
+// .page-my-car .am-navbar-light .am-navbar-right::after,
+// .page-remote-control .am-navbar-light .am-navbar-right::after,
+// .page-remote-instrument .am-navbar-light .am-navbar-right::after{
+//     content: '刷新';
+//     color: #fff;
+//     font-size: 14px;
+//     position: absolute;
+//     margin-right: 10px;
+//     width: 49px;
+//     bottom: 5px;
+// }
+
+.refreshButton .txt{
+    color: #fff;
+    font-size: 14px;
+    position: relative;
+    line-height: 1;
+    bottom: -26px;
 }

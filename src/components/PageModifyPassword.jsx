@@ -85,7 +85,9 @@ export default class PageModifyPassword extends React.Component {
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <WingBlank className="page-login-WingBlank" size="lg">
                         <InputItem
-                            type="password"
+                            // type="password"
+                            type={this.state.showControlCode0 ? "number" : "password"}
+                            extra={<img onClick={() => { this.setState({ showControlCode0: !this.state.showControlCode0 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="请输入原密码"
                             maxLength="20"
                             value={this.state.oldPassword}
@@ -96,7 +98,9 @@ export default class PageModifyPassword extends React.Component {
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
-                            type="password"
+                            // type="password"
+                            type={this.state.showControlCode1 ? "number" : "password"}
+                            extra={<img onClick={() => { this.setState({ showControlCode1: !this.state.showControlCode1 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="设置新密码"
                             maxLength="20"
                             value={this.state.newPassword}
@@ -107,7 +111,9 @@ export default class PageModifyPassword extends React.Component {
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
-                            type="password"
+                            // type="password"
+                            type={this.state.showControlCode2 ? "number" : "password"}
+                            extra={<img onClick={() => { this.setState({ showControlCode2: !this.state.showControlCode2 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="确认新密码"
                             maxLength="20"
                             value={this.state.confirmNewPassword}

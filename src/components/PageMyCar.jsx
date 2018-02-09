@@ -249,7 +249,7 @@ export default class PageMyCar extends React.Component{
                     <NavBar
                         style={{ "background-color": "#000" }}
                         mode="light"
-                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}></Button>}
+                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}><span className="txt">刷新</span></Button>}
                     >我的车辆</NavBar>
                     <div className="my-car-big-box" style={{ "padding-top": "4.6rem" }}>
                         <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" :"my-car-img-box"}>

@@ -67,6 +67,9 @@ export default class PagePersonalCenter extends React.Component {
         });
     }
     changeNickName = () => {
+        let u = navigator.userAgent;
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        let platform = isiOS ? "ios" : "android";
         Modal.prompt('修改昵称', '',[
             { text: '返回' },
             {
@@ -79,7 +82,7 @@ export default class PagePersonalCenter extends React.Component {
                     runPromise("appuserUpdate", { "nick_name": value}, this.handleChangeNickName);
                 }
             },
-        ], 'default', null, ['输入昵称'], "ios");
+        ], 'default', null, ['输入昵称'], platform);
     }
     //退出登录
     signOut = () => {

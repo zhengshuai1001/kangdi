@@ -120,13 +120,15 @@ export default class PageRegister extends React.Component {
                     </InputItem>
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
-                        type="password"
+                        // type="password"
+                        type={this.state.showControlCode ? "number" : "password"}
+                        extra={<img onClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                         placeholder="请输入密码"
                         maxLength="20"
                         value={this.state.password}
                         onChange={(val) => { val = val.trim(); this.setState({ password: val }) }}
                         onBlur={(val) => { this.testPassword(val) }}
-                        clear
+                        // clear
                     >
                         <img className="page-login-password-img" src={require('../images/page-login-password.png')} />
                     </InputItem>
