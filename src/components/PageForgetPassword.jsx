@@ -185,7 +185,7 @@ export default class PageForgetPassword extends React.Component {
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
                         // type="password"
-                        type={this.state.showControlCode ? "number" : "password"}
+                        type={this.state.showControlCode ? "text" : "password"}
                         extra={<img onClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                         placeholder={this.state.NewPasswordPlaceholder}
                         maxLength={this.state.passwordLength}
