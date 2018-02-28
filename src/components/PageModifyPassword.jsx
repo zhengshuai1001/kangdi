@@ -68,6 +68,19 @@ export default class PageModifyPassword extends React.Component {
 
         }
     }
+    onClickInputEye = (state) => {
+        this.setState({ [state]: !this.state[state] })
+        this.refs[state].focus();
+        Toast.hide();
+    }
+    handleTouchPage = (e) => {
+        if (this.state.focusScroll) {
+            for (let i = 0; i < document.getElementsByTagName("input").length; i++) {
+                const element = document.getElementsByTagName("input")[i];
+                element.blur();
+            }
+        }
+    }
     render() {
         return (
             <QueueAnim
@@ -75,7 +88,7 @@ export default class PageModifyPassword extends React.Component {
                 duration="500"
                 ease="easeOutBack"
             >
-                <div key="1" className="page-login page-modifyPassword">
+                <div key="1" className="page-login page-modifyPassword" onTouchStart={this.handleTouchPage}>
                     <NavBar
                         style={{ "background-color": "#000" }}
                         mode="light"
@@ -86,39 +99,45 @@ export default class PageModifyPassword extends React.Component {
                     <WingBlank className="page-login-WingBlank" size="lg">
                         <InputItem
                             // type="password"
+                            ref="showControlCode0"
                             type={this.state.showControlCode0 ? "text" : "password"}
-                            extra={<img onClick={() => { this.setState({ showControlCode0: !this.state.showControlCode0 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode0")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="请输入原密码"
                             maxLength="20"
                             value={this.state.oldPassword}
                             onChange={(val) => { this.setState({ oldPassword: val }) }}
-                            onBlur={(val) => { this.testOldPassword(val) }}
+                            onBlur={(val) => { this.testOldPassword(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-login-password.png')} />
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
                             // type="password"
+                            ref="showControlCode1"
                             type={this.state.showControlCode1 ? "text" : "password"}
-                            extra={<img onClick={() => { this.setState({ showControlCode1: !this.state.showControlCode1 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode1")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="设置新密码"
                             maxLength="20"
                             value={this.state.newPassword}
                             onChange={(val) => { this.setState({ newPassword: val }) }}
-                            onBlur={(val) => { this.testNewPassword(val) }}
+                            onBlur={(val) => { this.testNewPassword(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-login-password.png')} />
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
                             // type="password"
+                            ref="showControlCode2"
                             type={this.state.showControlCode2 ? "text" : "password"}
-                            extra={<img onClick={() => { this.setState({ showControlCode2: !this.state.showControlCode2 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode2") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="确认新密码"
                             maxLength="20"
                             value={this.state.confirmNewPassword}
                             onChange={(val) => { this.setState({ confirmNewPassword: val }) }}
-                            onBlur={(val) => { this.testConfirmNewPassword(val) }}
+                            onBlur={(val) => { this.testConfirmNewPassword(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-login-password.png')} />
                         </InputItem>

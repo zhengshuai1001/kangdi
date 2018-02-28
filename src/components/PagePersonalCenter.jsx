@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { hashHistory, Link } from 'react-router';
-import { NavBar, Icon, WingBlank, WhiteSpace, List, Button, Modal } from 'antd-mobile';
+import { NavBar, Icon, WingBlank, WhiteSpace, List, Button, Modal, Toast } from 'antd-mobile';
 import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
@@ -44,17 +44,26 @@ export default class PagePersonalCenter extends React.Component {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
         }
+        // this.handleScroll = this.handleScroll.bind(this)
     }
     shouldComponentUpdate() {
         return this.props.router.location.action === 'POP';
     }
+    // handleScroll() {
+    //     let navBar = document.getElementsByClassName("fixed-NavBar")[0];
+    //     navBar.style.top = document.documentElement.scrollTop + "px";
+    // }
     componentDidMount() {
         setTimeout(() => {
             // let inputDOM = ReactDOM.findDOMNode(this.refs.imgInput);
             // cropperToUpload.bind(this)(inputDOM, 250, 250); 
             //发送ajax获取个人信息
             runPromise("appuserRetrieve", {}, this.handleUserInfo);  
-        }, 0);     
+        }, 0);  
+        // window.addEventListener('scroll', this.handleScroll);
+    }
+    componentWillUnmount() {
+        // window.removeEventListener('scroll', this.handleScroll);
     }
     onChangeFile = (e) => {
         // console.log(e.target.files[0]);
@@ -71,18 +80,56 @@ export default class PagePersonalCenter extends React.Component {
         let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
         let platform = isiOS ? "ios" : "android";
         Modal.prompt('修改昵称', '',[
-            { text: '返回' },
+            {   text: '返回',
+                onPress: () => {
+                    let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+                    propmtTouchBox.removeEventListener("ontouchstart", this.handleTouchPage, false);
+                }
+            },
             {
                 text: '确认',
                 onPress: (value) => {
                     this.setState({
                         temp_nick_name: value || "",
                     });
-                    //发送ajax修改昵称
-                    runPromise("appuserUpdate", { "nick_name": value}, this.handleChangeNickName);
+                    if (value.length) {
+                        //发送ajax修改昵称
+                        runPromise("appuserUpdate", { "nick_name": value }, this.handleChangeNickName);
+                    } else {
+                        Toast.info("昵称不能为空", 1);
+                    }
+                    let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+                    propmtTouchBox.removeEventListener("ontouchstart", this.handleTouchPage, false);
                 }
             },
         ], 'default', null, ['输入昵称'], platform);
+        // let inputOutDOM = document.querySelector(".am-modal-input");
+        // if (inputOutDOM) {
+        //     let inputDOM = inputOutDOM.getElementsByTagName("input")[0];
+        //     inputDOM.maxLength= 20;
+        //     inputDOM.value = window.innerHeight;
+        // }
+        // let oldInnerHeight = window.innerHeight;
+        // let token = setTimeout(() => {
+        //     let navBar = document.getElementsByClassName("fixed-NavBar")[0];
+        //     // navBar.scrollTop = "60px";
+        //     // navBar.style.top = document.documentElement.scrollTop + "px";
+        //     navBar.style.top = oldInnerHeight - window.innerHeight + "px";
+        //     // navBar.style.top = "0px";
+
+        //     let inputDOM = inputOutDOM.getElementsByTagName("input")[0];
+        //     inputDOM.value = window.innerHeight;
+        //     // alert(document.documentElement.scrollTop)
+        //     // navBar.className = navBar.className + " position-absolute";
+        //     document.querySelector(".am-modal-content").scrollIntoView(false);
+        //     clearTimeout(token);
+        // }, 500);
+
+        let token = setTimeout(() => {
+            let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
+            propmtTouchBox.addEventListener("touchstart", this.handleTouchPage, false);
+            // clearTimeout(token);
+        }, 500);
     }
     //退出登录
     signOut = () => {
@@ -97,20 +144,31 @@ export default class PagePersonalCenter extends React.Component {
             query: { form: 'signOut' }
         });
     }
+    handleTouchPage = (e) => {
+        for (let i = 0; i < document.getElementsByTagName("input").length; i++) {
+            const element = document.getElementsByTagName("input")[i];
+            element.blur();
+        }
+    }
     render() {
         return (
-            <QueueAnim
-                type="right"
-                duration="500"
-                ease="easeOutBack"
-            >
-                <div key="1" className="page-login page-personalCenter page-contactUs">
+            // <QueueAnim
+            //     type="right"
+            //     duration="500"
+            //     ease="easeOutBack"
+            //     // onEnd={(e) => { this.refs.queueAnim.style.transform = "initial" }}
+            //     onEnd={(e) => { document.getElementsByClassName("page-login")[0].style.transform = "initial" }}
+            // >
+            <div key="1" className="page-login page-personalCenter page-contactUs">
                     <NavBar
+                        className="fixed-NavBar"
                         style={{ "background-color": "#000" }}
                         mode="light"
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
                     >个人中心</NavBar>
+                    <div className="div-fixed-NavBar">
+                    <div className="backgroud-fixed-NavBar"></div>
                     <div className="avatar-box">
                         <div className="avatar-content">
                             <div className="img-box">
@@ -149,8 +207,9 @@ export default class PagePersonalCenter extends React.Component {
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <Button onClick={ this.signOut }  className="page-login-bottom">退出当前账号</Button>
                     </WingBlank>
+                    </div>
                 </div>
-            </QueueAnim>
+            // </QueueAnim>
         )
     }
 }

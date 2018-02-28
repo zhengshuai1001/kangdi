@@ -86,6 +86,7 @@ export default class CarStatus extends React.Component {
         //     //发送ajax获取车辆运行数据
         //     runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
         // }, 5000);
+
         let then = this;
         api.addEventListener({
             name: 'pause'
@@ -102,6 +103,13 @@ export default class CarStatus extends React.Component {
             });
             then.startQueryCarStatus();
         });
+        //判断是不是iPhone X，他又一个安全区的概念。
+        let isIPX = api.safeArea.top ? true : false;
+        if (isIPX) {
+            document.querySelector(".am-navbar-light.am-navbar").style.paddingTop = api.safeArea.top + 'px';
+            document.querySelector(".am-tabs-tab-bar-wrap .am-tab-bar-bar").style.marginBottom = api.safeArea.bottom + 'px';
+            document.querySelector(".am-button.feedbackButton").style.bottom = "7.5rem";
+        }
 
     }
     startQueryCarStatus = () => {

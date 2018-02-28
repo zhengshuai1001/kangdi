@@ -24,15 +24,20 @@ const PDFUrl2 = [
     'widget://res/car_control_code.pdf'
 ]
 
+let u = navigator.userAgent;
+let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
 export default class PageUseHelpDetail extends React.Component {
     constructor(props) {
         super(props)
         this.state= {
-            navBarTitle: "帮助详情"
+            navBarTitle: "帮助详情",
+            openPdfReader: false,
         }
         this.pdfReader = api.require('pdfReader');
     }
     componentDidMount() {
+        Toast.hide();
         let name = this.props.location.state.name;
         // let doc_url = decodeURI(this.props.location.state.doc_url);
 
@@ -55,6 +60,7 @@ export default class PageUseHelpDetail extends React.Component {
         //     url = decodeURI("https://www.huakewang.com/mhkw/%E4%B8%AD%E6%96%87doc.pdf");
         // }
         this.setState({ navBarTitle: name});
+        let then = this;
         this.pdfReader.openView({
             rect: {
                 x: 0,
@@ -65,19 +71,39 @@ export default class PageUseHelpDetail extends React.Component {
             path: doc_url,
             fixed: true
         }, function (ret) {
-            Toast.fail(JSON.stringify(ret), 2);
+            if (isiOS) {
+                if (ret.eventType == 'show') {
+                    then.setState({ openPdfReader: true });
+                    if (then.props.location.pathname != "/useHelpDetail") {
+                        then.pdfReader.closeView()
+                    }
+                }
+            }
         });         
     }
     componentWillUnmount() {
         // clearTimeout(this.state.token);
-        this.pdfReader.closeView()
+        if (isiOS) {
+            if (this.state.openPdfReader) {
+                this.pdfReader.closeView()
+            }  
+        } else {
+            this.pdfReader.closeView()
+        }
     }
     // shouldComponentUpdate() {
     //     return this.props.router.location.action === 'POP';
     // }
     closePage() {
         hashHistory.goBack();
-        this.pdfReader.closeView();
+        if (isiOS) {
+            if (this.state.openPdfReader) {
+                this.pdfReader.closeView()
+            }
+        } else {
+            this.pdfReader.closeView()
+        }
+        // this.pdfReader.closeView();
     }
     render() {
         return (

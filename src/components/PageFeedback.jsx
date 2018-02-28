@@ -5,12 +5,15 @@ import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 import { setInterval } from 'core-js/library/web/timers';
 
+// import iScroll from 'iscroll/build/iscroll';
+
 export default class PageFeedback extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             opinionTxt: "",
-            phone: ''
+            phone: '',
+            focusScrollInput: false, //判断页面下半部分的输入框是否focus，如果是，页面要大变。
         }
         //发送意见反馈后的处理函数
         this.handleSubmit = (req) => {
@@ -55,45 +58,127 @@ export default class PageFeedback extends React.Component {
 
         }
     }
+    // focusPhoneInput = () => {
+    //     // let oldInnerHeight = window.innerHeight;
+        
+    //     let token = setTimeout(() => {
+    //         // if (window.innerHeight < 480) {
+    //         // }
+    //         document.querySelector(".scrollIntoViewDOM").scrollIntoView(false);
+    //         clearTimeout(token);
+    //     }, 500);
+    // }
+    // componentDidMount() {
+    //     let token = setTimeout(() => {
+            
+    //     }, 500);
+    // }
+    focusScrollInput = () => {
+        this.setState({ focusScrollInput: true });
+        // let myScroll = new iScroll('#wrapper');
+        // this.setState({ myScroll });
+        let token = setTimeout(() => {
+            // this.state.myScroll.scrollToElement(document.querySelector(".scrollIntoViewDOM"));
+            // this.state.myScroll.scrollTo(0, -250);
+
+            document.body.style.overflow = "hidden";
+            document.body.style.height = window.innerHeight + "px";
+
+            document.documentElement.style.overflow = "hidden";
+            document.documentElement.style.height = window.innerHeight + "px";
+
+            document.getElementById("example").style.overflow = "hidden";
+            document.getElementById("example").style.height = window.innerHeight + "px";
+
+            document.querySelector(".scrollIntoViewDOM").scrollIntoView(false);
+
+        }, 500);
+    }
+    setHeightAuto = () => {
+        this.setState({ focusScrollInput: false });
+
+        // this.state.myScroll.scrollTo(0, 0);
+
+        // let myScroll = this.state.myScroll;
+        // myScroll.destroy();
+        // myScroll = null;
+
+        document.body.style.overflow = "auto";
+        document.body.style.height = "100%";
+
+        document.documentElement.style.overflow = "auto";
+        document.documentElement.style.height = "100%";
+
+        document.getElementById("example").style.overflow = "auto";
+        document.getElementById("example").style.height = "100%";
+    }
+    handleTouchPage = (e) => {
+        if (this.state.focusScrollInput) {
+            // this.refs["showControlCode"].blur();
+            document.querySelector(".scrollIntoViewDOM input").blur();
+        }
+        if (this.state.focusScrollTextarea) {
+            // this.refs["showControlCode"].blur();
+            if ((e.target.tagName).toLowerCase() == "textarea") {
+                let textareaHeight = document.querySelector(".opinion .am-textarea-control textarea").clientHeight
+                if (textareaHeight >= 200) {
+                    return;
+                }
+            }
+            document.querySelector(".opinion textarea").blur();
+        }
+    }
     render() {
         return (
             <QueueAnim
                 type="right"
                 duration="500"
                 ease="easeOutBack"
+                onEnd={(e) => { document.getElementsByClassName("page-login")[0].style.transform = "initial" }}
             >
-                <div key="1" className="page-login page-feedback">
+                <div key="1" className="page-login page-feedback" onTouchStart={this.handleTouchPage}>
                     <NavBar
+                        className="fixed-NavBar"
                         style={{ "background-color": "#000" }}
                         mode="light"
                         icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                         onLeftClick={() => hashHistory.goBack()}
                     >意见反馈</NavBar>
-                    <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
-                        <p className="title">问题和意见</p>
-                        <TextareaItem
-                            className="opinion"
-                            rows={8}
-                            count={200}
-                            placeholder="请简述您遇到的问题，或留下您的宝贵意见"
-                            value={this.state.opinionTxt}
-                            onChange={(val) => { this.setState({ opinionTxt: val }) }}
-                        />
-                    </WingBlank>
-                    <div className="segmenting-line"></div>
-                    <WingBlank className="page-login-WingBlank" size="lg" >
-                        <p className="title">手机号</p>
-                        <InputItem
-                            className="phone"
-                            type="number"
-                            maxLength="11"
-                            placeholder="选填，便于我们及时回复您"
-                            value={this.state.phone}
-                            onChange={(val) => { this.setState({ phone: val }) }}
-                        />
-                        <WhiteSpace className="page-login-WhiteSpace" size="xs" style={{ "margin-top": "2rem" }} />
-                        <Button onClick={this.onClickSubmit} className="page-login-bottom">提交</Button>
-                    </WingBlank>
+                    <div className="backgroud-fixed-NavBar"></div>
+                    {/* <div id="wrapper" className="main-scroll">
+                        <div id="scroller"> */}
+                            <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
+                                <p className="title">问题和意见</p>
+                                <TextareaItem
+                                    className="opinion"
+                                    // rows={8}
+                                    autoHeight
+                                    count={200}
+                                    placeholder="请简述您遇到的问题，或留下您的宝贵意见"
+                                    value={this.state.opinionTxt}
+                                    onChange={(val) => { this.setState({ opinionTxt: val }) }}
+                                    onFocus={() => { this.setState({ focusScrollTextarea: true}) }}
+                                    onBlur={() => { this.setState({ focusScrollTextarea: false }) }}
+                                />
+                            </WingBlank>
+                            <div className="segmenting-line"></div>
+                            <WingBlank className="page-login-WingBlank" size="lg" >
+                                <p className="title">手机号</p>
+                                <InputItem
+                                    className="phone scrollIntoViewDOM"
+                                    type="number"
+                                    maxLength="11"
+                                    placeholder="选填，便于我们及时回复您"
+                                    value={this.state.phone}
+                                    onChange={(val) => { this.setState({ phone: val }) }}
+                                    onFocus={this.focusScrollInput}
+                                    onBlur={this.setHeightAuto}
+                                />
+                                <WhiteSpace className="page-login-WhiteSpace" size="xs" style={{ "margin-top": "2rem" }} />
+                                <Button onClick={this.onClickSubmit} className="page-login-bottom">提交</Button>
+                            </WingBlank>
+                        {/* </div>
+                    </div> */}
                 </div>
             </QueueAnim>
         )

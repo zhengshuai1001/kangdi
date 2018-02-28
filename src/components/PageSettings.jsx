@@ -1,6 +1,6 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
-import { WingBlank, NavBar, Icon, List } from 'antd-mobile';
+import { WingBlank, NavBar, Icon, List, Toast } from 'antd-mobile';
 
 export default class PageSettings extends React.Component {
     constructor(props) {
@@ -9,6 +9,9 @@ export default class PageSettings extends React.Component {
     onClickList(e) {
         let path = `/${e}`;
         hashHistory.push(path); 
+    }
+    componentDidMount() {
+        Toast.hide()
     }
     render() {
         return (

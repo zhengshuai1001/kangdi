@@ -69,9 +69,34 @@ export default class PageLogin extends React.Component {
             }, this.handleLogin, false);
         }
     }
+    componentDidMount() {
+        Toast.hide()
+    }
+    onClickInputEye = (state) => {
+        this.setState({ [state]: !this.state[state] })
+        this.refs[state].focus();
+        Toast.hide();
+    }
+    focusScrollInput = () => {
+        this.setState({ focusScroll: true });
+        let token = setTimeout(() => {
+            if (window.innerHeight < 400) {
+                document.querySelector(".scrollIntoViewDOM").scrollIntoView(false);
+            }
+            clearTimeout(token);
+        }, 500);
+    }
+    handleTouchPage = (e) => {
+        if (this.state.focusScroll) {
+            for (let i = 0; i < document.getElementsByTagName("input").length; i++) {
+                const element = document.getElementsByTagName("input")[i];
+                element.blur();
+            }
+        }
+    }
     render(){
         return (
-            <div key="1" className="page-login">
+            <div key="1" className="page-login" onTouchStart={this.handleTouchPage}>
                 <div className="page-login-bg-div">
                     <img className="page-login-bg-img" src={require('../images/backgroundLogin.png')} />
                 </div>
@@ -82,20 +107,24 @@ export default class PageLogin extends React.Component {
                         maxLength="11"
                         value = {this.state.account}
                         onChange={(val) => { this.setState({ account: val }) }}
-                        onBlur={(val) => { this.testAccount(val) }}
+                        onBlur={(val) => { this.testAccount(val), this.setState({ focusScroll: false }) }}
+                        onFocus={() => { this.setState({ focusScroll: true }) }}
                     >
                         <img className="page-login-account-img" src={require('../images/page-login-account.png')} />
                     </InputItem>
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
                         // type="password"
+                        ref="showControlCode"
                         type={this.state.showControlCode ? "number" : "password"}
-                        extra={<img onClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                        extra={<img onClick={() => { this.onClickInputEye("showControlCode")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                         placeholder="请输入密码"
                         maxLength="20"
                         value={this.state.password}
                         onChange={(val) => { val = val.trim(); this.setState({ password: val }) }}
-                        onBlur={(val) => { this.testPassword(val) }}
+                        onBlur={(val) => { this.testPassword(val), this.setState({ focusScroll: false }) }}
+                        onFocus={this.focusScrollInput}
+                        className="scrollIntoViewDOM"
                     >
                         <img className="page-login-password-img" src={require('../images/page-login-password.png')} />
                     </InputItem>

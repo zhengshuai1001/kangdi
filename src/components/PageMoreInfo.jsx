@@ -99,20 +99,31 @@ export default class PageMoreInfo extends React.Component {
             
         }
     } 
+    handleTouchPage = (e) => {
+        if (this.state.focusScroll) {
+            for (let i = 0; i < document.getElementsByTagName("input").length; i++) {
+                const element = document.getElementsByTagName("input")[i];
+                element.blur();
+            }
+        }
+    }
     render() {
         return (
             <QueueAnim
                 type="right"
                 duration="500"
                 ease="easeOutBack"
+                onEnd={(e) => { document.getElementsByClassName("page-login")[0].style.transform = "initial" }}
             >
-            <div key="1" className="page-register page-login">
+            <div key="1" className="page-register page-login" onTouchStart={this.handleTouchPage}>
                 <NavBar
+                    className="fixed-NavBar"
                     style={{ "background-color": "#000" }}
                     mode="light"
                     icon={<Icon type="left" size="lg" style={{ "color": "#fff" }} />}
                     onLeftClick={() => hashHistory.goBack()}
                 >完善资料</NavBar>
+                <div className="backgroud-fixed-NavBar"></div>
                 <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
                     <InputItem
                         type="string"
@@ -120,7 +131,8 @@ export default class PageMoreInfo extends React.Component {
                         maxLength="20"
                         value={this.state.nick_name}
                         onChange={(val) => { this.setState({ nick_name: val }) }}
-                        onBlur={(val) => { this.testNickName(val) }}
+                        onBlur={(val) => { this.testNickName(val), this.setState({ focusScroll: false }) }}
+                        onFocus={() => { this.setState({ focusScroll: true }) }}
                         clear
                     >
                         <img className="page-login-account-img" src={require('../images/page-moreInfo-nickName.png')} />
@@ -130,7 +142,8 @@ export default class PageMoreInfo extends React.Component {
                         type="string"
                         value={this.state.full_name}
                         onChange={(val) => { this.setState({ full_name: val }) }}
-                        onBlur={(val) => { this.testFullName(val) }}
+                        onBlur={(val) => { this.testFullName(val), this.setState({ focusScroll: false }) }}
+                        onFocus={() => { this.setState({ focusScroll: true }) }}
                         placeholder="请输入姓名"
                         maxLength="20"
                         clear
@@ -144,7 +157,8 @@ export default class PageMoreInfo extends React.Component {
                         maxLength="18"
                         value={this.state.ID_number}
                         onChange={(val) => { this.setState({ ID_number: val }) }}
-                        onBlur={(val) => { this.testIDNumber(val) }}
+                        onBlur={(val) => { this.testIDNumber(val), this.setState({ focusScroll: false }) }}
+                        onFocus={() => { this.setState({ focusScroll: true }) }}
                         clear
                     >
                         <img className="page-login-password-img" src={require('../images/page-moreInfo-IDNumber.png')} />

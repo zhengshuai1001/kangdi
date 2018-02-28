@@ -37,6 +37,8 @@ export default class PageMyCarLogin extends React.Component {
             car_no:"",
             show_car_model_list: false,
             show_vincode_list: false,
+            focusScrollInput: false, //判断页面下半部分的输入框是否focus，如果是，页面要大变。
+
         }
         //发送完后车辆查询后的处理函数
         this.handleChangePassword = (req) => {
@@ -78,6 +80,7 @@ export default class PageMyCarLogin extends React.Component {
     componentDidMount() {
         //发送ajax获取车辆信息
         runPromise("carOwner", {}, this.handleChangePassword); 
+        Toast.hide();
     }
     //处理得到的车辆信息对象数组，提取出车型的数组
     getCarModelList(data) {
@@ -195,13 +198,59 @@ export default class PageMyCarLogin extends React.Component {
             }
         });
     }
+    onClickInputEye = (state) => {
+        this.setState({ [state]: !this.state[state] })
+        this.refs[state].focus();
+        Toast.hide();
+    }
+    focusScrollInput = () => {
+        this.setState({ focusScrollInput: true});
+
+        let token = setTimeout(() => {
+            if (window.innerHeight < 470) { }
+            document.body.style.overflow = "hidden";
+            document.body.style.height = window.innerHeight + "px";
+
+            document.documentElement.style.overflow = "hidden";
+            document.documentElement.style.height = window.innerHeight + "px";
+
+            document.getElementById("example").style.overflow = "hidden";
+            document.getElementById("example").style.height = window.innerHeight + "px";
+
+            document.querySelector(".scrollIntoViewDOM").scrollIntoView(false);
+            
+            clearTimeout(token);
+        }, 500);
+    }
+    setHeightAuto = () => {
+        this.setState({ focusScrollInput: false });
+
+        document.body.style.overflow = "auto";
+        document.body.style.height = "100%";
+
+        document.documentElement.style.overflow = "auto";
+        document.documentElement.style.height = "100%";
+
+        document.getElementById("example").style.overflow = "auto";
+        document.getElementById("example").style.height = "100%";
+    }
+    handleTouchPage = () => {
+        if (this.state.focusScrollInput) {
+            // this.refs["showControlCode"].blur();
+            document.querySelector(".scrollIntoViewDOM input").blur();
+        }
+    }
     render() {
         return (
-            <div key="1" className="page-login">
+            <div key="1" className="page-login"
+                onTouchStart={this.handleTouchPage}
+            >
                 <NavBar
+                    className="fixed-NavBar"
                     style={{ "background-color": "#000" }}
                     mode="light"
                 >我的车辆</NavBar>
+                <div className="backgroud-fixed-NavBar"></div>
                 <div className="page-login-bg-div" style={{"height":"15rem"}}>
                     <img style={{ "padding-top": "10%" }} className="page-login-bg-img" src={require('../images/backgroundLogin.png')} />
                 </div>
@@ -239,24 +288,27 @@ export default class PageMyCarLogin extends React.Component {
                     <DropDownList show={this.state.show_vincode_list} list={this.state.data_vincode_list} onActive={this.onActiveVincode} />
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
+                        ref="showControlCode"
                         type={this.state.showControlCode ? "number" : "password"}
                         pattern="[0-9]*"
                         placeholder="请输入车辆控制码"
                         maxLength="6"
                         value={this.state.controlCode}
                         onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ controlCode: val }) }}
-                        onBlur={(val) => { this.test_controlCode(val) }}
+                        onBlur={(val) => { this.test_controlCode(val), this.setHeightAuto() }}
                         // extra={<img className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                         // onExtraClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }}
-                        extra={<img onClick={() => { this.setState({ showControlCode: !this.state.showControlCode }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}                        
+                        extra={<img onClick={() => { this.onClickInputEye("showControlCode") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}                        
+                        onFocus={this.focusScrollInput}
+                        className="scrollIntoViewDOM"
                     >
                         <img style={{"width":"26px"}} className="page-login-password-img" src={require('../images/page-myCar-lock.png')} />
                     </InputItem>
-                    <Flex style={{ "margin-top": "1rem" }}>
-                        <Flex.Item onClick={this.handleRememberControlCode} style={{ "textAlign": "left", "paddingLeft": "1rem", "color": "#b3aeae", "font-size": "1.4rem" }}><span className="check-mark-span"><img style={{ "visibility": "hidden"}} ref="checkMarkImg" src={require('../images/check-mark-icon.png')}/></span>记住车辆控制码</Flex.Item>
-                        <Flex.Item style={{ "textAlign": "right", "paddingRight": "1rem" }}><Link style={{ "color": "#b3aeae" }} to={{ pathname: "/forgetPassword", query: { form: 'myCarLogin' } }}>忘记控制码？</Link></Flex.Item>
-                    </Flex>
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
+                    <Flex style={{ "margin-top": "0rem" }}>
+                        <Flex.Item onClick={this.handleRememberControlCode} style={{ "textAlign": "left", "paddingLeft": "1rem", "color": "#b3aeae", "font-size": "1.4rem", "visibility":"hidden" }}><span className="check-mark-span"><img style={{ "visibility": "hidden"}} ref="checkMarkImg" src={require('../images/check-mark-icon.png')}/></span>记住车辆控制码</Flex.Item>
+                        <Flex.Item style={{ "textAlign": "right", "paddingRight": "0rem" }}><Link style={{ "color": "#b3aeae" }} to={{ pathname: "/forgetPassword", query: { form: 'myCarLogin' } }}>忘记控制码？</Link></Flex.Item>
+                    </Flex>  
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <Button onClick={this.onClickNext} className="page-login-bottom">下一步</Button>
                     <p className="what-is-control-code" onClick={this.clickControl} >什么是车辆控制码？</p>

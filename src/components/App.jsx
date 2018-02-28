@@ -1,6 +1,6 @@
 import React from 'react';
 import { hashHistory } from 'react-router';
-import { TabBar } from 'antd-mobile';
+import { TabBar, Toast } from 'antd-mobile';
 
 
 export default class App extends React.Component {
@@ -23,6 +23,9 @@ export default class App extends React.Component {
     }
     shouldComponentUpdate() {
         return this.props.router.location.action === 'POP';
+    }
+    componentDidMount() {
+        Toast.hide();
     }
     render() {
         return (

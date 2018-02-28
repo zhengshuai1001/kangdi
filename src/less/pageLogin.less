@@ -107,7 +107,7 @@ html {
 .am-wingblank.am-wingblank-lg.page-login-WingBlank{
     margin-left: 2rem;
     margin-right: 2rem;
-    position: relative;
+    // position: relative;
 }
 .am-whitespace.am-whitespace-xs.page-login-WhiteSpace{
     height: 1.5rem;
@@ -1055,11 +1055,11 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     top: 50%;
     margin-top: -60px;
 }
-.input-text-security{
-    text-security:disc;
-    -webkit-text-security:disc;
-    -mox-text-security:disc;
-}
+// .input-text-security{
+//     text-security:disc;
+//     -webkit-text-security:disc;
+//     -mox-text-security:disc;
+// }
 .remote-meter-navbar.am-navbar{
     position: fixed;
     width: 100%;
@@ -1239,6 +1239,7 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     position: relative;
     top: -10px;
     background-size: 26px 26px;
+    border: none;
 }
 .am-navbar-light .am-navbar-right{
     position: relative;
@@ -1267,4 +1268,59 @@ html:not([data-scale]) .my-car-tabs .am-tabs-default-bar-top .am-tabs-default-ba
     top: 0;
     width: 100vw;
     height: 61vw;
+}
+.am-navbar.fixed-NavBar{
+    // position: fixed;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    z-index: 30;
+}
+.backgroud-fixed-NavBar{
+    height: 65px;
+}
+.div-fixed-NavBar{
+    // position: fixed;
+    // width: 100%;
+    // top: 65px;
+}
+.position-absolute{
+    position: absolute!important;
+    // position: fixed!important;
+    top: 50px!important;
+}
+#example, .container {
+    // height: auto!important;
+}
+// .page-login-WingBlank .am-list-item .am-input-control input{
+//     width: 120%;
+// }
+.main-scroll{
+    position: absolute;
+    width: 100%;
+    top: 65px;
+    bottom: 0;
+}
+.am-textarea-has-count .am-textarea-count{
+    bottom: 20px;
+}
+.opinion .am-textarea-control{
+    height: 200px;
+}
+.opinion .am-textarea-control textarea{
+    max-height: 200px;
+    min-height: 170px;
+    overflow-y: scroll;
+}
+.am-tabs-tab-bar-wrap{
+    background-color: #000;
+}
+.car-status-box{
+    height: 100%;
+}
+.car-status-box>div:not(.container-app){
+    height: 100%;
+}
+.page-login{
+    height: 100%;
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { hashHistory, Link } from "react-router";
-import { Accordion, NavBar, Carousel, WingBlank, Button } from "antd-mobile";
+import { Accordion, NavBar, Carousel, WingBlank, Button, Toast } from "antd-mobile";
 import { runPromise } from '../common/promise';
 
 // const imgUrl = [
@@ -45,7 +45,7 @@ export default class PageUseHelp2 extends React.Component {
         // simulate img loading
         //发送ajax获取使用帮助的文本
         runPromise("appHelp", {}, this.handleUseHelp, true);
-
+        Toast.hide();
         
     }
     handleTouchCard = (index) => {

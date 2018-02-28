@@ -11,9 +11,6 @@ export default class PageModifyControlCodeSecond extends React.Component {
             oldControlCode: '',
             newControlCode: '',
             confirmControlCode: '',
-            showControlCode0: false,
-            showControlCode1: false,
-            showControlCode2: false,
         }
         //发送完成修改控制码后的处理函数
         this.handleControlCode = (req) => {
@@ -81,6 +78,19 @@ export default class PageModifyControlCodeSecond extends React.Component {
 
         }
     }
+    onClickInputEye = (state) => {
+        this.setState({ [state]: !this.state[state] })
+        this.refs[state].focus();
+        Toast.hide();
+    }
+    handleTouchPage = (e) => {
+        if (this.state.focusScroll) {
+            for (let i = 0; i < document.getElementsByTagName("input").length; i++) {
+                const element = document.getElementsByTagName("input")[i];
+                element.blur();
+            }
+        }
+    }
     render() {
         return (
             <QueueAnim
@@ -88,7 +98,7 @@ export default class PageModifyControlCodeSecond extends React.Component {
                 duration="500"
                 ease="easeOutBack"
             >
-                <div key="1" className="page-register page-login">
+                <div key="1" className="page-register page-login" onTouchStart={this.handleTouchPage}>
                     <NavBar
                         style={{ "background-color": "#000" }}
                         mode="light"
@@ -98,45 +108,51 @@ export default class PageModifyControlCodeSecond extends React.Component {
                     <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
                         <InputItem
                             // type="number"
+                            ref="showControlCode0"
                             type={this.state.showControlCode0 ? "number" : "password"}
-                            extra={<img onClick={() => { this.setState({ showControlCode0: !this.state.showControlCode0 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode0") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="请输入原控制码"
                             maxLength="6"
                             value={this.state.oldControlCode}
                             onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ oldControlCode: val }) }}
-                            onBlur={(val) => { this.testOldControlCode(val) }}
+                            onBlur={(val) => { this.testOldControlCode(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-modify-control-code.png')} />
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
                             // type="number"
+                            ref="showControlCode1"
                             type={this.state.showControlCode1 ? "number" : "password"}
-                            extra={<img onClick={() => { this.setState({ showControlCode1: !this.state.showControlCode1 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode1") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="设置新控制码"
                             maxLength="6"
                             value={this.state.newControlCode}
                             onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ newControlCode: val }) }}
-                            onBlur={(val) => { this.testNewControlCode(val) }}
+                            onBlur={(val) => { this.testNewControlCode(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-modify-control-code.png')} />
                         </InputItem>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
                             // type="number"
+                            ref="showControlCode2"
                             type={this.state.showControlCode2 ? "number" : "password"}
-                            extra={<img onClick={() => { this.setState({ showControlCode2: !this.state.showControlCode2 }) }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode2") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="确认新控制码"
                             maxLength="6"
                             value={this.state.confirmControlCode}
                             onChange={(val) => { val = val.trim(); isNaN(val) ? "" : this.setState({ confirmControlCode: val }) }}
-                            onBlur={(val) => { this.testConfirmControlCode(val) }}
+                            onBlur={(val) => { this.testConfirmControlCode(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
                             <img className="page-login-password-img" src={require('../images/page-modify-control-code.png')} />
                         </InputItem>

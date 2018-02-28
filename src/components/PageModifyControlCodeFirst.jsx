@@ -32,9 +32,9 @@ export default class PageModifyControlCodeFirst extends React.Component {
         }
     }
     testSMSCode(val, noLimitSMSCode = false) {
-        if (this.state.SMSTxt === "获取验证码" || noLimitSMSCode) {
+        if (this.state.SMSCodeTxt === "获取验证码" || noLimitSMSCode) {
             if (!(/^\d{6}$/.test(val))) {
-                Toast.info("请输入6位数字短信验证码！", 2);
+                Toast.info("请输入6位数字短信验证码！", 1);
                 return false;
             } else {
                 return true;
@@ -80,6 +80,17 @@ export default class PageModifyControlCodeFirst extends React.Component {
             });
         }
     }
+    componentDidMount() {
+        Toast.hide();
+    }
+    handleTouchPage = (e) => {
+        if (this.state.focusScroll) {
+            for (let i = 0; i < document.getElementsByTagName("input").length; i++) {
+                const element = document.getElementsByTagName("input")[i];
+                element.blur();
+            }
+        }
+    }
     render() {
         return (
             <QueueAnim
@@ -87,7 +98,7 @@ export default class PageModifyControlCodeFirst extends React.Component {
                 duration="500"
                 ease="easeOutBack"
             >
-                <div key="1" className="page-register page-login">
+                <div key="1" className="page-register page-login" onTouchStart={this.handleTouchPage}>
                     <NavBar
                         style={{ "background-color": "#000" }}
                         mode="light"
@@ -101,7 +112,8 @@ export default class PageModifyControlCodeFirst extends React.Component {
                             maxLength="11"
                             value={this.state.phone}
                             onChange={(val) => { this.setState({ phone: val }) }}
-                            onBlur={(val) => { this.testPhone(val) }}
+                            onBlur={(val) => { this.testPhone(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                             clear
                         >
                             <img className="page-login-account-img" src={require('../images/page-login-phone.png')} />
@@ -114,7 +126,8 @@ export default class PageModifyControlCodeFirst extends React.Component {
                             onChange={(val) => { this.setState({ SMSCode: val }) }}
                             placeholder="请输入验证码"
                             maxLength="6"
-                            onBlur={(val) => { this.testSMSCode(val) }}
+                            onBlur={(val) => { this.testSMSCode(val), this.setState({ focusScroll: false }) }}
+                            onFocus={() => { this.setState({ focusScroll: true }) }}
                             // extra={<span>{this.state.SMSCodeTxt}</span>}
                             // onExtraClick={() => { this.handleSMSCode() }}
                             extra={<span onClick={() => { this.handleSMSCode() }} >{this.state.SMSCodeTxt}</span>}
