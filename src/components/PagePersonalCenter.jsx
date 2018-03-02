@@ -138,6 +138,7 @@ export default class PagePersonalCenter extends React.Component {
         localStorage.removeItem("vincode");
         // localStorage.removeItem("controlCode");
         localStorage.removeItem("car_no");
+        localStorage.removeItem("firstEntryPageUseHelpDetail");
         //跳转到登录页
         hashHistory.push({
             pathname: '/login',

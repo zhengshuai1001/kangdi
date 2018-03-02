@@ -133,6 +133,7 @@ export default class PageForgetPassword extends React.Component {
         }
     }
     componentDidMount(){
+        Toast.hide();
         if (this.props.location.query.form == "myCarLogin") {
             this.setState({
                 passwordLength: 6,
@@ -143,7 +144,12 @@ export default class PageForgetPassword extends React.Component {
     }
     onClickInputEye = (state) => {
         this.setState({ [state]: !this.state[state] })
-        this.refs[state].focus();
+        // this.refs[state].focus();
+        let oldPassword = this.state.password;
+        this.setState({ password: '' }, () => {
+            this.refs[state].focus();
+            this.setState({ password: oldPassword })
+        });
         Toast.hide();
     }
     handleTouchPage = (e) => {
@@ -170,7 +176,9 @@ export default class PageForgetPassword extends React.Component {
                 >{this.state.NavBarTitle}</NavBar>
                 <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
                     <InputItem
-                        type="number"
+                        // type="number"
+                        type="tel"
+                        pattern="[0-9]*"
                         placeholder="请输入手机号"
                         maxLength="11"
                         value={this.state.phone}
@@ -184,7 +192,9 @@ export default class PageForgetPassword extends React.Component {
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
                         className="SMSInput"
-                        type="number"
+                        // type="number"
+                        type="tel"
+                        pattern="[0-9]*"
                         value={this.state.SMSCode}
                         onChange={(val) => { this.setState({ SMSCode: val }) }}
                         placeholder="请输入验证码"
@@ -201,7 +211,7 @@ export default class PageForgetPassword extends React.Component {
                     <InputItem
                         // type="password"
                         ref="showControlCode"
-                        type={this.state.showControlCode ? "text" : "password"}
+                        type={this.state.showControlCode ? "string" : "password"}
                         extra={<img onClick={() => { this.onClickInputEye("showControlCode") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                         placeholder={this.state.NewPasswordPlaceholder}
                         maxLength={this.state.passwordLength}

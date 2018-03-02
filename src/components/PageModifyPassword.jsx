@@ -68,9 +68,14 @@ export default class PageModifyPassword extends React.Component {
 
         }
     }
-    onClickInputEye = (state) => {
+    onClickInputEye = (state, inputValueState) => {
         this.setState({ [state]: !this.state[state] })
-        this.refs[state].focus();
+        // this.refs[state].focus();
+        let oldPassword = this.state[inputValueState];
+        this.setState({ [inputValueState]: '' }, () => {
+            this.refs[state].focus();
+            this.setState({ [inputValueState]: oldPassword })
+        });
         Toast.hide();
     }
     handleTouchPage = (e) => {
@@ -100,8 +105,8 @@ export default class PageModifyPassword extends React.Component {
                         <InputItem
                             // type="password"
                             ref="showControlCode0"
-                            type={this.state.showControlCode0 ? "text" : "password"}
-                            extra={<img onClick={() => { this.onClickInputEye("showControlCode0")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            type={this.state.showControlCode0 ? "string" : "password"}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode0", "oldPassword")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="请输入原密码"
                             maxLength="20"
                             value={this.state.oldPassword}
@@ -115,8 +120,8 @@ export default class PageModifyPassword extends React.Component {
                         <InputItem
                             // type="password"
                             ref="showControlCode1"
-                            type={this.state.showControlCode1 ? "text" : "password"}
-                            extra={<img onClick={() => { this.onClickInputEye("showControlCode1")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            type={this.state.showControlCode1 ? "string" : "password"}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode1", "newPassword")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="设置新密码"
                             maxLength="20"
                             value={this.state.newPassword}
@@ -130,8 +135,8 @@ export default class PageModifyPassword extends React.Component {
                         <InputItem
                             // type="password"
                             ref="showControlCode2"
-                            type={this.state.showControlCode2 ? "text" : "password"}
-                            extra={<img onClick={() => { this.onClickInputEye("showControlCode2") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            type={this.state.showControlCode2 ? "string" : "password"}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode2", "confirmNewPassword") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             placeholder="确认新密码"
                             maxLength="20"
                             value={this.state.confirmNewPassword}

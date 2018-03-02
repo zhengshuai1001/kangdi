@@ -74,7 +74,35 @@ export default class PageLogin extends React.Component {
     }
     onClickInputEye = (state) => {
         this.setState({ [state]: !this.state[state] })
-        this.refs[state].focus();
+        // let Input = ReactDOM.findDOMNode(this.refs[state]);
+        // let obj = Input.querySelector("input"); //获取input原生对象
+        // let value = obj.value;
+        // obj.value = "";
+        // this.refs[state].focus();
+        // obj.value = "25652565";
+        // console.log(obj);
+        // console.log(obj.value);
+        // let txt = obj.createTextRange(); 
+        // console.log(event.srcElement);
+        // console.log(obj);
+        // var rng = document.selection.createRange(); 
+        // console.log(rng);
+        // let range = document.createRange();
+        // range.selectNode(obj);
+        // window.getSelection().addRange(range);
+        // console.log(obj.value.length);
+        // console.log(range);
+        // range.setStart(obj, obj.value.length);
+        // range.setEnd(obj, obj.value.length);
+        // range.move("character", obj.value);  
+        // range.collapse(true);
+        // range.select(); 
+
+        let oldPassword = this.state.password;
+        this.setState({ password: ''},()=>{
+            this.refs[state].focus();
+            this.setState({ password: oldPassword})
+        });
         Toast.hide();
     }
     focusScrollInput = () => {
@@ -102,7 +130,8 @@ export default class PageLogin extends React.Component {
                 </div>
                 <WingBlank className="page-login-WingBlank" size="lg">
                     <InputItem
-                        type="number"
+                        type="tel"
+                        pattern="[0-9]*" 
                         placeholder="请输入您的手机号"
                         maxLength="11"
                         value = {this.state.account}
@@ -116,7 +145,7 @@ export default class PageLogin extends React.Component {
                     <InputItem
                         // type="password"
                         ref="showControlCode"
-                        type={this.state.showControlCode ? "number" : "password"}
+                        type={this.state.showControlCode ? "string" : "password"}
                         extra={<img onClick={() => { this.onClickInputEye("showControlCode")  }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                         placeholder="请输入密码"
                         maxLength="20"

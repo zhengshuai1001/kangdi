@@ -110,7 +110,7 @@ export default class CarStatus extends React.Component {
             document.querySelector(".am-tabs-tab-bar-wrap .am-tab-bar-bar").style.marginBottom = api.safeArea.bottom + 'px';
             document.querySelector(".am-button.feedbackButton").style.bottom = "7.5rem";
         }
-
+        
     }
     startQueryCarStatus = () => {
         clearTimeout(this.state.tokenSetTimeout);

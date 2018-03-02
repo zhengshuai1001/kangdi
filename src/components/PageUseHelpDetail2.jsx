@@ -27,76 +27,26 @@ const PDFUrl2 = [
 let u = navigator.userAgent;
 let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
 
-export default class PageUseHelpDetail extends React.Component {
+export default class PageUseHelpDetail2 extends React.Component {
     constructor(props) {
         super(props)
         this.state= {
             navBarTitle: "帮助详情",
             openPdfReader: false,
         }
-        this.pdfReader = api.require('pdfReader');
+        // this.pdfReader = api.require('pdfReader');
     }
     componentDidMount() {
+        Toast.hide();
         let name = this.props.location.state.name;
-        this.setState({ navBarTitle: name });
-
         // let doc_url = decodeURI(this.props.location.state.doc_url);
-        
+
         let doc_url = "";
         let form = this.props.location.query.form;
         if (form == "pageMyCarLogin") {
             doc_url = PDFUrl2[0];
         } else {
             doc_url = decodeURI(this.props.location.state.doc_url);
-        }
-        let then = this;
-        this.pdfReader.openView({
-            rect: {
-                x: 0,
-                y: 65,
-                w: 'auto',
-                h: 'auto'
-            },
-            path: doc_url,
-            fixed: true
-        }, function (ret) {
-            if (isiOS) {
-                if (ret.eventType == 'show') {
-                    then.setState({ openPdfReader: true });
-                    if (then.props.location.pathname != "/useHelpDetail") {
-                        then.pdfReader.closeView()
-                    }
-                }
-            }
-        }); 
-
-        if (form == "pageMyCarLogin") {
-            doc_url = PDFUrl2[0];
-            Toast.hide();
-            this.openPdfReader(false);
-        } else {
-            let entryIndex = this.props.location.state.index; //判断进入的是第几个
-            //判断当前PDF是不是第一次打开。
-            let FirstEntryPDF = localStorage.getItem("firstEntryPageUseHelpDetail");
-            let entryIndexStatus = false;  //是否打开过
-            if (FirstEntryPDF) {
-                entryIndexStatus = (JSON.parse(FirstEntryPDF))[entryIndex];
-            } else {
-                return;
-            }
-            doc_url = decodeURI(this.props.location.state.doc_url);
-            if (isiOS && !entryIndexStatus) {
-                this.pdfReader.hideView(); //隐藏文档视图
-                Toast.loading('加载中...', 2, () => {
-                    this.openPdfReader(true);
-
-                    let newFirstEntryPDF = JSON.parse(FirstEntryPDF);
-                    newFirstEntryPDF[entryIndex] = true;
-                    localStorage.setItem("firstEntryPageUseHelpDetail", JSON.stringify(newFirstEntryPDF));
-                });
-            } else {
-                this.openPdfReader(false);
-            }
         }
         
         // let url = PDFUrl[0];
@@ -108,8 +58,8 @@ export default class PageUseHelpDetail extends React.Component {
         // }
         // if (name == "车辆保养项目手册") {
         //     url = decodeURI("https://www.huakewang.com/mhkw/%E4%B8%AD%E6%96%87doc.pdf");
-        // }     
-
+        // }
+        this.setState({ navBarTitle: name});
         // let then = this;
         // this.pdfReader.openView({
         //     rect: {
@@ -129,12 +79,8 @@ export default class PageUseHelpDetail extends React.Component {
         //             }
         //         }
         //     }
-        // }); 
-    }
-    openPdfReader(showView) {
-        if (showView) {
-            this.pdfReader.showView(); //显示文档视图
-        }
+        // });  
+        this.props.openPDFReader(doc_url)     
     }
     componentWillUnmount() {
         // clearTimeout(this.state.token);
@@ -151,14 +97,15 @@ export default class PageUseHelpDetail extends React.Component {
     // }
     closePage() {
         hashHistory.goBack();
-        if (isiOS) {
-            if (this.state.openPdfReader) {
-                this.pdfReader.closeView()
-            }
-        } else {
-            this.pdfReader.closeView()
-        }
+        // if (isiOS) {
+        //     if (this.state.openPdfReader) {
+        //         this.pdfReader.closeView()
+        //     }
+        // } else {
+        //     this.pdfReader.closeView()
+        // }
         // this.pdfReader.closeView();
+        this.props.closePDFReader()
     }
     render() {
         return (
@@ -181,6 +128,6 @@ export default class PageUseHelpDetail extends React.Component {
     }
 }
 
-PageUseHelpDetail.contextTypes = {
+PageUseHelpDetail2.contextTypes = {
     router: React.PropTypes.object
 };

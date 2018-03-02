@@ -28,7 +28,7 @@ export default class PageMyCarLogin extends React.Component {
             frameCode: '',
             controlCode: localStorage.getItem("controlCode") || "",
             rememberControlCode: false,
-            showControlCode: false,
+            showControlCode: true,
             data:[],
             data_car_model_list: [],
             data_car_model_selected:"",
@@ -200,7 +200,12 @@ export default class PageMyCarLogin extends React.Component {
     }
     onClickInputEye = (state) => {
         this.setState({ [state]: !this.state[state] })
-        this.refs[state].focus();
+        // this.refs[state].focus();
+        let oldPassword = this.state.controlCode;
+        this.setState({ controlCode: '' }, () => {
+            this.refs[state].focus();
+            this.setState({ controlCode: oldPassword })
+        });
         Toast.hide();
     }
     focusScrollInput = () => {
@@ -289,7 +294,7 @@ export default class PageMyCarLogin extends React.Component {
                     <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                     <InputItem
                         ref="showControlCode"
-                        type={this.state.showControlCode ? "number" : "password"}
+                        type={this.state.showControlCode ? "tel" : "password"}
                         pattern="[0-9]*"
                         placeholder="请输入车辆控制码"
                         maxLength="6"

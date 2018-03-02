@@ -11,6 +11,9 @@ export default class PageModifyControlCodeSecond extends React.Component {
             oldControlCode: '',
             newControlCode: '',
             confirmControlCode: '',
+            showControlCode0: true,
+            showControlCode1: true,
+            showControlCode2: true,
         }
         //发送完成修改控制码后的处理函数
         this.handleControlCode = (req) => {
@@ -78,9 +81,14 @@ export default class PageModifyControlCodeSecond extends React.Component {
 
         }
     }
-    onClickInputEye = (state) => {
+    onClickInputEye = (state, inputValueState) => {
         this.setState({ [state]: !this.state[state] })
-        this.refs[state].focus();
+        // this.refs[state].focus();
+        let oldPassword = this.state[inputValueState];
+        this.setState({ [inputValueState]: '' }, () => {
+            this.refs[state].focus();
+            this.setState({ [inputValueState]: oldPassword })
+        });
         Toast.hide();
     }
     handleTouchPage = (e) => {
@@ -109,8 +117,8 @@ export default class PageModifyControlCodeSecond extends React.Component {
                         <InputItem
                             // type="number"
                             ref="showControlCode0"
-                            type={this.state.showControlCode0 ? "number" : "password"}
-                            extra={<img onClick={() => { this.onClickInputEye("showControlCode0") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            type={this.state.showControlCode0 ? "tel" : "password"}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode0","oldControlCode") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="请输入原控制码"
@@ -126,8 +134,8 @@ export default class PageModifyControlCodeSecond extends React.Component {
                         <InputItem
                             // type="number"
                             ref="showControlCode1"
-                            type={this.state.showControlCode1 ? "number" : "password"}
-                            extra={<img onClick={() => { this.onClickInputEye("showControlCode1") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            type={this.state.showControlCode1 ? "tel" : "password"}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode1", "newControlCode") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="设置新控制码"
@@ -143,8 +151,8 @@ export default class PageModifyControlCodeSecond extends React.Component {
                         <InputItem
                             // type="number"
                             ref="showControlCode2"
-                            type={this.state.showControlCode2 ? "number" : "password"}
-                            extra={<img onClick={() => { this.onClickInputEye("showControlCode2") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
+                            type={this.state.showControlCode2 ? "tel" : "password"}
+                            extra={<img onClick={() => { this.onClickInputEye("showControlCode2", "confirmControlCode") }} className="password-visible-icon" src={require('../images/password-visible-icon.png')} />}
                             className="input-text-security"
                             pattern="[0-9]*"
                             placeholder="确认新控制码"

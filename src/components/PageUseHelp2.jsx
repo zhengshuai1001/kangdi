@@ -35,7 +35,8 @@ export default class PageUseHelp2 extends React.Component {
                 this.setState({
                     useHelpData: data
                 });
-                localStorage.setItem("useHelpDefaultData",JSON.stringify(data))
+                localStorage.setItem("useHelpDefaultData",JSON.stringify(data));
+                this.initFirstEntryPDFLocalStorage(data.length);
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -49,15 +50,26 @@ export default class PageUseHelp2 extends React.Component {
         
     }
     handleTouchCard = (index) => {
-        // console.log(index);
         hashHistory.push({
             pathname: '/useHelpDetail',
             query: { form: 'pageUseHelp2' },
             state:{
                 name: this.state.useHelpData[index].name,
-                doc_url: this.state.useHelpData[index].doc_url
+                doc_url: this.state.useHelpData[index].doc_url,
+                index: index
             }
         });
+    }
+    //初始化第一次进入PDF阅读器的localStorage。首先判断本地存储是否已经有（没有管更新的问题，是个隐藏bug），有的话就不做任何操作了。
+    initFirstEntryPDFLocalStorage(length) {
+        let isHavePDFLocalStorage = localStorage.getItem("firstEntryPageUseHelpDetail");
+        if (!isHavePDFLocalStorage) {
+            let arr = [];
+            for (let i = 0; i < length; i++) {
+                arr.push(false);
+            }
+            localStorage.setItem("firstEntryPageUseHelpDetail", JSON.stringify(arr))   
+        }
     }
     onCacheImg(e, imgUrl ) {
         // console.log(e.target, imgUrl);

@@ -166,7 +166,9 @@ export default class PageFeedback extends React.Component {
                                 <p className="title">手机号</p>
                                 <InputItem
                                     className="phone scrollIntoViewDOM"
-                                    type="number"
+                                    // type="number"
+                                    type="tel"
+                                    pattern="[0-9]*"
                                     maxLength="11"
                                     placeholder="选填，便于我们及时回复您"
                                     value={this.state.phone}

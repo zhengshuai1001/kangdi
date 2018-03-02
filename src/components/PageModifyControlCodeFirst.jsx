@@ -107,7 +107,9 @@ export default class PageModifyControlCodeFirst extends React.Component {
                     >修改控制码</NavBar>
                     <WingBlank className="page-login-WingBlank" size="lg" style={{ "margin-top": "2rem" }}>
                         <InputItem
-                            type="number"
+                            // type="number"
+                            type="tel"
+                            pattern="[0-9]*" 
                             placeholder="请输入手机号"
                             maxLength="11"
                             value={this.state.phone}
@@ -121,7 +123,9 @@ export default class PageModifyControlCodeFirst extends React.Component {
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
                         <InputItem
                             className="SMSInput"
-                            type="number"
+                            // type="number"
+                            type="tel"
+                            pattern="[0-9]*" 
                             value={this.state.SMSCode}
                             onChange={(val) => { this.setState({ SMSCode: val }) }}
                             placeholder="请输入验证码"
