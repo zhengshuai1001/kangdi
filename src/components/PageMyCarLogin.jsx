@@ -3,6 +3,9 @@ import { hashHistory, Link } from 'react-router';
 import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Toast } from 'antd-mobile';
 import { runPromise } from '../common/promise';
 
+let phoneType = navigator.userAgent;
+let isiOS = !!phoneType.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
 const DropDownList = (props) => (
     <ul
         className="drop-down-list-box"
@@ -28,7 +31,7 @@ export default class PageMyCarLogin extends React.Component {
             frameCode: '',
             controlCode: localStorage.getItem("controlCode") || "",
             rememberControlCode: false,
-            showControlCode: true,
+            showControlCode: !isiOS,
             data:[],
             data_car_model_list: [],
             data_car_model_selected:"",
@@ -266,7 +269,7 @@ export default class PageMyCarLogin extends React.Component {
                         maxLength="20"
                         editable={false}
                         value={this.state.data_car_model_selected}
-                        onChange={(val) => { this.setState({ data_car_model_selected: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ data_car_model_selected: val }) }}
                         onClick={() => { this.handleClickModel() }}
                         onBlur={() => { this.setState({ show_car_model_list: false })}}
                         extra={<div className="triangle-down-icon"></div>}
@@ -282,7 +285,7 @@ export default class PageMyCarLogin extends React.Component {
                         maxLength="20"
                         editable={false}
                         value={this.state.data_vincode_selected}
-                        onChange={(val) => { this.setState({ data_vincode_selected: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ data_vincode_selected: val }) }}
                         onClick={() => { this.state.data_vincode_list.length > 0 ? this.setState({ show_vincode_list: !this.state.show_vincode_list }) : Toast.info("请先选择车型", 1) }}
                         onBlur={() => { this.setState({ show_vincode_list: false }) }}
                         extra={<div className="triangle-down-icon"></div>}

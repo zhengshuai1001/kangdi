@@ -130,7 +130,7 @@ export default class PageMoreInfo extends React.Component {
                         placeholder="请输入昵称"
                         maxLength="20"
                         value={this.state.nick_name}
-                        onChange={(val) => { this.setState({ nick_name: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ nick_name: val }) }}
                         onBlur={(val) => { this.testNickName(val), this.setState({ focusScroll: false }) }}
                         onFocus={() => { this.setState({ focusScroll: true }) }}
                         clear
@@ -141,7 +141,7 @@ export default class PageMoreInfo extends React.Component {
                     <InputItem
                         type="string"
                         value={this.state.full_name}
-                        onChange={(val) => { this.setState({ full_name: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ full_name: val }) }}
                         onBlur={(val) => { this.testFullName(val), this.setState({ focusScroll: false }) }}
                         onFocus={() => { this.setState({ focusScroll: true }) }}
                         placeholder="请输入姓名"
@@ -156,7 +156,7 @@ export default class PageMoreInfo extends React.Component {
                         placeholder="请输入您的身份证号码"
                         maxLength="18"
                         value={this.state.ID_number}
-                        onChange={(val) => { this.setState({ ID_number: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ ID_number: val }) }}
                         onBlur={(val) => { this.testIDNumber(val), this.setState({ focusScroll: false }) }}
                         onFocus={() => { this.setState({ focusScroll: true }) }}
                         clear

@@ -28,6 +28,7 @@ export default class PagePersonalCenter extends React.Component {
                     real_name: res.data.real_name || "",
                     certid: res.data.certid || "",
                     avatar: "http://47.96.17.228:9001" + res.data.header_img_url || require("../images/avatar.png")
+                    // avatar: "http://kd.hetaoyun.com/" + res.data.header_img_url || require("../images/avatar.png")
                 });               
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
@@ -83,7 +84,7 @@ export default class PagePersonalCenter extends React.Component {
             {   text: '返回',
                 onPress: () => {
                     let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
-                    propmtTouchBox.removeEventListener("ontouchstart", this.handleTouchPage, false);
+                    propmtTouchBox.removeEventListener("touchstart", this.handleTouchPage, false);
                 }
             },
             {
@@ -99,7 +100,7 @@ export default class PagePersonalCenter extends React.Component {
                         Toast.info("昵称不能为空", 1);
                     }
                     let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
-                    propmtTouchBox.removeEventListener("ontouchstart", this.handleTouchPage, false);
+                    propmtTouchBox.removeEventListener("touchstart", this.handleTouchPage, false);
                 }
             },
         ], 'default', null, ['输入昵称'], platform);
@@ -128,7 +129,7 @@ export default class PagePersonalCenter extends React.Component {
         let token = setTimeout(() => {
             let propmtTouchBox = document.querySelector(".am-modal-wrap .am-modal");
             propmtTouchBox.addEventListener("touchstart", this.handleTouchPage, false);
-            // clearTimeout(token);
+            clearTimeout(token);
         }, 500);
     }
     //退出登录

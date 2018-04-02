@@ -1,6 +1,6 @@
 import React from 'react';
 import { Toast } from 'antd-mobile';
-import { runPromise } from '../common/promise';
+import { runPromise, AjaxCancel } from '../common/promise';
 
 export default class CarStatus extends React.Component {
     constructor(props) {
@@ -60,7 +60,12 @@ export default class CarStatus extends React.Component {
         this.handleRefreshWakeup = (req) => {
             let res = req.result;
             if (res.code == 1000) {
-                Toast.success("车辆状态已更新", 1);
+                Toast.success("车辆状态已更新", 1, ()=>{
+                    // 取消请求
+                    AjaxCancel();
+                    //重新发起汽车数据查询请求
+                    this.startQueryCarStatus();
+                });
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -101,6 +106,8 @@ export default class CarStatus extends React.Component {
             then.setState({
                 sendAjax: true
             });
+            // 取消请求
+            AjaxCancel();
             then.startQueryCarStatus();
         });
         //判断是不是iPhone X，他又一个安全区的概念。

@@ -48,6 +48,10 @@ export default class PageLogin extends React.Component {
 
     testPassword(val) {
         let value = val.replace(" ", "");
+        if (value.length < 6) {
+            Toast.info("登陆密码不得少于6位", 1);
+            return false;
+        }
         if (!(/^.{1,20}$/.test(value))) {
             Toast.info("请输入正确密码", 1);
             return false;
@@ -135,7 +139,7 @@ export default class PageLogin extends React.Component {
                         placeholder="请输入您的手机号"
                         maxLength="11"
                         value = {this.state.account}
-                        onChange={(val) => { this.setState({ account: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ account: val }) }}
                         onBlur={(val) => { this.testAccount(val), this.setState({ focusScroll: false }) }}
                         onFocus={() => { this.setState({ focusScroll: true }) }}
                     >

@@ -4,6 +4,9 @@ import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Icon, Toast, Mo
 import QueueAnim from 'rc-queue-anim';
 import { runPromise } from '../common/promise';
 
+let phoneType = navigator.userAgent;
+let isiOS = !!phoneType.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+
 export default class PageModifyControlCodeSecond extends React.Component {
     constructor(props) {
         super(props);
@@ -11,9 +14,9 @@ export default class PageModifyControlCodeSecond extends React.Component {
             oldControlCode: '',
             newControlCode: '',
             confirmControlCode: '',
-            showControlCode0: true,
-            showControlCode1: true,
-            showControlCode2: true,
+            showControlCode0: !isiOS,
+            showControlCode1: !isiOS,
+            showControlCode2: !isiOS,
         }
         //发送完成修改控制码后的处理函数
         this.handleControlCode = (req) => {

@@ -35,6 +35,10 @@ export default class PageRegister extends React.Component {
     }
     testPassword(val) {
         let value = val.replace(" ","");
+        if (value.length < 6) {
+            Toast.info("登陆密码不得少于6位", 1);
+            return false;
+        }
         if (!(/^.{1,20}$/.test(value))) {
             Toast.info("请输入正确密码", 1);
             return false;
@@ -135,7 +139,7 @@ export default class PageRegister extends React.Component {
                         placeholder="请输入手机号"
                         maxLength="11"
                         value= {this.state.phone}
-                        onChange={(val) => { this.setState({ phone: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ phone: val }) }}
                         onBlur={(val) => { this.testPhone(val), this.setState({ focusScroll: false }) }}
                         onFocus={() => { this.setState({ focusScroll: true }) }}
                         clear
@@ -165,7 +169,7 @@ export default class PageRegister extends React.Component {
                         type="tel"
                         pattern="[0-9]*"
                         value={this.state.SMSCode}
-                        onChange={(val) => { this.setState({ SMSCode: val }) }}
+                        onChange={(val) => { val = val.trim(); this.setState({ SMSCode: val }) }}
                         placeholder="请输入验证码"
                         maxLength="6"
                         onBlur={(val) => { this.testSMSCode(val), this.setState({ focusScroll: false }) }}

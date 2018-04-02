@@ -28,6 +28,10 @@ export default class PageModifyPassword extends React.Component {
     }
     testOldPassword(val) {
         let value = val.replace(" ", "");
+        if (value.length < 6) {
+            Toast.info("登陆密码不得少于6位", 1);
+            return false;
+        }
         if (!(/^.{1,20}$/.test(value))) {
             Toast.info("请输入正确密码", 1);
             return false;
@@ -37,6 +41,10 @@ export default class PageModifyPassword extends React.Component {
     }
     testNewPassword(val) {
         let value = val.replace(" ", "");
+        if (value.length < 6) {
+            Toast.info("登陆密码不得少于6位", 1);
+            return false;
+        }
         if (!(/^.{1,20}$/.test(value))) {
             Toast.info("请输入正确密码", 1);
             return false;
@@ -110,7 +118,7 @@ export default class PageModifyPassword extends React.Component {
                             placeholder="请输入原密码"
                             maxLength="20"
                             value={this.state.oldPassword}
-                            onChange={(val) => { this.setState({ oldPassword: val }) }}
+                            onChange={(val) => { val = val.trim(); this.setState({ oldPassword: val }) }}
                             onBlur={(val) => { this.testOldPassword(val), this.setState({ focusScroll: false }) }}
                             onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
@@ -125,7 +133,7 @@ export default class PageModifyPassword extends React.Component {
                             placeholder="设置新密码"
                             maxLength="20"
                             value={this.state.newPassword}
-                            onChange={(val) => { this.setState({ newPassword: val }) }}
+                            onChange={(val) => { val = val.trim(); this.setState({ newPassword: val }) }}
                             onBlur={(val) => { this.testNewPassword(val), this.setState({ focusScroll: false }) }}
                             onFocus={() => { this.setState({ focusScroll: true }) }}
                         >
@@ -140,7 +148,7 @@ export default class PageModifyPassword extends React.Component {
                             placeholder="确认新密码"
                             maxLength="20"
                             value={this.state.confirmNewPassword}
-                            onChange={(val) => { this.setState({ confirmNewPassword: val }) }}
+                            onChange={(val) => { val = val.trim(); this.setState({ confirmNewPassword: val }) }}
                             onBlur={(val) => { this.testConfirmNewPassword(val), this.setState({ focusScroll: false }) }}
                             onFocus={() => { this.setState({ focusScroll: true }) }}
                         >

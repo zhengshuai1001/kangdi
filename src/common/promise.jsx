@@ -2,7 +2,8 @@ import { hashHistory } from 'react-router';
 import { Toast } from 'antd-mobile';
 
 import axios from 'axios';
-
+let CancelToken = axios.CancelToken;
+let AjaxCancel;
 let Ajax = axios.create({
     // baseURL: 'http://kd.hetaoyun.com/api/',
     // baseURL: 'https://bird.ioliu.cn/v2?Content-Type=application/json&url=http://kd.hetaoyun.com/api/',
@@ -101,15 +102,25 @@ function runPromise(ajaxName, param, handle, mustLogin = true, mustCarLogin = fa
 //发送ajax请求通用
 function sendAjax(url, param) {
     return new Promise(function (resolve, reject) {
-        Ajax.post(url, param).then(req => {
+        // Ajax.post(url, param).then(req => {
+        Ajax.post(url, param,{
+            // url: url,
+            // data: param,
+            cancelToken: new CancelToken(function executor(c) {
+                // executor 函数接收一个 cancel 函数作为参数
+                AjaxCancel = c;
+            })
+        }).then(req => {
             if (ServerJudgeLogon(req)) {
                 resolve(req);
             }
             // resolve(req);
         }).catch(error => {
             //全局处理网络请求错误
-            // console.log(error);
-            // Toast.offline("网络错误",2)
+            // console.log(error.message);
+            if (error.message) {
+                Toast.offline("网络错误",2);
+            }
             reject(error);
         });
     });
@@ -138,4 +149,4 @@ function ServerJudgeLogon(req){
     }
 }
 
-export { runPromise };
+export { runPromise, AjaxCancel };

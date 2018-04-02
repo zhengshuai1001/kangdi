@@ -172,7 +172,7 @@ export default class PageFeedback extends React.Component {
                                     maxLength="11"
                                     placeholder="选填，便于我们及时回复您"
                                     value={this.state.phone}
-                                    onChange={(val) => { this.setState({ phone: val }) }}
+                                    onChange={(val) => { val = val.trim(); this.setState({ phone: val }) }}
                                     onFocus={this.focusScrollInput}
                                     onBlur={this.setHeightAuto}
                                 />

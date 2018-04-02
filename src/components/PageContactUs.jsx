@@ -50,15 +50,15 @@ export default class PageContactUs extends React.Component {
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">网址</span>
-                                <span onClick={(e) => this.openBrowser("http://www.kandigroup.com.cn")} className="contact-us-right">www.kandigroup.com.cn</span>
+                                <span onClick={(e) => this.openBrowser("http://www.kandigroup.com.cn")} className="contact-us-right underline">www.kandigroup.com.cn</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">联系电话</span>
-                                <span onClick={(e) => this.callPhone("057189775550")} className="contact-us-right">86-0571-89775550</span>
+                                <span onClick={(e) => this.callPhone("057189775550")} className="contact-us-right underline">86-0571-89775550</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">传真</span>
-                                <span onClick={(e) => this.callPhone("057189774235")} className="contact-us-right">86-0571-89774235</span>
+                                <span onClick={(e) => this.callPhone("057189774235")} className="contact-us-right underline">86-0571-89774235</span>
                             </List.Item>
                             {/* <List.Item>
                                 <span className="contact-us-left">Q Q </span>
