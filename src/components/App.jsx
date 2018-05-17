@@ -17,7 +17,7 @@ export default class App extends React.Component {
             this.context.router.push('/login');
         } else {
             this.setState({
-                selectedTab: this.props.location.pathname
+                selectedTab: this.props.location.pathname == "/MyCarLogin" ? "/MyCar" : this.props.location.pathname
             });
         }
     }
@@ -26,6 +26,16 @@ export default class App extends React.Component {
     }
     componentDidMount() {
         Toast.hide();
+    }
+    componentWillReceiveProps(nextProps) {
+        let token = localStorage.getItem("token");
+        if (!token) {
+            this.context.router.push('/login');
+        } else {
+            this.setState({
+                selectedTab: nextProps.location.pathname == "/MyCarLogin" ? "/MyCar" : nextProps.location.pathname
+            });
+        }
     }
     render() {
         return (

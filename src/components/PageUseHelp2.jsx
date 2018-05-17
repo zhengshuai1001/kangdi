@@ -47,6 +47,10 @@ export default class PageUseHelp2 extends React.Component {
         //发送ajax获取使用帮助的文本
         runPromise("appHelp", {}, this.handleUseHelp, true);
         Toast.hide();
+        if (/iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)) {
+            //判断是不是iPhone X，他又一个安全区的概念。
+            document.querySelector(".am-button.feedbackButton").style.bottom = "7.5rem";
+        }
         
     }
     handleTouchCard = (index) => {

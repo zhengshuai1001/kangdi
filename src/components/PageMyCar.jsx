@@ -181,12 +181,30 @@ export default class PageMyCar extends React.Component{
     }
     componentWillReceiveProps(nextProps) {
         this.setState(nextProps.carStatus)
+        let vincode = localStorage.getItem("vincode");
+        if (!vincode) {
+            //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+            hashHistory.push({
+                pathname: '/MyCarLogin',
+                query: { form: 'promise' }
+            });
+            return;
+        }
     }
     componentDidMount() {
         //发送ajax获取车辆运行数据
         // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
         //重新向后端获取车辆运行数据
         this.props.queryCarStatus();
+        let vincode = localStorage.getItem("vincode");
+        if (!vincode) {
+            //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+            hashHistory.push({
+                pathname: '/MyCarLogin',
+                query: { form: 'promise' }
+            });
+            return;
+        }
     }
     componentWillMount() {
         let vincode = localStorage.getItem("vincode");

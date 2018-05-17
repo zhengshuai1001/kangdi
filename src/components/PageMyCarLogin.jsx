@@ -34,9 +34,9 @@ export default class PageMyCarLogin extends React.Component {
             showControlCode: !isiOS,
             data:[],
             data_car_model_list: [],
-            data_car_model_selected:"",
+            data_car_model_selected: localStorage.getItem("car_model_selected") ? localStorage.getItem("car_model_selected") : "",
             data_vincode_list: [],
-            data_vincode_selected: "",
+            data_vincode_selected: localStorage.getItem("vincode_selected") ? localStorage.getItem("vincode_selected") : "",
             car_no:"",
             show_car_model_list: false,
             show_vincode_list: false,
@@ -116,6 +116,9 @@ export default class PageMyCarLogin extends React.Component {
             data_vincode_list: this.getVincodeList(car_model),
             show_car_model_list: false
         });
+        if (car_model) {
+            localStorage.setItem("car_model_selected", car_model);
+        }
     }
     //点击下拉列表的某一列
     onActiveVincode = (index) => {
@@ -133,6 +136,9 @@ export default class PageMyCarLogin extends React.Component {
             car_tail: car_tail,
             show_vincode_list: false 
         });
+        if (vincode) {
+            localStorage.setItem("vincode_selected", vincode);
+        }
     }
     test_car_model_selected(val) {
         let value = val.replace(" ", "");

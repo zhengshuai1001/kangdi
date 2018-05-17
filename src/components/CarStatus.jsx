@@ -91,31 +91,35 @@ export default class CarStatus extends React.Component {
         //     //发送ajax获取车辆运行数据
         //     runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
         // }, 5000);
-
+        
+        localStorage.setItem("vincode",""); //进入页面时，首先就清除车辆控制码
         let then = this;
-        api.addEventListener({
-            name: 'pause'
-        }, function (ret, err) {
-            then.setState({
-                sendAjax: false
-            })
-        });
-        api.addEventListener({
-            name: 'resume'
-        }, function (ret, err) {
-            then.setState({
-                sendAjax: true
-            });
-            // 取消请求
-            AjaxCancel();
-            then.startQueryCarStatus();
-        });
-        //判断是不是iPhone X，他又一个安全区的概念。
-        let isIPX = api.safeArea.top ? true : false;
-        if (isIPX) {
-            document.querySelector(".am-navbar-light.am-navbar").style.paddingTop = api.safeArea.top + 'px';
-            document.querySelector(".am-tabs-tab-bar-wrap .am-tab-bar-bar").style.marginBottom = api.safeArea.bottom + 'px';
-            document.querySelector(".am-button.feedbackButton").style.bottom = "7.5rem";
+        setTimeout(() => {
+            if (window.api) {
+                api.addEventListener({
+                    name: 'pause'
+                }, function (ret, err) {
+                    then.setState({
+                        sendAjax: false
+                    })
+                });
+                api.addEventListener({
+                    name: 'resume'
+                }, function (ret, err) {
+                    localStorage.setItem("vincode", ""); //进入前台时，首先就清除车辆控制码
+                    then.setState({
+                        sendAjax: true
+                    });
+                    // 取消请求
+                    AjaxCancel();
+                    then.startQueryCarStatus();
+                });
+            }
+        }, 500);
+        if (/iphone/gi.test(navigator.userAgent) && (screen.height == 812 && screen.width == 375)) {
+            //判断是不是iPhone X，他又一个安全区的概念。
+            document.querySelector(".am-navbar-light.am-navbar").style.paddingTop = 44 + 'px';
+            document.querySelector(".am-tabs-tab-bar-wrap .am-tab-bar-bar").style.marginBottom = 24 + 'px';
         }
         
     }
@@ -129,7 +133,7 @@ export default class CarStatus extends React.Component {
         //发送ajax唤醒车辆。
         runPromise("controlWakeup", {}, this.handleRefreshWakeup, true, true);
     }
-    render() {
+    render() { 
         return (
             <div className="car-status-box" >
                 {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus, refreshWakeup: this.refreshWakeup})}

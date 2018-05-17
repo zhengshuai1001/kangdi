@@ -37,6 +37,7 @@ export default class PageUseHelpDetail extends React.Component {
         this.pdfReader = api.require('pdfReader');
     }
     componentDidMount() {
+        this.clickKeyback(); //注册监听事件， 点击返回键
         let name = this.props.location.state.name;
         this.setState({ navBarTitle: name });
 
@@ -159,6 +160,24 @@ export default class PageUseHelpDetail extends React.Component {
             this.pdfReader.closeView()
         }
         // this.pdfReader.closeView();
+    }
+    //监听事件，点击系统返回键
+    clickKeyback = () => {
+        if (window.api) {
+            window.api.addEventListener({
+                name: 'keyback'
+            }, (ret, err) => {
+                this.closePage(); //执行关闭页面的相关操作
+            });
+        }
+    }
+    componentWillMount() {
+        //移除事件，点击系统返回键
+        if (window.api) {
+            window.api.removeEventListener({
+                name: 'keyback'
+            });
+        }
     }
     render() {
         return (

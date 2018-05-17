@@ -152,6 +152,24 @@ export default class PagePersonalCenter extends React.Component {
             element.blur();
         }
     }
+    hideRealName = (name) => {
+        // let hideStar = "";
+        // for (let i = 0; i < name.length - 1; i++) {
+        //     hideStar += "*";
+        // }
+        // return name.substring(0, 1) + hideStar;
+        if (name.length > 0) {
+            return "*" + name.substring(1, name.length);
+        } else {
+            return ""
+        }
+    }
+    hideCertid = (str) => {
+        return str.replace(/(\w)/g, function (a, b, c, d) { return (c > 9 && c < 18) ? '*' : a });
+    }
+    hidePhone = (str) => {
+        return str.replace(/(\w)/g, function (a, b, c, d) { return (c > 2 && c < 7) ? '*' : a });
+    }
     render() {
         return (
             // <QueueAnim
@@ -194,15 +212,15 @@ export default class PagePersonalCenter extends React.Component {
                         <List className="my-list">
                             <List.Item>
                                 <span className="contact-us-left">姓名</span>
-                                <span className="contact-us-right">{this.state.real_name}</span>
+                                <span className="contact-us-right">{this.hideRealName(this.state.real_name)}</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">证件号</span>
-                                <span className="contact-us-right">{this.state.certid}</span>
+                                <span className="contact-us-right">{this.hideCertid(this.state.certid)}</span>
                             </List.Item>
                             <List.Item>
                                 <span className="contact-us-left">联系方式</span>
-                                <span className="contact-us-right">{this.state.phone}</span>
+                                <span className="contact-us-right">{this.hidePhone(this.state.phone)}</span>
                             </List.Item>
                         </List>
                         <WhiteSpace className="page-login-WhiteSpace" size="xs" />
