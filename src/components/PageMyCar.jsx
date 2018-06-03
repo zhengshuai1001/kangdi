@@ -270,11 +270,11 @@ export default class PageMyCar extends React.Component{
                         rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}><span className="txt">刷新</span></Button>}
                     >我的车辆</NavBar>
                     <div className="my-car-big-box" style={{ "padding-top": "4.6rem" }}>
-                        <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" :"my-car-img-box"}>
+                        <div className={(!!~(this.state.car_tail.indexOf("K17A"))) || (!!~(this.state.car_tail.indexOf("K27"))) ? "my-car-img-box K17A" :"my-car-img-box"}>
                             <img
                                 style={{ "display": this.state.lamp ? "block" : "none" }}
                                 className="car-status-img-continued-lamp"
-                                src={!!~(this.state.car_tail.indexOf("K17A")) ? require('../images/K17/main_car_setting_effect_far_light.png') : require('../images/K12/k12_main_car_setting_effect_far_light.png')}
+                                src={(!!~(this.state.car_tail.indexOf("K17A"))) || (!!~(this.state.car_tail.indexOf("K27"))) ? require('../images/K17/main_car_setting_effect_far_light.png') : require('../images/K12/k12_main_car_setting_effect_far_light.png')}
                             />
                             <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no"): ""}</span>
                         </div>

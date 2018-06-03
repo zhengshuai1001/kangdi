@@ -25,7 +25,8 @@ const transformParam = {
     engine1: "23",
     door0: "2",
     door1: "1",
-    lamp0: "16",
+    // lamp0: "16",
+    lamp0: "13", //关灯就关小灯
     lamp1: "15",
     AirConditioner0: "2", //空调
     AirConditioner1: "1", //空调
@@ -531,7 +532,7 @@ export default class PageRemoteControl extends React.Component{
             }, this.handleControlCarAir2, true, true, state);
         }
     }
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {       
         this.setState(nextProps.carStatus)
     }
     componentDidMount() {
@@ -570,7 +571,7 @@ export default class PageRemoteControl extends React.Component{
             contrlpara: { "part": param, "para": "" }
         }, this.handleControlCarWindow, true, true);
     }
-    render() {
+    render() {      
         const doorAllClassName = `tabs-one ${this.state.door ? "active" : ""} door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
         const tabs = [
             { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
@@ -613,7 +614,7 @@ export default class PageRemoteControl extends React.Component{
                             <Flex.Item><ShortcutBtn state="AirConditioner" text="空调" imgURL={imgUrl.switch} onActive={this.onActiveAir} /></Flex.Item>
                         </Flex>
                     </div>
-                    <div className={!!~(this.state.car_tail.indexOf("K17A")) ? "my-car-img-box K17A" : "my-car-img-box"}>
+                    <div className={(!!~(this.state.car_tail.indexOf("K17A"))) || (!!~(this.state.car_tail.indexOf("K27"))) ? "my-car-img-box K17A" : "my-car-img-box"}>
                         <img 
                             style={{"display": this.state.carStatusImgShow ? "block" : "none" }}
                             className={this.state.carStatusImgClassName} 
@@ -622,7 +623,7 @@ export default class PageRemoteControl extends React.Component{
                         <img
                             style={{ "display": this.state.lamp ? "block" : "none" }}
                             className="car-status-img-continued-lamp"
-                            src={!!~(this.state.car_tail.indexOf("K17A")) ? require('../images/K17/main_car_setting_effect_far_light.png') : require('../images/K12/k12_main_car_setting_effect_far_light.png')}
+                            src={(!!~(this.state.car_tail.indexOf("K17A"))) || (!!~(this.state.car_tail.indexOf("K27"))) ? require('../images/K17/main_car_setting_effect_far_light.png') : require('../images/K12/k12_main_car_setting_effect_far_light.png')}
                         />
                         <span className="car-no-span">{localStorage.getItem("car_no") ? localStorage.getItem("car_no") : ""}</span>
                     </div>

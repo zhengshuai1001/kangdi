@@ -31,7 +31,7 @@ export default class CarStatus extends React.Component {
                         AirConditioner: data.EasData.AirConditioner,  //
                         ac: data.EasData.AC,  //
                         ptc: data.EasData.PTC,  //
-                        defrost: !!(data.EasData.WindDirection) ? 1 : 0, //
+                        defrost: data.EasData.WindDirection == 3 ? 1 : 0, //
                         acc: data.KDData.ACC, //
                         soc: data.CarData.SOC, //
                         temperature: 0, //室内温度不知道

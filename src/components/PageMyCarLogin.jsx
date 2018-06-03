@@ -175,9 +175,15 @@ export default class PageMyCarLogin extends React.Component {
             } else {
                 localStorage.removeItem("controlCode");
             }
-            localStorage.setItem("vincode", data_vincode_selected);
-            localStorage.setItem("car_no", car_no); //保存车牌号码
-            localStorage.setItem("car_tail", car_tail); //保存车辆型号
+            if (data_vincode_selected) {
+                localStorage.setItem("vincode", data_vincode_selected);
+            }
+            if (car_no) {
+                localStorage.setItem("car_no", car_no); //保存车牌号码
+            }
+            if (car_tail) {
+                localStorage.setItem("car_tail", car_tail); //保存车辆型号
+            }
             // hashHistory.push({
             //     pathname: '/MyCar',
             //     state: this.state
