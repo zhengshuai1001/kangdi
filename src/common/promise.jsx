@@ -13,6 +13,22 @@ let Ajax = axios.create({
     responseType: 'json'
 });
 
+// 添加响应拦截器
+Ajax.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+    let { data } = response;
+    if (data && data.result && data.result.code != 1000 && data.result.errmsg_text ) {
+        //此时存在errmsg_text，自定义错误信息，此时应该重定向errmsg，同时将errmsg_text绑定到window上，让错误表调用
+        window.AjaxResponseErrmsgText = data.result.errmsg_text;
+        response.data.result.errmsg = "302"; //重定向errmsg
+    }
+    console.log(response);
+    return response;
+}, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+});
+
 const ajaxURLList = {
     smsNumsend: "sms/numsend", //获取短信
     accountLogin: "account/login", //登录
@@ -141,6 +157,20 @@ function ServerJudgeLogon(req){
         localStorage.removeItem("vincode");
         hashHistory.push({
             pathname: '/MyCarLogin',
+            query: { form: 'promise' }
+        });
+        return false;
+    } else if (res && res.code != 1000 && res.errmsg == 902) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("vincode");
+        // localStorage.removeItem("controlCode");
+        localStorage.removeItem("car_no");
+        localStorage.removeItem("firstEntryPageUseHelpDetail");
+        localStorage.removeItem("car_model_selected");
+        localStorage.removeItem("vincode_selected");
+        //跳转到登录页
+        hashHistory.push({
+            pathname: '/login',
             query: { form: 'promise' }
         });
         return false;

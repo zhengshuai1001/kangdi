@@ -47,5 +47,8 @@ export default {
     "907": "短信服务业务限制",
     "908": "短信服务异常",
     "909": "上位机软件通讯超时",
-    "910": "功能末开通"
+    "910": "功能末开通",
+    get "302"() {
+        return window.AjaxResponseErrmsgText;
+    },
 }
