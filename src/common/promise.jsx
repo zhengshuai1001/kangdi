@@ -22,7 +22,7 @@ Ajax.interceptors.response.use(function (response) {
         window.AjaxResponseErrmsgText = data.result.errmsg_text;
         response.data.result.errmsg = "302"; //重定向errmsg
     }
-    console.log(response);
+    // console.log(response);
     return response;
 }, function (error) {
     // 对响应错误做点什么
@@ -46,6 +46,7 @@ const ajaxURLList = {
     controlAc: "control/ac", //空调控制
     appHelp: "app/help", //使用帮助
     controlWakeup: "control/wakeup", //唤醒车辆
+    carModel_tmpl: "car/model_tmpl", //车型模板查询
 }
 
 //定义一个基于Promise的异步任务执行器

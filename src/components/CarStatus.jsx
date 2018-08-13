@@ -121,7 +121,9 @@ export default class CarStatus extends React.Component {
             document.querySelector(".am-navbar-light.am-navbar").style.paddingTop = 44 + 'px';
             document.querySelector(".am-tabs-tab-bar-wrap .am-tab-bar-bar").style.marginBottom = 24 + 'px';
         }
-        
+        //update 0818 测试，获取车型图片
+        console.log("carModel_tmpl")
+        runPromise("carModel_tmpl", {car_tail: 'K17AS'}, (res)=>{console.log(res)}, false, false);
     }
     startQueryCarStatus = () => {
         clearTimeout(this.state.tokenSetTimeout);
