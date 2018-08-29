@@ -1,7 +1,9 @@
 import React from 'react';
 import { hashHistory, Link } from 'react-router';
-import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Toast } from 'antd-mobile';
+import { WhiteSpace, Button, WingBlank, InputItem, Flex, NavBar, Toast, ActivityIndicator } from 'antd-mobile';
 import { runPromise } from '../common/promise';
+
+// import axios from 'axios';
 
 let phoneType = navigator.userAgent;
 let isiOS = !!phoneType.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
@@ -41,7 +43,7 @@ export default class PageMyCarLogin extends React.Component {
             show_car_model_list: false,
             show_vincode_list: false,
             focusScrollInput: false, //判断页面下半部分的输入框是否focus，如果是，页面要大变。
-
+            isAjaxGetCarModel: false,
         }
         //发送完后车辆查询后的处理函数
         this.handleChangePassword = (req) => {
@@ -61,14 +63,107 @@ export default class PageMyCarLogin extends React.Component {
             let res = req.result;
             // console.log(res);
             if (res.code == 1000) {
-                //跳转到首页,MyCar
-                hashHistory.push({
-                    pathname: '/MyCar'
-                }); 
+                this.ajaxGetCarModel(); //获取车型图片
+                if (!this.state.isAjaxGetCarModel) {
+                    //跳转到首页,MyCar
+                    hashHistory.push({
+                        pathname: '/MyCar'
+                    }); 
+                }
             } else {
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
         }
+        this.handleGetCarModel = (req) => {
+            let res = req.result;
+            if (res.code == 1000) {
+                 let { pictures, position } = res.data;
+                 if (pictures) {
+                    localStorage.setItem('carModelPictures', JSON.stringify(pictures));
+                    this.cacheImageCarModelPictures(pictures); //缓存汽车图片，然后把图片URL换成本地路径
+                 }
+                 if (position) {
+                    localStorage.setItem('carModelPosition', JSON.stringify(position));
+                }
+                if (this.state.isAjaxGetCarModel) {
+                    this.setState({ isAjaxGetCarModel: false })
+                    //跳转到首页,MyCar
+                    hashHistory.push({
+                        pathname: '/MyCar'
+                    });
+                }
+            } else {
+                this.setState({ isAjaxGetCarModel: false })
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+    }
+    //update 0817 汽车车型图片使用后端图片
+    //缓存汽车车型图片
+    cacheImageCarModelPictures = (item_list = {}) => {
+        if (window.api) {
+            for (const key in item_list) {
+                if (item_list.hasOwnProperty(key)) {
+                    const url = item_list[key];
+                    window.api.imageCache({
+                        url,
+                    }, (ret, err) => {
+                        if (ret.status) {
+                            let cacheUrl = ret.url; //返回的本地路径
+                            let carModelPicturesObject = {};
+                            let carModelPicturesString = localStorage.getItem('carModelPictures');
+                            if (carModelPicturesString  && Object.keys(JSON.parse(carModelPicturesString)).length > 0) {
+                                carModelPicturesObject = JSON.parse(carModelPicturesString);
+                            }
+                            carModelPicturesObject[key] = cacheUrl;
+                            localStorage.setItem('carModelPictures', JSON.stringify(carModelPicturesObject))
+                        }
+                    })
+                }
+            }
+        }
+    }
+    ajaxGetCarModel = () => {
+        let carModelPictures = localStorage.getItem('carModelPictures');
+        if (!carModelPictures) {
+            this.setState({ isAjaxGetCarModel: true })
+        }
+        let car_tail = localStorage.getItem("car_tail") || 'K17AS';
+        runPromise("carModel_tmpl", {
+            car_tail,
+        }, this.handleGetCarModel, false, false);
+
+        // axios({
+        //     method: "POST",
+        //     url: 'https://www.easy-mock.com/mock/5b757c3cf377e45dfb6ce8fe/kandi/car/model_tmpl',
+        //     data: {
+        //     }
+        // })
+        //     .then((response) => {
+        //         let res = response.data;
+        //         if (res.code == 1000) {
+        //             let { pictures, position } = res.data;
+        //             if (pictures) {
+        //                 localStorage.setItem('carModelPictures', JSON.stringify(pictures));
+        //                 this.cacheImageCarModelPictures(pictures); //缓存汽车图片，然后把图片URL换成本地路径
+        //             }
+        //             if (position) {
+        //                 localStorage.setItem('carModelPosition', JSON.stringify(position));
+        //             }
+        //             if (this.state.isAjaxGetCarModel) {
+        //                 this.setState({ isAjaxGetCarModel: false })
+        //                 //跳转到首页,MyCar
+        //                 hashHistory.push({
+        //                     pathname: '/MyCar'
+        //                 });
+        //             }
+        //         } else {
+        //             Toast.fail(ERRMSG[res.errmsg], 2);
+        //         }
+        //     })
+        //     .catch((error) => {
+        //         console.log(error.data);
+        //     });
     }
     handleRememberControlCode = () => {
         this.setState({
@@ -274,6 +369,10 @@ export default class PageMyCarLogin extends React.Component {
                 <div className="page-login-bg-div" style={{"height":"15rem"}}>
                     <img style={{ "padding-top": "10%" }} className="page-login-bg-img" src={require('../images/backgroundLogin.png')} />
                 </div>
+                <ActivityIndicator
+                    text="登录中..."
+                    animating={this.state.isAjaxGetCarModel}
+                />
                 <WingBlank className="page-login-WingBlank" size="lg">
                     <InputItem
                         type="string"

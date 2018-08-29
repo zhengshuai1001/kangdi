@@ -1,0 +1,391 @@
+import React from 'react';
+import { hashHistory, Link } from 'react-router';
+import { NavBar, Icon, Flex, Tabs, Toast, Button } from 'antd-mobile';
+import QueueAnim from 'rc-queue-anim';
+import { runPromise } from '../common/promise';
+
+// const imgUrl = [require('../images/shortcut-btn-trunk.png'),
+//     require('../images/shortcut-btn-lock.png'),
+//     require('../images/shortcut-btn-engine.png'),
+//     require('../images/shortcut-btn-door.png'),
+//     require('../images/shortcut-btn-lamp.png'),
+//     require('../images/shortcut-btn-switch.png'),
+//     require('../images/shortcut-btn-refrigeration.png'),
+//     require('../images/shortcut-btn-heating.png'),
+//     require('../images/shortcut-btn-defrost.png'),
+//     require('../images/big-btn-meter.png'),
+//     require('../images/big-btn-code.png'),
+//     require('../images/big-btn-control.png'),
+//     require('../images/switch-key-icon.png')
+// ];
+
+let carStatusImg = {
+    K12: {},
+    K17: {}
+}
+
+//update 0817 车型图片代码重构
+
+function changeCarStatusImg() {
+    let carModelPicturesObject = {};
+    let carModelPicturesString = localStorage.getItem('carModelPictures');
+    if (carModelPicturesString  && Object.keys(JSON.parse(carModelPicturesString)).length > 0) {
+        carModelPicturesObject = JSON.parse(carModelPicturesString);
+
+        let carImg = {
+            trunk0: carModelPicturesObject.main_car_setting_effect_car_houbei_lock,
+            trunk1: carModelPicturesObject.main_car_setting_effect_car_houbei_unlock,
+            lock1: carModelPicturesObject.main_car_setting_effect_car_door_unlock,
+            lock0: carModelPicturesObject.main_car_setting_effect_car_door_lock,
+            horn1: carModelPicturesObject.main_car_setting_effect_alert_light,
+            lamp0: carModelPicturesObject.main_car_setting_effect_near_light,
+            lamp1: carModelPicturesObject.main_car_setting_effect_far_light,
+            Window0: carModelPicturesObject.main_car_setting_left_window_icon_up,
+            Window1: carModelPicturesObject.main_car_setting_left_window_icon_down,
+            car: carModelPicturesObject.main_car_setting_effect_car_global,
+        };
+
+        //将新的图片赋值给全局图片变量
+        //为了保证以前的代码还能使用，将新的图片地址赋值给旧名称
+        carStatusImg.K12 = carImg;
+        carStatusImg.K17 = carImg;
+    }
+
+}
+
+const imgUrl ={
+    trunk : require('../images/shortcut-btn-trunk.png'),
+    lock : require('../images/shortcut-btn-lock.png'),
+    engine : require('../images/shortcut-btn-engine.png'),
+    door : require('../images/shortcut-btn-door.png'),
+    doorLF: require('../images/shortcut-btn-doorLF.png'),
+    doorRF: require('../images/shortcut-btn-doorRF.png'),
+    doorLR: require('../images/shortcut-btn-doorLR.png'),
+    doorRR: require('../images/shortcut-btn-doorRR.png'),
+    doorActive: require('../images/shortcut-btn-door-active.png'),
+    doorLFActive: require('../images/shortcut-btn-doorLF-active.png'),
+    doorRFActive: require('../images/shortcut-btn-doorRF-active.png'),
+    doorLRActive: require('../images/shortcut-btn-doorLR-active.png'),
+    doorRRActive: require('../images/shortcut-btn-doorRR-active.png'),
+    lamp : require('../images/shortcut-btn-lamp.png'),
+    switch : require('../images/shortcut-btn-switch.png'),
+    refrigeration : require('../images/shortcut-btn-refrigeration.png'),
+    heating : require('../images/shortcut-btn-heating.png'),
+    defrost : require('../images/shortcut-btn-defrost.png'),
+    meter : require('../images/big-btn-meter.png'),
+    code : require('../images/big-btn-code.png'),
+    control : require('../images/big-btn-control.png'),
+    icon : require('../images/switch-key-icon.png'),
+    trunkActive: require('../images/shortcut-btn-trunk-active.png'), //以下是活动状态的图标
+    lockActive: require('../images/shortcut-btn-lock-active.png'),
+    engineActive: require('../images/shortcut-btn-engine-active.png'),
+    // doorActive: require('../images/shortcut-btn-door-active.png'),
+    lampActive: require('../images/shortcut-btn-lamp-active.png'),
+    switchActive: require('../images/shortcut-btn-switch-active.png'),
+    refrigerationActive: require('../images/shortcut-btn-refrigeration-active.png'),
+    heatingActive: require('../images/shortcut-btn-heating-active.png'),
+    defrostActive: require('../images/shortcut-btn-defrost-active.png'),
+
+}
+const MyCarBtn = (props) => (
+    <div
+        className="my-car-btn-box"
+        onClick={() => { props.onActive(props.index) }}
+    >
+        <div className="my-car-btn-img-box">
+            <img src={props.imgURL} />
+        </div>
+        <span>{props.text}</span>
+    </div>
+)
+
+const transformParam = {
+    trunk0: "18",
+    trunk1: "17",
+    lock0: "8",
+    lock1: "7",
+    engine0: "24",
+    engine1: "23",
+    door0: "2",
+    door1: "1",
+    lamp0: "16",
+    lamp1: "15",
+    AirConditioner0: "2", //空调
+    AirConditioner1: "1", //空调
+    ac0: "4", // AC降温
+    ac1: "3", // AC降温
+    ptc0: "6", // PTC加热
+    ptc1: "5", // PTC加热
+    defrost0: "9", // 除雾除霜
+    defrost1: "12", // 除雾除霜
+}
+
+export default class PageMyCar extends React.Component{
+    constructor(props) {
+        super(props)
+        this.state ={
+            trunk: 0, //后备箱
+            lock: 0,  //车锁
+            engine: 0, //电机加锁
+            door: 0, //车门
+            lamp: 0, //车灯
+            AirConditioner: 0, //空调
+            ac: 0, // AC降温
+            ptc: 0, // PTC加热
+            defrost: 0, // 除雾除霜
+            acc: 0, // 自适应巡航
+            soc: 0, //电量
+            temperature: 0, //室内温度
+            onClickTabName: "", //点击tab的state名字
+            // car_tail: "K17A", //车辆型号
+            car_tail: localStorage.getItem("car_tail") || "", //车辆型号
+            initialPage: 0,
+            carModelPosition: localStorage.getItem('carModelPosition') ? JSON.parse(localStorage.getItem('carModelPosition')) : {}
+        }
+        //发送完车辆运行数据查询后的处理函数
+        this.handleQueryCarStatus = (req) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                let data = res.data;
+                //获取车辆运行数据后保存
+                this.setState({
+                    trunk: data.BcmData.Trunk, 
+                    lock: data.BcmData.CentralLock,  
+                    engine: data.BcmData.BatteryDoor, //假的
+                    door: data.BcmData.LFDoor,  //左前门,先用左前门代替车门
+                    doorLF: data.BcmData.LFDoor,  //左前门
+                    doorRF: data.BcmData.RFDoor,  //右前门
+                    doorLR: data.BcmData.LRDoor,  //左后门
+                    doorRR: data.BcmData.RRDoor,  //右后门
+                    lamp: data.BcmData.Headlight, //大灯
+                    AirConditioner: data.EasData.AirConditione, 
+                    ac: data.EasData.AC,
+                    ptc: data.EasData.PTC,
+                    defrost: data.EasData.WindDirection == 3 ? 1 : 0,
+                    acc: data.KDData.ACC,
+                    soc: data.CarData.SOC,
+                    temperature: 0 //室内温度不知道
+                });
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+        //发送完后车身控制后的处理函数
+        this.handleControlCar = (req) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                let data = res.data;
+                //将相应的state取反操作
+                this.setState({
+                    [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
+                });
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+        //发送完车身控制的空调部分的处理函数
+        this.handleControlCarAir = (req) => {
+            let res = req.result;
+            // console.log(res);
+            if (res.code == 1000) {
+                let data = res.data;
+                //将相应的state取反操作
+                this.setState({
+                    [this.state.onClickTabName]: this.state[this.state.onClickTabName] == 1 ? 0 : 1
+                });
+
+                //空调操作后做的应该是重新获取空调的数据。
+                //发送ajax获取车辆运行数据
+                runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+            } else {
+                Toast.fail(ERRMSG[res.errmsg], 2);
+            }
+        }
+    }
+    onActive = (index) => {
+        // console.log(index);
+        var path = "/";
+        index == 0 ? path = "/remoteMeter" : "";
+        index == 1 ? path = "/modifyControlCodeFirst" : "";
+        index == 2 ? path = "/remoteControl" : "";
+        // console.log(path)
+        hashHistory.push({
+            pathname: path
+        }); 
+    }
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps.carStatus)
+        let vincode = localStorage.getItem("vincode");
+        if (!vincode) {
+            //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+            hashHistory.push({
+                pathname: '/MyCarLogin',
+                query: { form: 'promise' }
+            });
+            return;
+        }
+    }
+    componentDidMount() {
+        //发送ajax获取车辆运行数据
+        // runPromise("queryCarStatus", {}, this.handleQueryCarStatus,true, true);
+        //重新向后端获取车辆运行数据
+        this.props.queryCarStatus();
+        let vincode = localStorage.getItem("vincode");
+        if (!vincode) {
+            //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+            hashHistory.push({
+                pathname: '/MyCarLogin',
+                query: { form: 'promise' }
+            });
+            return;
+        }
+    }
+    componentWillMount() {
+        changeCarStatusImg(); //设置汽车图片
+        let vincode = localStorage.getItem("vincode");
+        if (!vincode) {
+            //车辆没有没登录，跳转到我的车辆页，输入车辆验证码
+            hashHistory.push({
+                pathname: '/MyCarLogin',
+                query: { form: 'promise' }
+            });
+            return;
+        }
+        this.setState(this.props.carStatus);
+        let u = navigator.userAgent;
+        let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/);
+        this.setState({ isiOS });        
+    }
+    onClickTab = (tab, index) => {
+        let state = tab.title.props.state;
+        if (state == "door") {
+            // Toast.offline('不能操作车门', 1);
+            return;
+        }
+        this.setState({onClickTabName: state});
+        let suffix = this.state[state] == 1 ? "0" : "1" ;
+        let param = state + suffix;
+        //不能是空调控制
+        if (state != "AirConditioner" && state != "ac" && state != "ptc" && state != "defrost") {
+            //发送ajax设置车身控制
+            // runPromise("controlCar", {
+            //     contrlpara: { "part": transformParam[param], "para": "" }
+            // }, this.handleControlCar, true, true);
+        } else {
+            //发送ajax设置车身控制 ,空调
+            // runPromise("controlAc", {
+            //     contrlpara: { "part": transformParam[param], "para": "" }
+            // }, this.handleControlCarAir, true, true);
+        } 
+    }
+    render() {
+        const doorAllClassName = `tabs-one ${this.state.door ? "active" : ""} door ${this.state.doorLF ? "lf" : ""} ${this.state.doorRF ? "rf" : ""} ${this.state.doorLR ? "lr" : ""} ${this.state.doorRR ? "rr" : ""}`;
+        const tabs = [
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="trunk" className={this.state.trunk ? "tabs-one active" : "tabs-one"}><img src={ this.state.trunk ? imgUrl.trunkActive : imgUrl.trunk} /><span>后备箱</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="lock" className={this.state.lock ? "tabs-one active" : "tabs-one"}><img src={ this.state.lock ? imgUrl.lockActive : imgUrl.lock} /><span>车锁</span></div> },
+            // { title: <div state="engine" className={this.state.engine ? "tabs-one active" : "tabs-one"}><img src={ this.state.engine ? imgUrl.engineActive : imgUrl.engine} /><span>电机加锁</span></div> },
+            // { title: <div state="door" className={this.state.door ? "tabs-one active" : "tabs-one"}><img src={ this.state.door ? imgUrl.doorActive : imgUrl.door} /><span>车门</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="door" className={doorAllClassName}><img className="bg" src={!this.state.door ? imgUrl.door : imgUrl.doorActive} /><img className="lf" src={!this.state.door ? imgUrl.doorLF : imgUrl.doorLFActive} /><img className="rf" src={!this.state.door ? imgUrl.doorRF : imgUrl.doorRFActive} /><img className="lr" src={!this.state.door ? imgUrl.doorLR : imgUrl.doorLRActive} /><img className="rr" src={!this.state.door ? imgUrl.doorRR : imgUrl.doorRRActive} /><span>车门</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 0}) }} state="lamp" className={this.state.lamp ? "tabs-one active" : "tabs-one"}><img src={ this.state.lamp ? imgUrl.lampActive : imgUrl.lamp} /><span>车灯</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="AirConditioner" className={this.state.AirConditioner ? "tabs-one active" : "tabs-one"}><img src={ this.state.AirConditioner ? imgUrl.switchActive : imgUrl.switch} /><span>空调</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="ac" className={this.state.ac ? "tabs-one active" : "tabs-one"}><img src={ this.state.ac ? imgUrl.refrigerationActive : imgUrl.refrigeration} /><span>AC</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="ptc" className={this.state.ptc ? "tabs-one active" : "tabs-one"}><img src={ this.state.ptc ? imgUrl.heatingActive : imgUrl.heating} /><span>PTC</span></div> },
+            { title: <div onTouchEnd={() => { this.setState({initialPage: 7}) }} state="defrost" className={this.state.defrost ? "tabs-one active" : "tabs-one"}><img src={ this.state.defrost ? imgUrl.defrostActive : imgUrl.defrost} /><span>除雾除霜</span></div> }
+        ];
+        return (
+            <QueueAnim
+                type="right"
+                duration="500"
+                ease="easeOutBack"
+            >
+                <div key="1" className="page-login  page-my-car">
+                    <NavBar
+                        style={{ "background-color": "#000" }}
+                        mode="light"
+                        rightContent={<Button className="refreshButton" onClick={() => { this.props.refreshWakeup() }}><span className="txt">刷新</span></Button>}
+                    >我的车辆</NavBar>
+                    <div className="my-car-big-box" style={{ "padding-top": "4.6rem" }}>
+                        <div 
+                            className={(!!~(this.state.car_tail.indexOf("K17A"))) || (!!~(this.state.car_tail.indexOf("K27"))) ? "my-car-img-box K17A" :"my-car-img-box"}
+                            style={{"background-image": `url(${carStatusImg.K17.car ? carStatusImg.K17.car : null})`}}
+                        >
+                            <img
+                                style={{ "display": this.state.lamp ? "block" : "none" }}
+                                className="car-status-img-continued-lamp"
+                                // src={(!!~(this.state.car_tail.indexOf("K17A"))) || (!!~(this.state.car_tail.indexOf("K27"))) ? require('../images/K17/main_car_setting_effect_far_light.png') : require('../images/K12/K12_main_car_setting_effect_far_light.png')}
+                                src={ carStatusImg.K17.lamp1 ? carStatusImg.K17.lamp1 : null }
+                            />
+                            <span 
+                                className="car-no-span"
+                                style={{
+                                    "transform": `scale(${this.state.carModelPosition.scale}) rotate(${this.state.carModelPosition.angle}deg)`,
+                                    "top": this.state.carModelPosition.y + "%",
+                                    "left": this.state.carModelPosition.x + "%"
+                                }}
+                            >{localStorage.getItem("car_no") ? localStorage.getItem("car_no"): ""}</span>
+                        </div>
+                        <div className="my-car-soc-box">
+                            <span className="soc">SOC</span>
+                            <span className="txt">{this.state.soc}%</span>
+                        </div>
+                        <div className="my-car-annular-box"></div>
+                        <div className="my-car-temperature-box" style={{ "display": "none" }}>
+                            <span className="temperature">{this.state.temperature}℃</span>
+                            <span className="txt">车内温度</span>
+                        </div>
+                        <div className="my-car-switchKey-box">
+                            <img src={imgUrl.icon}/>
+                            <div>
+                                {/* <span className={ this.state.acc == 0 ? "off active" : "off" }>OFF</span>
+                                <span className={this.state.acc == 1 ? "acc active" : "acc"}>ACC</span>
+                                <span className={this.state.acc == 2 ? "on active" : "on"}>ON</span> */}
+                                <span className="icon" style={{ "display": this.state.acc == 0 ? "block" : "none" }}>OFF</span>
+                                <span className="icon" style={{ "display": this.state.acc == 1 ? "block" : "none" }}>ACC</span>
+                                <span className="icon" style={{ "display": this.state.acc == 2 ? "block" : "none" }}>ON</span>
+                            </div>
+                        </div>
+                        <Tabs
+                            prefixCls="my-car-tabs"
+                            tabBarBackgroundColor="transparent"
+                            tabBarUnderlineStyle={{ "display": "none" }}
+                            tabs={tabs}
+                            page={this.state.initialPage}
+                            swipeable={false}
+                            // onChange={(tab, index) => { console.log('onChange', index, tab); }}
+                            onTabClick={this.onClickTab}
+                        >
+                        </Tabs>
+                        {/* 按康迪测试的要求更改 */}
+                        <div className="my-car-click-mask">
+                            <span onTouchStart={() => { this.setState({ initialPage: 0 }) }} className="left"></span>
+                            <span onTouchStart={() => { this.setState({ initialPage: 7 }) }} className="right"></span>
+                        </div>
+                    </div>
+                    <div 
+                        className="page-my-car-WingBlank diy-position" 
+                        size="lg" 
+                        // style={{ 
+                        //     "height": "144px",
+                        //     "height": "-webkit-calc(100% - 61.1979vw - 12.2rem - 147px)",
+                        //     "height": "calc(100% - 61.1979vw - 12.2rem - 147px)"
+                        // }}
+                        style={{ "height": this.state.isiOS ? "calc(100% - 61.1979vw - 12.2rem - 147px)" : "144px" }}
+                        >
+                        <Flex>
+                            <Flex.Item><MyCarBtn index="2" text="远程控制" imgURL={imgUrl.control} onActive={this.onActive} /></Flex.Item>
+                            <Flex.Item><MyCarBtn index="0" text="远程仪表" imgURL={imgUrl.meter} onActive={this.onActive} /></Flex.Item>
+                            <Flex.Item><MyCarBtn index="1" text="控制码修改" imgURL={imgUrl.code} onActive={this.onActive} /></Flex.Item>
+                        </Flex>
+                    </div>
+                </div>
+            </QueueAnim>
+        )
+    }
+}
+
+PageMyCar.contextTypes = {
+    router: React.PropTypes.object,
+    carStatus: React.PropTypes.object
+};

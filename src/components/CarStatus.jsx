@@ -105,14 +105,34 @@ export default class CarStatus extends React.Component {
                 });
                 api.addEventListener({
                     name: 'resume'
-                }, function (ret, err) {
+                }, (ret, err) => {
                     localStorage.setItem("vincode", ""); //进入前台时，首先就清除车辆控制码
+                    //用户有可能是因为特殊原因进入后台的，再次进入前台时，不应该跳转到汽车登录页
+                    let pathname = this.props.location.pathname;
+                    if (pathname != "/personalCenter" && pathname != "/contactUs"  && pathname != "/forgetPassword" && pathname != "/register") {
+                        // let vincode = localStorage.getItem("vincode");
+                        // localStorage.removeItem("vincode"); //进入前台时，首先就清除车辆控制码
+                        // if (vincode) {
+                        //     localStorage.setItem("tempVincode", vincode);
+                        // }
+                    } else {
+                        localStorage.setItem('stopGotoCarLogin', 1);
+                        // let tempVincode = localStorage.getItem("tempVincode");
+                        // localStorage.removeItem("tempVincode");
+                        // if (tempVincode) {
+                        //     localStorage.setItem("vincode", tempVincode);
+                        // }
+                    }
                     then.setState({
                         sendAjax: true
                     });
                     // 取消请求
                     AjaxCancel();
-                    then.startQueryCarStatus();
+                    if (localStorage.getItem("stopGotoCarLogin") != 1) {
+                        then.startQueryCarStatus();  
+                    } else {
+                        localStorage.removeItem('stopGotoCarLogin');
+                    }
                 });
             }
         }, 500);
@@ -121,9 +141,6 @@ export default class CarStatus extends React.Component {
             document.querySelector(".am-navbar-light.am-navbar").style.paddingTop = 44 + 'px';
             document.querySelector(".am-tabs-tab-bar-wrap .am-tab-bar-bar").style.marginBottom = 24 + 'px';
         }
-        //update 0818 测试，获取车型图片
-        console.log("carModel_tmpl")
-        runPromise("carModel_tmpl", {car_tail: 'K17AS'}, (res)=>{console.log(res)}, false, false);
     }
     startQueryCarStatus = () => {
         clearTimeout(this.state.tokenSetTimeout);

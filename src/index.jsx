@@ -9,7 +9,7 @@ import PageLogin from './components/PageLogin';
 import PageRegister from './components/PageRegister';
 import PageForgetPassword from './components/PageForgetPassword';
 import PageMoreInfo from './components/PageMoreInfo';
-import PageUseHelp from './components/PageUseHelp';
+// import PageUseHelp from './components/PageUseHelp';
 import PageUseHelp2 from './components/PageUseHelp2';
 import PageUseHelpDetail from './components/PageUseHelpDetail';
 import PageFeedback from './components/PageFeedback';
@@ -19,8 +19,8 @@ import PageModifyPassword from './components/PageModifyPassword';
 import PageContactUs from './components/PageContactUs';
 import PageMyCarLogin from './components/PageMyCarLogin';
 import PageRemoteMeter from './components/PageRemoteMeter';
-import PageRemoteControl from './components/PageRemoteControl';
-import PageMyCar from './components/PageMyCar';
+import PageRemoteControl from './components/PageRemoteControl2'; //车型图片代码重构
+import PageMyCar from './components/PageMyCar2'; //车型图片代码重构
 import PageModifyControlCodeFirst from './components/PageModifyControlCodeFirst';
 import PageModifyControlCodeSecond from './components/PageModifyControlCodeSecond';
 
