@@ -17,7 +17,7 @@ const DropDownList = (props) => (
             props.list.map((val,index) => { 
                 return (
                     <li
-                        onTouchStart={() => { props.onActive(index) }}
+                        onTouchStart={(e) => { props.onActive(index, e) }}
                     >{val}</li> 
                 )
             } ) 
@@ -86,6 +86,7 @@ export default class PageMyCarLogin extends React.Component {
                     localStorage.setItem('carModelPosition', JSON.stringify(position));
                 }
                 if (this.state.isAjaxGetCarModel) {
+                    Toast.hide()
                     this.setState({ isAjaxGetCarModel: false })
                     //跳转到首页,MyCar
                     hashHistory.push({
@@ -93,6 +94,7 @@ export default class PageMyCarLogin extends React.Component {
                     });
                 }
             } else {
+                Toast.hide()
                 this.setState({ isAjaxGetCarModel: false })
                 Toast.fail(ERRMSG[res.errmsg], 2);
             }
@@ -132,6 +134,7 @@ export default class PageMyCarLogin extends React.Component {
         let car_tail = localStorage.getItem('car_tail') || 'K17AS';
         if (old_car_tail != car_tail) {
             this.setState({ isAjaxGetCarModel: true })
+            Toast.loading('加载中...', 3)
         }
         // let car_tail = localStorage.getItem("car_tail") || 'K17AS';
         runPromise("carModel_tmpl", {
@@ -208,7 +211,8 @@ export default class PageMyCarLogin extends React.Component {
         return vincodeList;
     }
     //点击下拉列表的某一列
-    onActiveCarModel = (index) => {
+    onActiveCarModel = (index, e) => {
+        e.stopPropagation();
         let car_model = this.state.data_car_model_list[index];
         // console.log(car_model)
         this.setState({
@@ -222,7 +226,8 @@ export default class PageMyCarLogin extends React.Component {
         }
     }
     //点击下拉列表的某一列
-    onActiveVincode = (index) => {
+    onActiveVincode = (index, e) => {
+        e.stopPropagation();
         let vincode = this.state.data_vincode_list[index];
         let car_no = "";
         let car_tail = "";
