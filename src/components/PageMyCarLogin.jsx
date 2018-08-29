@@ -78,11 +78,11 @@ export default class PageMyCarLogin extends React.Component {
             let res = req.result;
             if (res.code == 1000) {
                  let { pictures, position } = res.data;
-                 if (pictures) {
+                 if (pictures && Object.keys(pictures).length > 0) {
                     localStorage.setItem('carModelPictures', JSON.stringify(pictures));
                     this.cacheImageCarModelPictures(pictures); //缓存汽车图片，然后把图片URL换成本地路径
                  }
-                 if (position) {
+                 if (position && Object.keys(position).length > 0) {
                     localStorage.setItem('carModelPosition', JSON.stringify(position));
                 }
                 if (this.state.isAjaxGetCarModel) {
@@ -124,11 +124,16 @@ export default class PageMyCarLogin extends React.Component {
         }
     }
     ajaxGetCarModel = () => {
-        let carModelPictures = localStorage.getItem('carModelPictures');
-        if (!carModelPictures) {
+        // let carModelPictures = localStorage.getItem('carModelPictures');
+        // if (!carModelPictures) {
+        //     this.setState({ isAjaxGetCarModel: true })
+        // }
+        let old_car_tail = localStorage.getItem('old_car_tail');
+        let car_tail = localStorage.getItem('car_tail') || 'K17AS';
+        if (old_car_tail != car_tail) {
             this.setState({ isAjaxGetCarModel: true })
         }
-        let car_tail = localStorage.getItem("car_tail") || 'K17AS';
+        // let car_tail = localStorage.getItem("car_tail") || 'K17AS';
         runPromise("carModel_tmpl", {
             car_tail,
         }, this.handleGetCarModel, false, false);
@@ -209,6 +214,7 @@ export default class PageMyCarLogin extends React.Component {
         this.setState({
             data_car_model_selected: car_model,
             data_vincode_list: this.getVincodeList(car_model),
+            data_vincode_selected: '', //选择车型后，此时车架码应该是没有选择的状态
             show_car_model_list: false
         });
         if (car_model) {
@@ -275,6 +281,15 @@ export default class PageMyCarLogin extends React.Component {
             }
             if (car_no) {
                 localStorage.setItem("car_no", car_no); //保存车牌号码
+            }
+            //update 0829
+            let car_model_selected = localStorage.getItem('car_model_selected');
+            if (car_model_selected && typeof car_model_selected == 'string' && car_model_selected.length > 0) {
+                if (car_tail && car_tail != car_model_selected) {
+                    // this.setState({ isAjaxGetCarModel: true })
+                    localStorage.setItem("old_car_tail", car_tail); //保存车辆型号
+                    car_tail = car_model_selected;
+                }
             }
             if (car_tail) {
                 localStorage.setItem("car_tail", car_tail); //保存车辆型号
@@ -369,10 +384,10 @@ export default class PageMyCarLogin extends React.Component {
                 <div className="page-login-bg-div" style={{"height":"15rem"}}>
                     <img style={{ "padding-top": "10%" }} className="page-login-bg-img" src={require('../images/backgroundLogin.png')} />
                 </div>
-                <ActivityIndicator
+                {/* <ActivityIndicator
                     text="登录中..."
                     animating={this.state.isAjaxGetCarModel}
-                />
+                /> */}
                 <WingBlank className="page-login-WingBlank" size="lg">
                     <InputItem
                         type="string"

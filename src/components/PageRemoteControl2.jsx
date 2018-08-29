@@ -646,7 +646,8 @@ export default class PageRemoteControl extends React.Component{
                             style={{
                                 "transform": `scale(${this.state.carModelPosition.scale}) rotate(${this.state.carModelPosition.angle}deg)`,
                                 "top": this.state.carModelPosition.y + "%",
-                                "left": this.state.carModelPosition.x + "%"
+                                "left": this.state.carModelPosition.x + "%",
+                                "visibility": this.state.carModelPosition.y ? 'initial' : 'hidden'
                             }}
                         >{localStorage.getItem("car_no") ? localStorage.getItem("car_no") : ""}</span>
                     </div>
