@@ -134,8 +134,7 @@ function sendAjax(url, param) {
             // resolve(req);
         }).catch(error => {
             //全局处理网络请求错误
-            // console.log(error.message);
-            if (error.message) {
+            if (error.message && url != 'control/queryCarStatus') {
                 Toast.offline("网络错误",2);
             }
             reject(error);
