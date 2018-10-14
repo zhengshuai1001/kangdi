@@ -78,6 +78,7 @@ class PageUploadAvatar2 extends React.Component {
         this.handleUploadAvatar = (req) => {
             let res = req.result;
             // console.log(res);
+            Toast.hide();
             if (res.code == 1000) {
                 //上传图片成功，退回到个人中心页
                 Toast.success("上传头像成功", 1, ()=>{
@@ -94,8 +95,17 @@ class PageUploadAvatar2 extends React.Component {
     //         "header_img": (this.convertCanvasToImage(this.state.img2)).split("base64,")[1]
     //     }, this.handleUploadAvatar);
     // }
-    componentWillMount () {
+    componentWillMount_old_update_1014 () {
         this.setState(this.props.location.state);
+    }
+    componentWillMount() {
+        
+        let avatar = this.props.UploadAvatar;
+        if (avatar && avatar.img) {
+            this.setState({ img: avatar.img });
+        } else {
+            hashHistory.goBack();
+        }
     }
     componentDidMount2 () {
         let { img, img1, width, height } = this.state;
@@ -166,9 +176,17 @@ class PageUploadAvatar2 extends React.Component {
         // console.log(pc);
         let dataURL = pc.clip();
         //发送ajax上传图片
-        runPromise("appuserChangeimg", {
-            "header_img": dataURL.split("base64,")[1]
-        }, this.handleUploadAvatar);
+        Toast.loading('上传头像...', 5);
+        setTimeout(() => {
+            runPromise("appuserChangeimg", {
+                "header_img": dataURL.split("base64,")[1]
+            }, this.handleUploadAvatar);
+        }, 300);
+    }
+    componentWillUnmount() {
+        this.props.propsSetState("UploadAvatar", {
+            img: null
+        });
     }
     render() {
         return (

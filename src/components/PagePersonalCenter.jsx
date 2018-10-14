@@ -17,7 +17,8 @@ export default class PagePersonalCenter extends React.Component {
             real_name: '',
             certid: '',
             phone: localStorage.getItem("kangdid") || "",
-            avatar: require("../images/avatar.png")
+            avatar: require("../images/avatar.png"),
+            saveImgObject: false
         }
         //获取个人信息后的处理函数
         this.handleUserInfo = (req) => {
@@ -63,10 +64,10 @@ export default class PagePersonalCenter extends React.Component {
         }, 0);  
         // window.addEventListener('scroll', this.handleScroll);
     }
-    componentWillUnmount() {
+    componentWillUnmount_old_update_1014() {
         // window.removeEventListener('scroll', this.handleScroll);
     }
-    onChangeFile = (e) => {
+    onChangeFile_old_update_1014 = (e) => {
         // console.log(e.target.files[0]);
         //跳转到裁切图片页
         hashHistory.push({
@@ -75,6 +76,28 @@ export default class PagePersonalCenter extends React.Component {
                 img: e.target.files[0]
             }
         });
+    }
+    //上传图片
+    onChangeFile = (e) => {
+        this.props.propsSetState("UploadAvatar", {
+            img: e.target.files[0]
+        });
+        this.setState({
+            saveImgObject: true
+        },()=>{
+            //跳转到裁切图片页
+            hashHistory.push({
+                pathname: '/uploadAvatar2',
+                query: { form: 'PerfectInfo' },
+            });
+        })
+    }
+    componentWillUnmount() {
+        if (!this.state.saveImgObject) {
+            this.props.propsSetState("UploadAvatar", {
+                img: null
+            });
+        }
     }
     changeNickName = () => {
         let u = navigator.userAgent;

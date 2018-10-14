@@ -2,13 +2,16 @@ import React from 'react';
 import { Toast } from 'antd-mobile';
 import { runPromise, AjaxCancel } from '../common/promise';
 
+import update from 'immutability-helper';
+
 export default class CarStatus extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             sendAjax: true,
             carStatus: {},
-            queryCarStatus: this.startQueryCarStatus
+            queryCarStatus: this.startQueryCarStatus,
+            UploadAvatar: {} // 上传的图片对象，图片对象属性名为img，记得及时手动清除
         }
         //发送完车辆运行数据查询后的处理函数
         this.handleQueryCarStatus = (req) => {
@@ -152,10 +155,27 @@ export default class CarStatus extends React.Component {
         //发送ajax唤醒车辆。
         runPromise("controlWakeup", {}, this.handleRefreshWakeup, true, true);
     }
+    /**
+     * props回调修改状态，
+     * 大状态state里，每一个页面是一个小状态，
+     * 要先找到是哪个页面，然后去（浅）合并每个页面的小状态
+     * @param page 选择某个页面
+     * @param state 需要（浅）合并的状态
+     * 
+     * @memberof HOC
+     */
+    propsSetState = (page, state, callback = ()=>{}) => {
+        if (this.state[page]) {
+            const newState = update(this.state, { [page]: { $merge: state } });
+            this.setState(newState,()=>{
+                callback();
+            });
+        }
+    }
     render() { 
         return (
             <div className="car-status-box" >
-                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus, refreshWakeup: this.refreshWakeup})}
+                {this.props.children && React.cloneElement(this.props.children, { carStatus: this.state.carStatus, queryCarStatus: this.state.queryCarStatus, refreshWakeup: this.refreshWakeup, propsSetState: this.propsSetState, UploadAvatar: this.state.UploadAvatar})}
             </div>
         )
     }
